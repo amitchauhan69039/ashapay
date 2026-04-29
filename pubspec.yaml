@@ -1,0 +1,72 @@
+name: asha_pay
+description: "A new Flutter project."
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.3.2 <4.0.0'
+
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+
+  # -------------------------- state management --------------------------
+  get: ^4.6.6
+
+  # -------------------------- ui --------------------------
+  intl: ^0.18.1
+
+
+
+  # -------------------------- Local storage --------------------------
+  shared_preferences: ^2.2.1
+  cached_network_image: ^3.2.3
+  flutter_cache_manager: ^3.3.1
+
+  #_______________________ API integration _______________________
+  http:
+
+  #_______________________ Firebase Service _______________________
+  cupertino_icons: ^1.0.6
+  device_info_plus: ^10.1.0
+  package_info_plus: ^8.0.0
+  crypto: ^3.0.3
+  fluttertoast: ^8.2.4
+  image_picker: ^1.0.5
+  path_provider: ^2.1.1
+  loading_indicator: ^3.1.1
+  permission_handler: ^11.1.0
+  country_picker: ^2.0.23
+  sms_autofill: ^2.3.1
+  google_fonts: ^8.1.0
+
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^3.0.0
+
+flutter:
+
+  uses-material-design: true
+
+  assets:
+    - assets/
+    - assets/icons/
+
+
+  fonts:
+    - family: Roboto
+      fonts:
+        - asset: assets/fonts/Roboto-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/Roboto-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/Roboto-Bold.ttf
+          weight: 600
+
+
