@@ -32,124 +32,85 @@ class _LoginScreenState extends State<LoginScreen> {
                 children: [
 
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    padding: const EdgeInsets.only(top: 80, left: 15, right: 15),
                     child: Column(
                       children: [
-
-                        const SizedBox(height: 100),
-
                         /// Logo
                         Image.asset(
                           AssetRes.asha_logo,
-                          height: 120,
+                          height: 100,
                         ),
 
-                        const SizedBox(height: 10),
+                        appSizedBox(height: 1.h),
 
-                        const Text(
+                        Text(
                           "ASHA Pay",
-                          style: TextStyle(
-                            fontSize: 22,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.blue,
-                          ),
+                          style: styleW700S20.copyWith(color: ColorRes.appBlueColor)
                         ),
 
-                        const SizedBox(height: 70),
+                        appSizedBox(height: 5.h),
 
                         /// Mobile Field
-                        TextField(
+                        CommonTextField(
                           controller: controller.phoneNumberController,
-                          decoration: InputDecoration(
-                            hintText: "Enter Mobile Number",
-                            suffixIcon: const Icon(Icons.person),
-                            filled: true,
-                            fillColor: Colors.white.withOpacity(0.9),
-                            contentPadding: const EdgeInsets.symmetric(vertical: 18, horizontal: 15),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(14),
-                              borderSide: const BorderSide(color: Colors.blue),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(14),
-                              borderSide: const BorderSide(color: Colors.blue),
-                            ),
-                          ),
+                          hintText: "Username",
+                          textInputType: TextInputType.phone,
+                          isNumberOnly: true,
+                          suffixIcon: const Icon(Icons.person_outline, size: 20),
                         ),
 
-                        const SizedBox(height: 15),
+                        appSizedBox(height: 2.h),
 
-
-                        TextField(
+                        CommonTextField(
                           controller: controller.passwordController,
-                          obscureText: !isPasswordVisible,
-                          decoration: InputDecoration(
-                            hintText: "Password",
-                            filled: true,
-                            fillColor: Colors.white.withOpacity(0.9),
-                            contentPadding: const EdgeInsets.symmetric(vertical: 18,horizontal: 15),
-                            suffixIcon: IconButton(
-                              icon: Icon(
-                                isPasswordVisible
-                                    ? Icons.visibility
-                                    : Icons.visibility_off,
-                              ),
-                              onPressed: () {
-                                setState(() {
-                                  isPasswordVisible = !isPasswordVisible;
-                                });
-                              },
-                            ),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(14),
-                            ),
+                          hintText: "Password",
+                          secureText: !isPasswordVisible,
+                          isPassword: true,
+                          suffixIcon: Icon(
+                            isPasswordVisible
+                                ? Icons.visibility_outlined
+                                : Icons.visibility_off_outlined,
+                            size: 20,
                           ),
+                          onSuffixTap: () {
+                            setState(() {
+                              isPasswordVisible = !isPasswordVisible;
+                            });
+                          },
                         ),
 
-                        const SizedBox(height: 30),
+                        appSizedBox(height: 3.h),
 
+                        AppButton(
+                          buttonName: controller.isLoading ? "Loading..." : "लॉग इन",
+                          isEnabled: !controller.isLoading,
+                          onTap: () async {
+                            if (controller.isLoading) return;
 
-                        Container(
-                          margin: const EdgeInsets.symmetric(horizontal: 10),
-                          child: SizedBox(
-                            width: double.infinity,
-                            height: 55,
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.blue,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                              ),
-                              onPressed: () {
-                                controller.loginApi();
-                                },
-                              child: Text(
-                                "लॉग इन",
-                                style: GoogleFonts.notoSansDevanagari(
-                                  fontSize: 18,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ),
-                          ),
+                            controller.isLoading = true;
+                            controller.update();
+
+                            await controller.loginApi();
+
+                            controller.isLoading = false;
+                            controller.update();
+                          },
                         ),
 
-
-                        const Spacer(),
                       ],
                     ),
 
                   ),
 
-
                   Positioned(
-                    bottom: 45,
-                    left: 20,
-                    right: 20,
-                    child: Image.asset(
-                      AssetRes.ladies_harayana_map_area,
-                      fit: BoxFit.contain,
+                    bottom: 0,
+                    left: 15,
+                    right: 15,
+                    child: IgnorePointer(
+                      child: Image.asset(
+                        AssetRes.ladies_harayana_map_area,
+                        fit: BoxFit.contain,
+                      ),
                     ),
                   ),
                 ],

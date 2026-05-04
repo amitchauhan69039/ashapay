@@ -6,7 +6,6 @@ class AuthApi{
     try {
       final response = await HttpService.postApi(
         url: EndPoints.login,
-        isContentType: true,
         body: loginBody
       );
       print("loginBody: $loginBody");

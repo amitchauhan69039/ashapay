@@ -39,4 +39,4 @@ export 'package:asha_pay/screens/auth/api/auth_api.dart';
 export 'package:asha_pay/screens/home/home_screen.dart';
 export 'package:asha_pay/screens/home/controller/home_controller.dart';
 export 'package:asha_pay/model/login_model.dart';
-export 'package:asha_pay/model/applications_model.dart';
+export 'package:asha_pay/model/programs_model.dart';

@@ -363,160 +363,122 @@ class ErrorText extends StatelessWidget {
 }
 
 class CommonTextField extends StatelessWidget {
-  final String? heading;
   final TextEditingController? controller;
-  final TextEditingController? contryCodeController;
   final String? hintText;
   final Widget? suffixIcon;
-  final VoidCallback? onSuffixTap;
-  final VoidCallback? onTap;
-  bool secureText;
-  bool isNumberOnly;
-  TextInputType? textInputType;
-  bool isMobileNumber;
-  String errorText;
-  final int maxLines;
-  final bool isEnabled;
-  final bool isReadOnly;
-  final Function(String)? onChanged;
-  final bool showCountry;
-  bool isPersonName;
-  bool isOnlyNumber;
+  final bool secureText;
+  final TextInputType? textInputType;
+  final bool isNumberOnly;
 
-  CommonTextField({
-    Key? key,
-    this.isEnabled = true,
-    this.isReadOnly = false,
-    this.secureText = false,
-    this.maxLines = 1,
-    this.textInputType,
-    this.isMobileNumber = false,
-    this.heading,
-    this.isNumberOnly = false,
+  final bool isPassword;
+  final VoidCallback? onSuffixTap;
+
+  // 🔥 NEW
+  final Color? fillColor;
+  final bool showBorder;
+
+  const CommonTextField({
+    super.key,
     this.controller,
-    this.contryCodeController,
     this.hintText,
     this.suffixIcon,
-    this.errorText = "",
+    this.secureText = false,
+    this.textInputType,
+    this.isNumberOnly = false,
+    this.isPassword = false,
     this.onSuffixTap,
-    this.onTap,
-    this.onChanged,
-    this.showCountry = false,
-    this.isPersonName = false,
-    this.isOnlyNumber = false,
-  }) : super(key: key);
+
+    this.fillColor,              // 🔹 dynamic bg
+    this.showBorder = false,     // 🔹 border show/hide
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        if (heading != null)
-          Padding(
-            padding: const EdgeInsets.only(bottom: 8.0),
-            child: Text(
-              heading ?? "",
-              style: styleW500S14.copyWith(color: ColorRes.appBlackColor),
-            ),
-          ),
-        InkWell(
-          onTap: onTap,
-          child: SizedBox(
-            height: maxLines > 1 ? 40 * maxLines.toDouble() : 50,
-            child: Row(
-              children: [
-                Expanded(
-                  child: Container(
-                    // Set the background color for the entire container
-                    decoration: BoxDecoration(
-                      border: Border.all(color: ColorRes.white),
-                      color: ColorRes.white,
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    child: Row(
-                      children: [
-                        if (!showCountry) appSizedBox(width: 8.0),
-                        if (showCountry) ...[
-                          // Show country picker if showCountry is true
-                          InkWell(
-                            onTap: () {
-                              _showCountryPicker(context);
-                            },
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                              child: Row(
-                                children: [
-                                  Text(
-                                      '+91',
-                                      style: styleW400S14.copyWith(color: ColorRes.appBlackColor),
-                                      textAlign: TextAlign.center
-                                  ),
-                                  const Icon(Icons.keyboard_arrow_down),
-                                ],
-                              ),
-                            ),
-                          ),
-                          appSizedBox(width: 8.0),
-                        ],
-                        Expanded(
-                          child: TextFormField(
-                            keyboardType: textInputType,
-                            inputFormatters: [
-                              if (isNumberOnly) FilteringTextInputFormatter.digitsOnly,
-                              if (isMobileNumber) LengthLimitingTextInputFormatter(10),
-                              if (isPersonName) LengthLimitingTextInputFormatter(15),
-                              if(isOnlyNumber) FilteringTextInputFormatter.allow(RegExp("[a-zA-Z ]")),
-                            ],
-                            obscureText: secureText,
-                            obscuringCharacter: '*',
-                            controller: controller,
-                            onChanged: onChanged,
-                            enabled: isEnabled,
-                            readOnly: isReadOnly,
-                            style: styleW400S14.copyWith(color: ColorRes.appBlackColor),
-                            cursorColor: Colors.black,
-                            maxLines: maxLines,
-                            decoration: InputDecoration(
-                              border: InputBorder.none,
-                              hintText: hintText,
-                              hintStyle: styleW400S14.copyWith(color: ColorRes.greyColor),
-                              //  filled: true,
-                              //  fillColor: Colors.grey.withOpacity(0.27),
-
-                              suffixIcon: InkWell(
-                                onTap: onSuffixTap,
-                                child: Padding(
-                                  padding: const EdgeInsets.only(right: 13.0),
-                                  child: suffixIcon,
-                                ),
-                              ),
-                              suffixIconConstraints: const BoxConstraints(
-                                maxWidth: 35,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-        ErrorText(errorText: errorText),
+    return TextFormField(
+      controller: controller,
+      obscureText: secureText,
+      keyboardType: textInputType,
+      inputFormatters: [
+        if (isNumberOnly) FilteringTextInputFormatter.digitsOnly,
       ],
-    );
-  }
+      cursorColor: const Color(0xff2B78E4),
 
-  void _showCountryPicker(BuildContext context) {
-    showCountryPicker(
-      context: context,
-      showPhoneCode: true,
-      onSelect: (Country country) {
-        contryCodeController!.text = country.phoneCode ?? '';
-        print("Selected country: ${country.name}");
-      },
+      decoration: InputDecoration(
+        hintText: hintText,
+        isDense: true,
+
+        suffixIcon: isPassword
+            ? GestureDetector(
+          onTap: onSuffixTap,
+          child: suffixIcon,
+        )
+            : suffixIcon,
+
+        filled: true,
+        fillColor: fillColor ?? Colors.white, // 🔥 default white
+
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 15,
+          vertical: 18,
+        ),
+
+        // 🔥 Dynamic Borders
+        border: showBorder
+            ? OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide(color: Colors.grey.shade300),
+        )
+            : OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide.none,
+        ),
+
+        enabledBorder: showBorder
+            ? OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide(color: Colors.grey.shade300),
+        )
+            : OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide.none,
+        ),
+
+        focusedBorder: showBorder
+            ? OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: const BorderSide(
+            color: Color(0xff2B78E4),
+            width: 1.2,
+          ),
+        )
+            : OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide.none,
+        ),
+
+        errorBorder: showBorder
+            ? OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: const BorderSide(color: Colors.red),
+        )
+            : OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide.none,
+        ),
+
+        focusedErrorBorder: showBorder
+            ? OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: const BorderSide(
+            color: Colors.red,
+            width: 1.6,
+          ),
+        )
+            : OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide.none,
+        ),
+      ),
     );
   }
 }

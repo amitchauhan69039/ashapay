@@ -210,12 +210,12 @@ class AppUpgradeDialog extends StatelessWidget {
           AppButton(
             // borderRadius: 5,
             buttonName: "Update Now",
-            onButtonTap: () {
+           /* onButtonTap: () {
               // String url = Platform.isAndroid
               //     ? "https://play.google.com/store/apps/details?id=com.coreyo.user"
               //     : "https://apps.apple.com/app/id6476030826";
               // launchUrl(Uri.parse(url));
-            },
+            },*/
           ),
           const SizedBox(height: 10),
         ],

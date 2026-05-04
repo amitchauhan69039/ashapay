@@ -6,14 +6,14 @@ String loginModelToJson(LoginModel data) => json.encode(data.toJson());
 
 class LoginModel {
   String? status;
-  Data? data;
+  LoginData? data;
   String? message;
 
   LoginModel({this.status, this.data, this.message});
 
   LoginModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
-    data = json['data'] != null ? new Data.fromJson(json['data']) : null;
+    data = json['data'] != null ? new LoginData.fromJson(json['data']) : null;
     message = json['message'];
   }
 
@@ -28,7 +28,7 @@ class LoginModel {
   }
 }
 
-class Data {
+class LoginData {
   String? token;
   int? id;
   String? username;
@@ -37,7 +37,7 @@ class Data {
   String? mobileNo;
   String? gender;
 
-  Data(
+  LoginData(
       {this.token,
         this.id,
         this.username,
@@ -46,7 +46,7 @@ class Data {
         this.mobileNo,
         this.gender});
 
-  Data.fromJson(Map<String, dynamic> json) {
+  LoginData.fromJson(Map<String, dynamic> json) {
     token = json['token'];
     id = json['id'];
     username = json['username'];

@@ -1,212 +1,304 @@
+import 'dart:ui';
+
 import 'package:asha_pay/asha_pay.dart';
+import 'package:asha_pay/screens/home/entryProgram_screen.dart';
+import 'package:asha_pay/screens/home/familySearchScreen.dart';
 
-class HomeScreen extends StatefulWidget {
-  @override
-  _HomeScreenState createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
-  final HomeController controller = Get.put(HomeController());
-
+class DashboardScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: <Widget>[
-          CommonMenuAppbar(
-            title: "Test User",
-            rightWidget: CustomPopupMenu(
-              onSelected: (item) {
-                switch (item) {
-                  case 0:
-                    signOut(context);
-                    break;
-                }
-              },
+      backgroundColor: Colors.white,
+      body: SafeArea(
+        child: Container(
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage(AssetRes.login_bg),
+              fit: BoxFit.cover,
             ),
           ),
-          // GridView with 2 columns
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: AppPadding.horizontalPadding),
-            child: GridView.builder(
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 10.0,
-                  mainAxisSpacing: 10.0,
-                ),
-                shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
-                itemCount: gridItems.length,
-                itemBuilder: (context, index) {
-                  return GestureDetector(
-                    onTap: () {
-                     // Get.to(() => ApplicationsScreen(title: gridItems[index].title));
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: gridItems[index].color,
-                        borderRadius: BorderRadius.circular(12.0),
+
+          // 🔥 FIX: Stack added
+          child: Stack(
+            children: [
+              // 🔹 Main Content
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // 🔹 Header
+                  Container(
+                    padding: EdgeInsets.only(
+                        top: 30, left: 16, right: 16, bottom: 10),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(20),
+                        bottomRight: Radius.circular(20),
                       ),
-                      padding: EdgeInsets.all(2),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Row(
+                    ),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Expanded(
-                                  flex: 8,
-                                  child:  Text(
-                                    '${gridItems[index].title} : ',
-                                    style: styleW400S14.copyWith(color: Colors.white),
-                                    textAlign: TextAlign.center,
-                                  )
+                              Text("नमस्ते, Nirmala!",
+                                  style: styleW600S16),
+                              appSizedBox(height: 5),
+                              Text(
+                                "हमारे पोर्टल ASHAPAY पर आपका स्वागत है!",
+                                style: styleW400S12.copyWith(
+                                    color: Colors.grey),
                               ),
-                              Expanded(  flex: 2,
-                                  child: Text(
-                                    '${gridItems[index].titleValue}',
-                                    style: styleW400S14.copyWith(color: Colors.white),
-                                  )),
+                              appSizedBox(height: 10),
+
+                              // 🔹 Date Row
+                              Row(
+                                children: [
+                                  Image.asset(
+                                    AssetRes.calendarIcon,
+                                    height: 14, // 🔥 increased (10 was too small)
+                                  ),
+                                  SizedBox(width: 6),
+                                  Text(
+                                    "27 अप्रैल 2026, 3:40",
+                                    style: styleW600S12.copyWith(
+                                        color: Colors.grey),
+                                  ),
+                                ],
+                              )
                             ],
                           ),
-                          Text(
-                            '${"trial".tr} : ${gridItems[index].trial}',
-                            textAlign: TextAlign.center,
-                            style: styleW400S14.copyWith(color: Colors.white),
-                          ),
-                          Text(
-                            '${"without_trial".tr} : ${gridItems[index].withoutTrial}',
-                            textAlign: TextAlign.center,
-                            style: styleW400S14.copyWith(color: Colors.white),
-                          )
-                        ],
-                      ),
-                    )
-                  );
-                }
-            )
+                        ),
+
+                        // 🔹 Avatar + Logout
+                        Column(
+                          children: [
+                            CircleAvatar(
+                              radius: 25,
+                              backgroundImage:
+                              AssetImage(AssetRes.avtarIcon),
+                            ),
+                            appSizedBox(height: 8),
+                            ElevatedButton(
+                              onPressed: () {
+                                showLogoutDialog(context);
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor:
+                                ColorRes.appRedColor,
+                                shape: StadiumBorder(),
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 2),
+                                minimumSize: Size.zero,
+                                tapTargetSize:
+                                MaterialTapTargetSize.shrinkWrap,
+                              ),
+                              child: Text(
+                                "Logout",
+                                style: styleW400S12.copyWith(
+                                    color: ColorRes.white),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  appSizedBox(height: 2.h),
+
+                  // 🔹 Section Title
+                  Padding(
+                    padding:
+                    const EdgeInsets.symmetric(horizontal: 16),
+                    child: Text("आशा कार्य", style: styleW600S18),
+                  ),
+
+                  appSizedBox(height: 1.h),
+
+                  // 🔹 Cards
+                  dashboardCard(
+                    title: "एंट्री दर्ज करें",
+                    iconPath: AssetRes.enterIcon,
+                    onTap: () {
+                      Get.to(()=> AshaProgramScreen());
+                    },
+                  ),
+                  dashboardCard(
+                    iconPath: AssetRes.userlistIcon,
+                    title: "परिवार को सूचीबद्ध करें",
+                    onTap: () {
+                      Get.to(()=> FamilySearchScreen());
+                    },
+                  ),
+                  Spacer(),
+                ],
+              ),
+
+              // 🔹 Bottom Image (NOW CORRECT)
+              Positioned(
+                bottom: 0,
+                left: 15,
+                right: 15,
+                child: IgnorePointer(
+                  child: Image.asset(
+                    AssetRes.ladies_harayana_map_area,
+                    fit: BoxFit.contain,
+                  ),
+                ),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
 
-}
-
-class GridItem {
-  final Color color;
-  final String title;
-  final String titleValue;
-  final String trial;
-  final String withoutTrial;
-
-  GridItem({required this.color, required this.title,  required this.titleValue, required this.trial, required this.withoutTrial});
-}
-
-// Inside your widget class
-List<GridItem> gridItems = [
-  GridItem(color: Colors.blue, title: "total_application".tr, titleValue: '1', trial: '7', withoutTrial: '9'),
-  GridItem(color: Colors.green, title: "new_application".tr, titleValue: '1', trial: '7', withoutTrial: '9'),
-  GridItem(color: Colors.pink, title: "pending_application".tr, titleValue: '1', trial: '7', withoutTrial: '9'),
-  GridItem(color: Colors.blueGrey, title: "disposed_off_application".tr, titleValue: '1', trial: '7', withoutTrial: '9'),
-  GridItem(color: Colors.deepOrange, title: "rejected_application".tr, titleValue: '1', trial: '7', withoutTrial: '9'),
-  GridItem(color: Colors.brown, title: "sine_die_application".tr, titleValue: '1', trial: '7', withoutTrial: '9'),
-
-];
-
-class CustomPopupMenu extends StatelessWidget {
-  final Function(int) onSelected;
-
-  const CustomPopupMenu({Key? key, required this.onSelected}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return PopupMenuButton<int>(
-      icon: Icon(Icons.more_vert, color: Colors.white, size: 24),
-      itemBuilder: (context) => [
-        PopupMenuItem<int>(value: 0, child: Row(
-          children: [
-            Text("logout".tr, style: styleW400S15),
-          ],
-        )),
-      ],
-      onSelected: (item) => onSelected(item),
+  Widget dashboardCard({
+    required String iconPath,
+    required String title,
+    VoidCallback? onTap, // 🔹 add this
+  }) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      child: Material(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(10),
+        elevation: 2, // shadow
+        child: InkWell(
+          borderRadius: BorderRadius.circular(10),
+          onTap: onTap, // 🔹 click here
+          child: Container(
+            padding: EdgeInsets.all(12),
+            child: Row(
+              children: [
+                Container(
+                  padding: EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    color: ColorRes.appBlueColor,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Image.asset(
+                    iconPath,
+                    height: 22,
+                    width: 22,
+                  ),
+                ),
+                appSizedBox(width: 15),
+                Expanded(
+                  child: Text(title, style: styleW400S16),
+                ),
+                Image.asset(
+                  AssetRes.dotsIcon,
+                  height: 18,
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
     );
   }
 }
 
-signOut(context){
-  return  showDialog(
+void showLogoutDialog(BuildContext context) {
+  showDialog(
     context: context,
-    builder: (BuildContext context) {
-      return Dialog(
-          insetPadding: const EdgeInsets.all(15),
-          child: Wrap(
-            children: [
-              Container(
-                padding: const EdgeInsets.all(20),
-                decoration: BoxDecoration(
-                  color: ColorRes.white,
-                  borderRadius: BorderRadius.circular(12),
-                  boxShadow: const [
-                    BoxShadow(
-                      color: ColorRes.greyColor,
-                      spreadRadius: 0,
-                      blurRadius: 4.7,
-                    ),
+    barrierDismissible: false,
+    barrierColor: Colors.transparent,
+    builder: (context) {
+      return Stack(
+        children: [
 
-                  ],
-                ),
+          // 🔹 Blur + Dark Overlay
+          BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
+            child: Container(
+              color: Colors.black.withOpacity(0.1),
+            ),
+          ),
+
+          // 🔹 Your Dialog (same as before)
+          Center(
+            child: Container(
+              margin: EdgeInsets.symmetric(horizontal: 30),
+              padding: EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(25),
+              ),
+              child: Material(
+                color: Colors.transparent,
                 child: Column(
+                  mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('are_you_sure_you_want_to_sign_out'.tr, style: styleW500S15),
+
+                    Text(
+                      "Logout",
+                      style: styleW600S16
+                    ),
+
+                    appSizedBox(height: 8),
+
+                    Text(
+                      "Are you sure you want to logout?",
+                      style: styleW400S14.copyWith(color: Colors.grey)
+                    ),
+
                     appSizedBox(height: 20),
+
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        InkWell(
-                          splashColor: Colors.transparent,
-                          highlightColor:
-                          Colors.transparent,
-                          onTap: Get.back,
-                          child:  Container(
-                            alignment: Alignment.center,
-                            width: 70,
-                            height: 35,
-                            // padding: const EdgeInsets.symmetric(horizontal: 5,vertical: 3),
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(5),
-                                color: ColorRes.appRedColor,
+                        Expanded(
+                          child: ElevatedButton(
+                            onPressed: () async {
+                              Navigator.pop(context);
+                              await PrefService.clear();
+
+                              Get.offAll(() => LoginScreen());
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.grey.shade300,
+                              shape: StadiumBorder(),
+                              elevation: 0,
                             ),
-                            child: Text('cancel'.tr,
-                                style: styleW500S15.copyWith(color: ColorRes.white))
+                            child: Text(
+                              "OK",
+                              style: styleW500S14.copyWith(color: Colors.black),
+                            ),
                           ),
                         ),
-                        appSizedBox(width: 2.5.w),
-                        InkWell(
-                          splashColor: Colors.transparent,
-                          highlightColor: Colors.transparent,
-                          onTap: () async {
-                            Get.back();
-                            await PrefService.set(PrefKeys.userId, "");
-                            Get.offAll(() => const LoginScreen());
-                          },
-                          child: AppButton(buttonName: 'yes'.tr,
-                            buttonHeight: 35,
-                            buttonWidth: 70,
-                            borderRadius: 5,
-                            textColor: ColorRes.white,
-                            backgroundColor: ColorRes.appBlueColor
-                          ),
 
+                        appSizedBox(width: 10),
+
+                        Expanded(
+                          child: ElevatedButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.grey.shade300,
+                              shape: StadiumBorder(),
+                              elevation: 0,
+                            ),
+                            child: Text(
+                              "Cancel",
+                              style: styleW500S14.copyWith(color: Colors.black),
+                            ),
+                          ),
                         ),
                       ],
                     )
                   ],
                 ),
               ),
-            ],
-          ));
+            ),
+          ),
+        ],
+      );
     },
   );
 }

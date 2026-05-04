@@ -3,6 +3,8 @@ class EndPoints {
 
   //--------------------------------- endpoints ---------------------------------
   static const login = baseUrl+'Auth/login';
+  static const getPrograms = baseUrl+'Asha/GetAshaProgramMaster';
+  static const getFamilyMembers = baseUrl+'Asha/ListFamilyWithMembers';
 
 
 }

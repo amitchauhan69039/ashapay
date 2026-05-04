@@ -12,52 +12,35 @@ class HttpService {
     Map<String, dynamic>? queryParams,
   }) async {
     try {
-      if (!skipHeader) {
-        headers = headers ?? appHeader(isContentType: isContentType);
+      // 🔥 Default headers
+      headers = headers ?? appHeader(isContentType: isContentType);
+
+      // Auth Token
+      String? token = PrefService.getString(PrefKeys.accessToken);
+      if (token.isNotEmpty) {
+        headers["Authorization"] = "Bearer $token";
       }
+
       debugPrint("Url = $url");
       debugPrint("Headers = $headers");
       debugPrint("Query Params = $queryParams");
 
-      // Construct the full URL with query parameters
       Uri uri = Uri.parse(url);
       if (queryParams != null) {
         uri = uri.replace(queryParameters: queryParams);
       }
 
       final response = await http.get(uri, headers: headers);
+
+      debugPrint("STATUS: ${response.statusCode}");
+      debugPrint("BODY: ${response.body}");
+
       bool isExpired = await isTokenExpire(response);
       if (!isExpired) {
         return response;
       }
     } catch (e) {
-      debugPrint(e.toString());
-    }
-    return null;
-  }
-
-  static Future<http.Response?> postApii({
-    required String url,
-    Map<String, String>? header,
-    dynamic body,
-    bool isContentType = true,
-  }) async {
-    try {
-      header = header ?? appHeader(isContentType: isContentType);
-      debugPrint("Url = $url");
-      debugPrint("Header = $header");
-      debugPrint("Body = $body");
-
-      if (body is Map) {
-        body = jsonEncode(body);
-      }
-      final response = await http.post(Uri.parse(url), headers: header, body: body);
-      bool isExpired = await isTokenExpire(response);
-      if (!isExpired) {
-        return response;
-      }
-    } catch (e) {
-      debugPrint(e.toString());
+      debugPrint("ERROR: ${e.toString()}");
     }
     return null;
   }
@@ -66,29 +49,38 @@ class HttpService {
     required String url,
     Map<String, String>? header,
     Map<String, String>? body,
-    bool isContentType = false,
   }) async {
     try {
-      header = header ?? {};
-      debugPrint("Url = $url");
-      debugPrint("Header = $header");
-      debugPrint("Body = $body");
+      header ??= {};
 
-      // Set Content-Type header to application/x-www-form-urlencoded
       header['Content-Type'] = 'application/json';
+      header['Accept'] = 'application/json';
 
-      // Encode the body as form data
-      final encodedBody = body != null ? body.entries.map((e) => '${Uri.encodeComponent(e.key)}=${Uri.encodeComponent(e.value)}').join('&') : null;
-
-      final response = await http.post(Uri.parse(url), headers: header, body: encodedBody);
-      bool isExpired = await isTokenExpire(response);
-      if (!isExpired) {
-        return response;
+      // 🔥 Auth Token
+      String? token = PrefService.getString(PrefKeys.accessToken);
+      if (token.isNotEmpty) {
+        header["Authorization"] = "Bearer $token";
       }
-    } catch (e) {
-      debugPrint(e.toString());
+      
+      debugPrint("URL = $url");
+      debugPrint("HEADER = $header");
+      debugPrint("BODY = ${jsonEncode(body)}");
+
+      final response = await http.post(
+        Uri.parse(url),
+        headers: header,
+        body: jsonEncode(body),
+      ).timeout(const Duration(seconds: 30));
+
+      debugPrint("STATUS = ${response.statusCode}");
+      debugPrint("RESPONSE = ${response.body}");
+
+      return response;
+    } catch (e, s) {
+      debugPrint("ERROR = $e");
+      debugPrint("STACK = $s");
+      return null;
     }
-    return null;
   }
 
   static Future<http.Response?> uploadFileWithDataApi({
@@ -135,13 +127,15 @@ class HttpService {
     if (PrefService.getString(PrefKeys.accessToken).isEmpty) {
       return {
         if(isContentType)
-          "Content-Type":"application/json"
+          "Content-Type":"application/json",
+          "Accept":"application/json"
       };
     } else {
       return {
         "token": PrefService.getString(PrefKeys.accessToken),
         if(isContentType)
-          "Content-Type":"application/json"
+          "Content-Type":"application/json",
+          "Accept":"application/json"
       };
     }
   }

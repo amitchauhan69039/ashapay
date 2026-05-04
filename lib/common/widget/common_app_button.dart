@@ -2,56 +2,67 @@ import 'package:asha_pay/asha_pay.dart';
 
 class AppButton extends StatelessWidget {
   final String buttonName;
-  final double buttonHeight;
-  final double? buttonWidth;
-  final double? borderRadius;
-  final double? fontSize;
-  final bool isSelected;
+  final double height;
+  final double? width;
+  final double radius;
   final bool isEnabled;
-  final Color textColor;
-  final Color backgroundColor;
-  final FontWeight? fontWeight;
-  final VoidCallback? onButtonTap;
+  final VoidCallback? onTap;
 
-  AppButton({
-    Key? key,
+  final Color backgroundColor;
+  final Color textColor;
+  final double fontSize;
+  final FontWeight fontWeight;
+
+  const AppButton({
+    super.key,
     required this.buttonName,
-    this.buttonHeight = 45,
-    this.buttonWidth,
-    this.borderRadius,
-    this.onButtonTap,
+    this.height = 55,
+    this.width,
+    this.radius = 14,
+    this.isEnabled = true,
+    this.onTap,
+    this.backgroundColor = const Color(0xff2B78E4),
+    this.textColor = Colors.white,
     this.fontSize = 16,
     this.fontWeight = FontWeight.w500,
-    this.isSelected = true,
-    this.isEnabled = true,
-    this.textColor = Colors.white,
-    this.backgroundColor = ColorRes.buttonColor
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      color: Colors.transparent,
-      borderRadius: BorderRadius.circular(buttonHeight / 2),
-      child: InkWell(
-        borderRadius: BorderRadius.circular(buttonHeight / 2),
-        onTap: isEnabled ? onButtonTap : null,
-        child: AnimatedContainer(
-          duration: const Duration(milliseconds: 200),
-          height: buttonHeight,
-          width: buttonWidth ?? MediaQuery.of(context).size.width,
-          alignment: Alignment.center,
+    final w = width ?? double.infinity;
+
+    return Opacity(
+      opacity: isEnabled ? 1 : 0.6,
+      child: Material(
+        color: Colors.transparent,
+        child: Ink(
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(borderRadius ?? 40),
-            color: backgroundColor
+            color: backgroundColor,
+            borderRadius: BorderRadius.circular(radius),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.08),
+                blurRadius: 10,
+                offset: const Offset(0, 4),
+              ),
+            ],
           ),
-          child: Text(
-            buttonName,
-            style: TextStyle(
-              fontSize: fontSize,
-              fontFamily: AssetRes.roboto,
-              color: textColor,
-              fontWeight: fontWeight,
+          child: InkWell(
+            borderRadius: BorderRadius.circular(radius),
+            onTap: isEnabled ? onTap : null,
+            child: SizedBox(
+              height: height,
+              width: w,
+              child: Center(
+                child: Text(
+                  buttonName,
+                  style: TextStyle(
+                    fontSize: fontSize,
+                    fontWeight: fontWeight,
+                    color: textColor,
+                  ),
+                ),
+              ),
             ),
           ),
         ),
@@ -127,7 +138,7 @@ class CommonAppbar extends StatelessWidget {
                       child: Row(
                         children: [
                           Image.asset(
-                            AssetRes.splashLogo,
+                            AssetRes.asha_logo,
                             height: 50,
                           ),
                           appSizedBox(width: 3.w),
@@ -197,7 +208,7 @@ class CommonMenuAppbar extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Image.asset(
-                          AssetRes.splashLogo,
+                          AssetRes.asha_logo,
                           height: 50,
                         ),
                         appSizedBox(width: 3.w),

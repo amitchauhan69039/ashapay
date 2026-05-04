@@ -1,8 +1,7 @@
-import 'package:asha_pay/screens/auth/verification_screen.dart';
 import 'package:asha_pay/asha_pay.dart';
 
 class AuthController extends GetxController {
-  bool loader = false;
+  bool isLoading = false;
   bool verifyLoader = false;
   String phoneNumberErrorText = "";
   String passwordErrorText = "";
@@ -22,6 +21,8 @@ class AuthController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    passwordController.text = "nirmaladevi";
+    phoneNumberController.text = "7027818670";
   }
   
   onResendOtp() async {
@@ -75,15 +76,12 @@ class AuthController extends GetxController {
 
 
   Future<void> loginApi() async {
-
-    print("aaaaaa ${loginValidation()}" );
     if(loginValidation()){
-      print("aaaaaa");
       FocusManager.instance.primaryFocus?.unfocus();
-      loader = true;
+      isLoading = true;
       update(['login']);
 
-      String deviceId=await getDeviceId();
+      String deviceId = await getDeviceId();
 
       Map<String,String> loginBody = {
         "username": phoneNumberController.text.toString().trim(),
@@ -96,9 +94,22 @@ class AuthController extends GetxController {
 
         if (model != null) {
           if (model.status == "success") {
+            final data = model.data;
 
+            if (data != null) {
+              await PrefService.set(PrefKeys.isLogin, true);
+
+              await PrefService.set(PrefKeys.accessToken, data.token ?? "");
+              await PrefService.set(PrefKeys.userId, data.id ?? 0);
+              await PrefService.set(PrefKeys.userName, data.username ?? "");
+              await PrefService.set(PrefKeys.roleId, data.roleid ?? 0);
+              await PrefService.set(PrefKeys.name, data.name ?? "");
+              await PrefService.set(PrefKeys.mobileNo, data.mobileNo ?? "");
+              await PrefService.set(PrefKeys.gender, data.gender ?? "");
+
+              Get.offAll(DashboardScreen());
+            }
           } else {
-
             toastMsg( model.message ?? 'Something went wrong');
           }
         }
@@ -106,13 +117,10 @@ class AuthController extends GetxController {
         debugPrint("Unexpected response format: ${e.toString()}");
       }
 
-      loader = false;
+      isLoading = false;
       update(['login']);
     }
 
   }
 
-  checkOtpMatch(String enteredOTP) {
-    Get.offAll(()=> HomeScreen());
-  }
 }

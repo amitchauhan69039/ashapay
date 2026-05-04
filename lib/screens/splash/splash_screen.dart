@@ -22,19 +22,23 @@ class _SplashScreenState extends State<SplashScreen> {
       body: Stack(
         children: [
           Container(
-            decoration: const BoxDecoration(
-              color: ColorRes.appBlueColor
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage(AssetRes.login_bg),
+                fit: BoxFit.cover,
+              ),
             ),
           ),
           // Centered logo
-          // Center(
-          //   child: Image.asset(
-          //     AssetRes.splashLogo,
-          //     height: 16.h,
-          //   ),
-          // ),
+          Center(
+            child: Image.asset(
+              AssetRes.asha_logo,
+              height: 16.h,
+            ),
+          ),
         ],
       ),
     );
   }
 }
+
