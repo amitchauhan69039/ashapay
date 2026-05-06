@@ -64,4 +64,25 @@ class ProgramsApi{
 
     return [];
   }
+
+  static Future<bool> addFamilyMembers(Map<String, dynamic> body) async {
+    try {
+      final response = await HttpService.postApi(
+        url: EndPoints.addFamilyMembers,
+        body: body,
+      );
+
+      print("AddFamilyMembers body: $body");
+      print("AddFamilyMembers response: ${response?.body}");
+
+      if (response != null && response.statusCode == 200) {
+        return true; // ✅ success
+      }
+
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+
+    return false;
+  }
 }

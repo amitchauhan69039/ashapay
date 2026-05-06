@@ -15,28 +15,7 @@ class AshaProgramScreen extends StatelessWidget {
           children: [
 
             // 🔹 App Bar
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: 12, vertical: 15),
-              color: Color(0xFF2F7FB6),
-              child: Row(
-                children: [
-                  Icon(Icons.arrow_back, color: Colors.white),
-                  Expanded(
-                    child: Center(
-                      child: Text(
-                        "आशा कार्यक्रम",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 18,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(width: 24)
-                ],
-              ),
-            ),
+            CommonHeader(title: "आशा कार्यक्रम"),
 
             // 🔹 Body
             Expanded(
