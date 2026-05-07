@@ -1,5 +1,4 @@
 import 'package:asha_pay/asha_pay.dart';
-import 'package:asha_pay/screens/ParivarSelection/parivar_selection_screen.dart';
 import 'package:asha_pay/screens/home/controller/programs_controller.dart';
 
 class AshaProgramScreen extends StatelessWidget {
@@ -37,7 +36,9 @@ class AshaProgramScreen extends StatelessWidget {
               child: Container(
                 decoration: BoxDecoration(
                   color: Colors.grey.shade200,
-
+                  borderRadius: BorderRadius.vertical(
+                    top: Radius.circular(20),
+                  ),
                 ),
 
                 // 🔥 GetBuilder

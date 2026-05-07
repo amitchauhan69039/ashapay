@@ -48,7 +48,7 @@ class HttpService {
   static Future<http.Response?> postApi({
     required String url,
     Map<String, String>? header,
-    Map<String, String>? body,
+    Map<String, dynamic>? body,
   }) async {
     try {
       header ??= {};
