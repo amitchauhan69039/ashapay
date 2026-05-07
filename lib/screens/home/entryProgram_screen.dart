@@ -1,4 +1,5 @@
 import 'package:asha_pay/asha_pay.dart';
+import 'package:asha_pay/screens/ParivarSelection/parivar_selection_screen.dart';
 import 'package:asha_pay/screens/home/controller/programs_controller.dart';
 
 class AshaProgramScreen extends StatelessWidget {
@@ -9,43 +10,34 @@ class AshaProgramScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xFF2F7FB6),
+      appBar: AppBar(
+        backgroundColor: const Color(0xff0f7df2),
+        iconTheme: const IconThemeData(
+          color: Colors.white,
+        ),
+        elevation: 0,
+        centerTitle: true,
+        title: const Text(
+          "आशा कार्यक्रम",
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 22,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+      ),
 
       body: SafeArea(
         child: Column(
           children: [
 
-            // 🔹 App Bar
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: 12, vertical: 15),
-              color: Color(0xFF2F7FB6),
-              child: Row(
-                children: [
-                  Icon(Icons.arrow_back, color: Colors.white),
-                  Expanded(
-                    child: Center(
-                      child: Text(
-                        "आशा कार्यक्रम",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 18,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(width: 24)
-                ],
-              ),
-            ),
 
             // 🔹 Body
             Expanded(
               child: Container(
                 decoration: BoxDecoration(
                   color: Colors.grey.shade200,
-                  borderRadius: BorderRadius.vertical(
-                    top: Radius.circular(20),
-                  ),
+
                 ),
 
                 // 🔥 GetBuilder
@@ -71,7 +63,16 @@ class AshaProgramScreen extends StatelessWidget {
 
                         final item = controller.programsList![index];
 
-                        return programCard(item.programmeName ?? "");
+                        return InkWell(
+                            onTap: () {
+
+                              if(index==1){
+                                Get.to(()=> ParivarSelectionScreen());
+                              }
+
+                            },
+                            child: programCard(item.programmeName ?? "")
+                        );
                       },
                     );
                   },

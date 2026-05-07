@@ -54,7 +54,7 @@ class HttpService {
       header ??= {};
 
       header['Content-Type'] = 'application/json';
-      header['Accept'] = 'application/json';
+      header[' '] = 'application/json';
 
       // 🔥 Auth Token
       String? token = PrefService.getString(PrefKeys.accessToken);
