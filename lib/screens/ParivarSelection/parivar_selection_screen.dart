@@ -77,7 +77,7 @@ class _ParivarSelectionScreenState extends State<ParivarSelectionScreen>{
 
   Widget getList(){
     if(!controller.familyList.isEmpty){
-      print("not empty bkjbjksdjk");
+
       return Expanded(
         child: ListView.builder(
           padding: const EdgeInsets.all(16),
@@ -85,6 +85,7 @@ class _ParivarSelectionScreenState extends State<ParivarSelectionScreen>{
           itemBuilder: (context, index) {
             return InkWell(
               onTap: (){
+
                 Get.to(()=> AshaGatividhiScreen(familyData: controller.familyList[index]));
               },
               child: Container(

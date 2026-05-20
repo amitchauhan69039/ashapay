@@ -7,6 +7,8 @@ class EndPoints {
   static const getFamilyMembers = baseUrl+'Asha/ListFamilyWithMembers';
   static const getActivitybyFamilyId = baseUrl+'Asha/GetActivitybyFamilyId';
   static const addFamilyMembers = baseUrl+'Asha/AddFamilyMembers';
+  static const addAshaMemberActivity = baseUrl+'Asha/AddAshaMemberActivity';
+  static const getMotherChildListWithId = baseUrl+'Asha/GetMotherChildListWithId';
 
 
 }

@@ -2,6 +2,7 @@ import 'package:asha_pay/asha_pay.dart';
 import 'package:asha_pay/model/family_model.dart';
 
 import '../../../model/family_activity_model.dart';
+import '../../../model/get_family_activity_model.dart';
 
 class ProgramsApi{
 
@@ -97,7 +98,7 @@ class ProgramsApi{
     return [];
   }
 
-  static Future<FamilyActivityModel?> getActivitybyFamilyId(Map<String, String> body) async {
+  static Future<GetFamilyActivityModel?> getActivitybyFamilyId(Map<String, String> body) async {
     try {
       final response = await HttpService.getApi(
           url: EndPoints.getActivitybyFamilyId,
@@ -110,7 +111,7 @@ class ProgramsApi{
       if (response != null && response.statusCode == 200) {
         final responseBody = response.body;
         try {
-          FamilyActivityModel model = familyActivityModelFromJson(responseBody);
+          GetFamilyActivityModel model = getFamilyActivityModelFromJson(responseBody);
           return model;
         } catch (e) {
           throw Exception("Unexpected response format: $responseBody");
@@ -141,5 +142,56 @@ class ProgramsApi{
     }
 
     return false;
+  }
+
+  static Future<bool> addAshaMembersActivity(Map<String, dynamic> body) async {
+    try {
+      final response = await HttpService.postApi(
+        url: EndPoints.addAshaMemberActivity,
+        body: body,
+      );
+
+      print("addAshaMemberActivity body: $body");
+      print("addAshaMemberActivity response: ${response?.body}");
+
+      if (response != null && response.statusCode == 200) {
+        return true;
+      }
+
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+
+    return false;
+  }
+
+  static Future<GetFamilyActivityModel?> getMotherChildListWithId(Map<String, String> body) async {
+    try {
+      final response = await HttpService.getApi(
+          url: EndPoints.getMotherChildListWithId,
+          queryParams: body
+      );
+
+      print("Respose: ${response}");
+
+
+
+
+      if (response != null && response.statusCode == 200) {
+        final responseBody = response.body;
+        try {
+          print("Get Programs Response: ${response.body}");
+          print("Status Code: ${response.statusCode}");
+
+          GetFamilyActivityModel model = getFamilyActivityModelFromJson(responseBody);
+          return model;
+        } catch (e) {
+          throw Exception("Unexpected response format: $responseBody");
+        }
+      }
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+    return null;
   }
 }

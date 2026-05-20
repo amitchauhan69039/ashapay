@@ -45,6 +45,8 @@ export 'package:asha_pay/screens/ParivarSelection/parivar_selection_controller.d
 export 'package:asha_pay/screens/ParivarSelection/parivar_selection_screen.dart';
 export 'package:asha_pay/screens/vaccinationList/vaccination_list_controller.dart';
 export 'package:asha_pay/screens/vaccinationList/vaccination_list_screen.dart';
+export 'package:asha_pay/screens/monthlyActivity/monthly_activity_controller.dart';
+export 'package:asha_pay/screens/monthlyActivity/monthly_activity_screen.dart';
 export 'package:asha_pay/screens/home/controller/home_controller.dart';
 export 'package:asha_pay/model/login_model.dart';
 export 'package:asha_pay/model/programs_model.dart';

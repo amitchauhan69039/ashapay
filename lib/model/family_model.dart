@@ -36,7 +36,7 @@ class FamilyModel {
 class FamilyData {
   String? familyId;
   Hod? hod;
-  List<Members>? members;
+  List<FamilyMembers>? members;
 
   FamilyData({this.familyId, this.hod, this.members});
 
@@ -44,9 +44,9 @@ class FamilyData {
     familyId = json['familyId'];
     hod = json['hod'] != null ? new Hod.fromJson(json['hod']) : null;
     if (json['members'] != null) {
-      members = <Members>[];
+      members = <FamilyMembers>[];
       json['members'].forEach((v) {
-        members!.add(new Members.fromJson(v));
+        members!.add(new FamilyMembers.fromJson(v));
       });
     }
   }
@@ -89,11 +89,12 @@ class Hod {
   }
 }
 
-class Members {
+class FamilyMembers {
   int? id;
   String? familyId;
   String? memberId;
   String? memberName;
+  int? age;
   String? dob;
   String? gender;
   String? abhaId;
@@ -103,11 +104,12 @@ class Members {
   String? updateDate;
   int? isActive;
 
-  Members(
+  FamilyMembers(
       {this.id,
         this.familyId,
         this.memberId,
         this.memberName,
+        this.age,
         this.dob,
         this.gender,
         this.abhaId,
@@ -117,11 +119,12 @@ class Members {
         this.updateDate,
         this.isActive});
 
-  Members.fromJson(Map<String, dynamic> json) {
+  FamilyMembers.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     familyId = json['familyId'];
     memberId = json['memberId'];
     memberName = json['memberName'];
+    age = json['age'];
     dob = json['dob'];
     gender = json['gender'];
     abhaId = json['abhaId'];
@@ -138,6 +141,7 @@ class Members {
     data['familyId'] = this.familyId;
     data['memberId'] = this.memberId;
     data['memberName'] = this.memberName;
+    data['age'] = this.age;
     data['dob'] = this.dob;
     data['gender'] = this.gender;
     data['abhaId'] = this.abhaId;

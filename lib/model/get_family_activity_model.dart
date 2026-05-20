@@ -1,20 +1,20 @@
 import 'dart:convert';
 
 import 'package:asha_pay/model/family_model.dart';
-FamilyActivityModel familyActivityModelFromJson(String str) => FamilyActivityModel.fromJson(json.decode(str));
+GetFamilyActivityModel getFamilyActivityModelFromJson(String str) => GetFamilyActivityModel.fromJson(json.decode(str));
 
-String familyActivityModelToJson(FamilyActivityModel data) => json.encode(data.toJson());
 
-class FamilyActivityModel {
+
+class GetFamilyActivityModel {
   String? status;
-  FamilyActivityData? data;
+  Data? data;
   String? message;
 
-  FamilyActivityModel({this.status, this.data, this.message});
+  GetFamilyActivityModel({this.status, this.data, this.message});
 
-  FamilyActivityModel.fromJson(Map<String, dynamic> json) {
+  GetFamilyActivityModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
-    data = json['data'] != null ? new FamilyActivityData.fromJson(json['data']) : null;
+    data = json['data'] != null ? new Data.fromJson(json['data']) : null;
     message = json['message'];
   }
 
@@ -29,12 +29,12 @@ class FamilyActivityModel {
   }
 }
 
-class FamilyActivityData {
+class Data {
   List<Activities>? activities;
 
-  FamilyActivityData({this.activities});
+  Data({this.activities});
 
-  FamilyActivityData.fromJson(Map<String, dynamic> json) {
+  Data.fromJson(Map<String, dynamic> json) {
     if (json['activities'] != null) {
       activities = <Activities>[];
       json['activities'].forEach((v) {
@@ -51,10 +51,11 @@ class FamilyActivityData {
     return data;
   }
 }
+
 class Activities {
   int? activityId;
   String? activityName;
-  List<FamilyMembers>? members;
+  List<Members>? members;
 
   Activities({this.activityId, this.activityName, this.members});
 
@@ -62,9 +63,9 @@ class Activities {
     activityId = json['activityId'];
     activityName = json['activityName'];
     if (json['members'] != null) {
-      members = <FamilyMembers>[];
+      members = <Members>[];
       json['members'].forEach((v) {
-        members!.add(new FamilyMembers.fromJson(v));
+        members!.add(new Members.fromJson(v));
       });
     }
   }
@@ -84,7 +85,6 @@ class Members {
   String? memberId;
   String? memberName;
   String? spousename;
-  int? age;
   String? dob;
   String? gender;
   String? lmpDate;
@@ -96,7 +96,6 @@ class Members {
       {this.memberId,
         this.memberName,
         this.spousename,
-        this.age,
         this.dob,
         this.gender,
         this.lmpDate,
@@ -108,7 +107,6 @@ class Members {
     memberId = json['memberId'];
     memberName = json['memberName'];
     spousename = json['spousename'];
-    age = json['age'];
     dob = json['dob'];
     gender = json['gender'];
     lmpDate = json['lmpDate'];
@@ -127,7 +125,6 @@ class Members {
     data['memberId'] = this.memberId;
     data['memberName'] = this.memberName;
     data['spousename'] = this.spousename;
-    data['age'] = this.age;
     data['dob'] = this.dob;
     data['gender'] = this.gender;
     data['lmpDate'] = this.lmpDate;

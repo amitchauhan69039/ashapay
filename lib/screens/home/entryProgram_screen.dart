@@ -30,8 +30,6 @@ class AshaProgramScreen extends StatelessWidget {
         child: Column(
           children: [
 
-
-            // 🔹 Body
             Expanded(
               child: Container(
                 decoration: BoxDecoration(
@@ -67,8 +65,10 @@ class AshaProgramScreen extends StatelessWidget {
                         return InkWell(
                             onTap: () {
 
-                              if(index==1){
+                              if(controller.programsList![index].programmeId==1){
                                 Get.to(()=> ParivarSelectionScreen());
+                              }else if(controller.programsList![index].programmeId==15){
+                                Get.to(()=> MonthlyActivityScreen());
                               }
 
                             },
