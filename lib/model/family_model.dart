@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'family_activity_model.dart';
+
 List<FamilyData> familyModelFromJson(String str) => List<FamilyData>.from(json.decode(str).map((x) => FamilyData.fromJson(x)));
 
 String familyModelToJson(List<FamilyData> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
@@ -95,8 +97,9 @@ class FamilyMembers {
   String? memberId;
   String? memberName;
   int? age;
-  String? dob;
+  dynamic dob;
   String? gender;
+  dynamic relation;
   String? abhaId;
   String? addharId;
   int? createdUser;
@@ -112,6 +115,7 @@ class FamilyMembers {
         this.age,
         this.dob,
         this.gender,
+        this.relation,
         this.abhaId,
         this.addharId,
         this.createdUser,
@@ -127,6 +131,7 @@ class FamilyMembers {
     age = json['age'];
     dob = json['dob'];
     gender = json['gender'];
+    relation = json['relation'];
     abhaId = json['abhaId'];
     addharId = json['addharId'];
     createdUser = json['createdUser'];
@@ -144,6 +149,7 @@ class FamilyMembers {
     data['age'] = this.age;
     data['dob'] = this.dob;
     data['gender'] = this.gender;
+    data['relation'] = this.relation;
     data['abhaId'] = this.abhaId;
     data['addharId'] = this.addharId;
     data['createdUser'] = this.createdUser;
@@ -153,3 +159,4 @@ class FamilyMembers {
     return data;
   }
 }
+

@@ -3,7 +3,6 @@ import 'package:http/http.dart' as http;
 import 'package:asha_pay/asha_pay.dart';
 
 class HttpService {
-
   static Future<http.Response?> getApi({
     required String url,
     Map<String, String>? headers,

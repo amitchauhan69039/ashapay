@@ -22,7 +22,6 @@ class ParivarSelectionController extends GetxController {
       // 🔥 API call
       familyList = await ProgramsApi.getAllFamilyMembers() ?? [];
 
-
     } catch (e) {
       print(e);
     }

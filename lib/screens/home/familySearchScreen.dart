@@ -1,71 +1,163 @@
 import 'package:asha_pay/asha_pay.dart';
-import 'package:asha_pay/model/MemberModel.dart';
 import 'package:asha_pay/model/family_model.dart';
+import 'package:asha_pay/screens/familyListing/addFamilyScreen.dart';
 import 'controller/family_controller.dart';
 
 class FamilySearchScreen extends StatelessWidget {
+
   final controller = Get.put(FamilyController());
+
+  FamilySearchScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
+
       backgroundColor: const Color(0xFF2F7FB6),
+
       body: GetBuilder<FamilyController>(
+
         id: FamilyController.familySearchID,
+
         builder: (controller) {
+
           return SafeArea(
+
             child: Column(
+
               children: [
 
                 /// 🔹 HEADER
-                CommonHeader(title: "ASHA Worker"),
+                CommonHeader(
+                  title: "ASHA Worker",
+                ),
 
                 /// 🔹 BODY
                 Expanded(
-                  child:  Container(
+
+                  child: Container(
+
                     margin: const EdgeInsets.only(top: 10),
+
                     decoration: BoxDecoration(
+
                       color: Colors.grey.shade200,
+
                       borderRadius: const BorderRadius.vertical(
                         top: Radius.circular(30),
                       ),
+
                       boxShadow: [
                         BoxShadow(
                           color: Colors.black.withOpacity(0.08),
                           blurRadius: 8,
                           offset: const Offset(0, -2),
-                        )
+                        ),
                       ],
                     ),
+
                     child: Column(
+
                       children: [
 
-                        /// 🔍 SEARCH
+                        /// 🔍 SEARCH SECTION
                         Container(
+
                           padding: const EdgeInsets.all(20),
-                          decoration: BoxDecoration(
+
+                          decoration: const BoxDecoration(
+
                             color: Colors.white,
+
                             borderRadius: BorderRadius.only(
                               topLeft: Radius.circular(20),
                               topRight: Radius.circular(20),
                             ),
                           ),
+
                           child: Column(
+
                             children: [
+
+                              /// 🔹 FAMILY ID FIELD
                               CommonTextField(
-                                controller: controller.searchCtrl,
-                                hintText: "Family ID डालें",
-                                fillColor: Colors.grey.shade300,
+
+                                controller:
+                                controller.searchCtrl,
+
+                                hintText:
+                                "Family ID डालें",
+
+                                fillColor:
+                                Colors.grey.shade300,
+
                                 showBorder: false,
-                                errorText: controller.familyIdError,
+
+                                errorText:
+                                controller.familyIdError,
                               ),
+
                               const SizedBox(height: 16),
+
+                              /// 🔹 SEARCH BUTTON
                               AppButton(
-                                buttonName: controller.isLoading
+
+                                buttonName:
+                                controller.isLoading
                                     ? "Loading..."
                                     : "परिवार खोजें",
+
                                 onTap: () async {
+
                                   await controller.searchFamily();
+                                },
+                              ),
+
+                              const SizedBox(height: 16),
+
+                              /// 🔹 OR
+                              Row(
+
+                                children: [
+
+                                  Expanded(
+                                    child: Divider(
+                                      color:
+                                      Colors.grey.shade400,
+                                    ),
+                                  ),
+
+                                  const Padding(
+                                    padding:
+                                    EdgeInsets.symmetric(
+                                      horizontal: 10,
+                                    ),
+                                    child: Text("या"),
+                                  ),
+
+                                  Expanded(
+                                    child: Divider(
+                                      color:
+                                      Colors.grey.shade400,
+                                    ),
+                                  ),
+                                ],
+                              ),
+
+                              const SizedBox(height: 16),
+
+                              /// 🔹 ADD FAMILY
+                              AppButton(
+
+                                buttonName:
+                                "नया परिवार जोड़ें",
+
+                                onTap: () {
+
+                                  Get.to(
+                                        () => AddFamilyScreen(),
+                                  );
                                 },
                               ),
                             ],
@@ -74,60 +166,154 @@ class FamilySearchScreen extends StatelessWidget {
 
                         const SizedBox(height: 10),
 
-                        /// 🔥 LIST
+                        /// 🔥 BODY CONTENT
                         Expanded(
+
                           child: Builder(
+
                             builder: (_) {
+
+                              /// 🔄 LOADING
                               if (controller.isLoading) {
-                                return const Center(child: CircularProgressIndicator());
+
+                                return const Center(
+                                  child:
+                                  CircularProgressIndicator(),
+                                );
                               }
 
+                              /// 🔹 INITIAL EMPTY
                               if (!controller.hasSearched) {
-                                return const Center(child: Text(""));
+
+                                return const SizedBox();
                               }
 
-                              if (controller.membersList.isEmpty) {
-                                return const Center(child: Text("No Data Found!"));
-                              }
+                              /// 🔥 MEMBERS
+                              final members =
+                              controller.familyList.isNotEmpty
+                                  ? controller
+                                  .familyList
+                                  .first
+                                  .members ??
+                                  []
+                                  : [];
 
-                              return ListView.builder(
-                                itemCount: controller.membersList.length + 1,
-                                itemBuilder: (context, index) {
+                              /// ❌ NO FAMILY
+                              if (members.isEmpty) {
 
-                                  /// 🔥 BUTTONS
-                                  if (index == controller.membersList.length) {
-                                    return Container(
-                                      padding: const EdgeInsets.all(12),
+                                return Align(
+
+                                  alignment:
+                                  Alignment.topCenter,
+
+                                  child: Container(
+
+                                    width: double.infinity,
+
+                                    margin:
+                                    const EdgeInsets.all(12),
+
+                                    padding:
+                                    const EdgeInsets.all(20),
+
+                                    decoration: BoxDecoration(
+
                                       color: Colors.white,
-                                      child: Row(
-                                        children: [
-                                          Expanded(
-                                            child: AppButton(
-                                              buttonName: "सदस्य जोड़ें",
-                                              onTap: () {
-                                                controller.addNewMember();
-                                              },
-                                            ),
+
+                                      borderRadius:
+                                      BorderRadius.circular(16),
+
+                                      border: Border.all(
+                                        color: Colors.orange,
+                                      ),
+                                    ),
+
+                                    child: const Column(
+
+                                      mainAxisSize:
+                                      MainAxisSize.min,
+
+                                      children: [
+
+                                        Icon(
+                                          Icons.search_off,
+                                          size: 60,
+                                          color: Colors.orange,
+                                        ),
+
+                                        SizedBox(height: 15),
+
+                                        Text(
+                                          "परिवार नहीं मिला",
+
+                                          style: TextStyle(
+                                            fontSize: 18,
+                                            fontWeight:
+                                            FontWeight.bold,
                                           ),
-                                          const SizedBox(width: 10),
-                                          Expanded(
-                                            child: AppButton(
-                                              buttonName: "परिवार जोड़ें",
-                                              onTap: () {
-                                                controller.saveFamily();
-                                              },
-                                            ),
-                                          ),
-                                        ],
+                                        ),
+
+                                        SizedBox(height: 10),
+
+                                        Text(
+                                          "इस Family ID से कोई परिवार नहीं मिला।\nकृपया नया परिवार जोड़ें।",
+
+                                          textAlign:
+                                          TextAlign.center,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              }
+
+                              /// ✅ FAMILY FOUND
+                              return ListView.builder(
+
+                                itemCount:
+                                members.length + 1,
+
+                                itemBuilder:
+                                    (context, index) {
+
+                                  /// ➕ ADD MEMBER BUTTON
+                                  if (index ==
+                                      members.length) {
+
+                                    return Container(
+
+                                      padding:
+                                      const EdgeInsets.all(12),
+
+                                      color: Colors.white,
+
+                                      child: AppButton(
+
+                                        buttonName:
+                                        "सदस्य जोड़ें",
+
+                                        onTap:
+                                        controller.addNewMember,
                                       ),
                                     );
                                   }
 
-                                  final item = controller.membersList[index];
+                                  final item =
+                                  members[index];
 
                                   return Padding(
-                                    padding: const EdgeInsets.symmetric(horizontal: 12),
-                                    child: familyCard(item),
+
+                                    key: ValueKey(
+                                      "${item.memberId}_$index",
+                                    ),
+
+                                    padding:
+                                    const EdgeInsets.symmetric(
+                                      horizontal: 12,
+                                    ),
+
+                                    child:
+                                    familyCard(item),
                                   );
                                 },
                               );
@@ -146,24 +332,51 @@ class FamilySearchScreen extends StatelessWidget {
     );
   }
 
-  /// 🔹 CARD
-  Widget familyCard(MemberModel item) {
+  /// 🔹 FAMILY CARD
+  Widget familyCard(FamilyMembers item) {
+
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: 10),
+
+      margin:
+      const EdgeInsets.symmetric(vertical: 10),
+
       padding: const EdgeInsets.all(12),
+
       decoration: BoxDecoration(
+
         color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
+
+        borderRadius:
+        BorderRadius.circular(16),
       ),
+
       child: Column(
+
         children: [
 
+          /// 🔹 TOP ROW
           Row(
+
             children: [
+
               Expanded(
-                child: field("नाम", item.nameCtrl, "नाम डालें"),
+
+                child: field(
+
+                  "नाम",
+
+                  item.memberName ?? "",
+
+                      (v) {
+                    item.memberName = v;
+                  },
+
+                  "नाम डालें",
+                ),
               ),
+
               const SizedBox(width: 10),
+
               Expanded(
                 child: idOrMotherField(item),
               ),
@@ -172,22 +385,73 @@ class FamilySearchScreen extends StatelessWidget {
 
           const SizedBox(height: 10),
 
-          field("आधार आईडी", item.aadharCtrl, "आधार डालें"),
+          /// 🔹 AADHAR
+          field(
+
+            "आधार आईडी",
+
+            item.addharId ?? "",
+
+                (v) {
+              item.addharId = v;
+            },
+
+            "आधार डालें",
+          ),
 
           const SizedBox(height: 10),
 
-          field("आमा आईडी", item.abhaCtrl, "आमा आईडी डालें"),
+          /// 🔹 ABHA
+          field(
+
+            "आमा आईडी",
+
+            item.abhaId ?? "",
+
+                (v) {
+              item.abhaId = v;
+            },
+
+            "आमा आईडी डालें",
+          ),
 
           const SizedBox(height: 10),
 
+          /// 🔹 DOB + GENDER
           Row(
+
             children: [
+
               Expanded(
-                child: field("जन्म तिथि", item.dobCtrl, "जन्म तिथि"),
+
+                child: field(
+
+                  "जन्म तिथि",
+
+                  item.dob ?? "",
+                      (v) {item.dob = v;
+                  },
+
+                  "जन्म तिथि",
+                ),
               ),
+
               const SizedBox(width: 10),
+
               Expanded(
-                child: field("लिंग", item.genderCtrl, "लिंग चुनें"),
+
+                child: field(
+
+                  "लिंग",
+
+                  item.gender ?? "",
+
+                      (v) {
+                    item.gender = v;
+                  },
+
+                  "लिंग चुनें",
+                ),
               ),
             ],
           ),
@@ -197,19 +461,46 @@ class FamilySearchScreen extends StatelessWidget {
   }
 
   /// 🔹 COMMON FIELD
-  Widget field(String label, TextEditingController ctrl, String hint) {
+  Widget field(
+
+      String label,
+      String value,
+      Function(String) onChanged,
+      String hint,
+      ) {
+
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+
+      crossAxisAlignment:
+      CrossAxisAlignment.start,
+
       children: [
+
         Text(label),
+
         const SizedBox(height: 5),
-        TextField(
-          controller: ctrl,
+
+        TextFormField(
+
+          key: ValueKey(
+            "$label-$value",
+          ),
+
+          initialValue: value,
+
+          onChanged: onChanged,
+
           decoration: InputDecoration(
+
             hintText: hint,
-            hintStyle: TextStyle(color: Colors.grey.shade400),
+
+            hintStyle: TextStyle(
+              color: Colors.grey.shade400,
+            ),
+
             border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(6),
+              borderRadius:
+              BorderRadius.circular(6),
             ),
           ),
         ),
@@ -217,39 +508,85 @@ class FamilySearchScreen extends StatelessWidget {
     );
   }
 
-  /// 🔹 ID OR MOTHER FIELD
-  Widget idOrMotherField(MemberModel item) {
-    final isExisting = item.memberId != null && item.memberId!.isNotEmpty;
+  /// 🔹 ID / MOTHER FIELD
+  Widget idOrMotherField(FamilyMembers item) {
+
+    final isExisting =
+        item.memberId != null &&
+            item.memberId!.isNotEmpty;
 
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+
+      crossAxisAlignment:
+      CrossAxisAlignment.start,
+
       children: [
-        Text(isExisting ? "सदस्य आईडी" : "माँ का नाम"),
+
+        Text(
+          isExisting
+              ? "सदस्य आईडी"
+              : "माँ का नाम",
+        ),
+
         const SizedBox(height: 5),
 
         isExisting
+
             ? Container(
+
           width: double.infinity,
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
-          decoration: BoxDecoration(
-            border: Border.all(color: Colors.grey.shade300),
-            borderRadius: BorderRadius.circular(6),
+
+          padding:
+          const EdgeInsets.symmetric(
+            horizontal: 10,
+            vertical: 12,
           ),
-          child: Text(item.memberId!),
+
+          decoration: BoxDecoration(
+
+            border: Border.all(
+              color: Colors.grey.shade300,
+            ),
+
+            borderRadius:
+            BorderRadius.circular(6),
+          ),
+
+          child: Text(
+            item.memberId ?? "",
+          ),
         )
-            : TextField(
-          controller: item.motherCtrl,
+
+            : TextFormField(
+
+          key: ValueKey(
+            "mother_${item.memberId}",
+          ),
+
+         /* initialValue:
+          item.relation ?? "",
+
+          onChanged: (v) {
+
+            item.relation = v;
+          },
+*/
           decoration: InputDecoration(
-            hintText: "माँ का नाम डालें",
-            hintStyle: TextStyle(color: Colors.grey.shade400),
+
+            hintText:
+            "माँ का नाम डालें",
+
+            hintStyle: TextStyle(
+              color: Colors.grey.shade400,
+            ),
+
             border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(6),
+              borderRadius:
+              BorderRadius.circular(6),
             ),
           ),
         ),
       ],
     );
   }
-
-
 }

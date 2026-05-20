@@ -1,220 +1,410 @@
 import 'package:asha_pay/asha_pay.dart';
-import 'package:asha_pay/model/MemberModel.dart';
 import 'package:asha_pay/model/family_model.dart';
 import 'package:asha_pay/screens/home/api/programsApi.dart';
 
 class FamilyController extends GetxController {
-  static const String familySearchID = "familySearchID";
+
+  static const String familySearchID =
+      "familySearchID";
 
   bool isLoading = false;
+
   bool hasSearched = false;
 
-  List<MemberModel> membersList = [];
+  /// 🔥 MAIN DATA
   List<FamilyData> familyList = [];
 
-  final TextEditingController searchCtrl = TextEditingController();
+  final TextEditingController searchCtrl =
+  TextEditingController();
 
   String? familyIdError;
 
   @override
   void onInit() {
+
     super.onInit();
+
     searchCtrl.text = "6XGZ0695";
 
     searchCtrl.addListener(() {
+
       if (familyIdError != null) {
+
         familyIdError = null;
+
         update([familySearchID]);
       }
     });
   }
 
-  /// 🔍 SEARCH
+  /// 🔍 SEARCH FAMILY
   Future<void> searchFamily() async {
+
     final familyID = searchCtrl.text.trim();
 
+    /// VALIDATION
     if (familyID.isEmpty) {
+
       familyIdError = "Family ID डालें";
+
       update([familySearchID]);
+
       return;
     }
 
-    familyIdError = null;
+    if (isLoading) return;
+
     isLoading = true;
+
     hasSearched = true;
+
+    /// CLEAR OLD DATA
+    familyList.clear();
+
     update([familySearchID]);
 
     try {
-      final response = await ProgramsApi.getFamilyMembers(familyID) ?? [];
 
-      familyList =
-          response.where((e) => e.familyId == familyID).toList();
+      final body = {
+        "familyid": familyID,
+      };
 
-      /// 🔥 MAP API → membersList
-      membersList.clear();
+      /// API CALL
+      List<FamilyData>? response = await ProgramsApi.getFamilyMembers(body);
 
-      if (familyList.isNotEmpty && familyList[0].members != null) {
-        for (var m in familyList[0].members!) {
-          final model = MemberModel();
+      print("RESPONSE LENGTH: ${response!.length}");
 
-          model.memberId = m.memberId; // ✅ important
+      /// STORE FULL LIST
+      if (response.isNotEmpty) {
 
-          model.nameCtrl.text = m.memberName ?? "";
-          model.genderCtrl.text = m.gender ?? "";
-          model.dobCtrl.text = m.dob ?? "";
-          model.abhaCtrl.text = m.abhaId ?? "";
-          model.aadharCtrl.text = m.addharId ?? "";
+        familyList.addAll(response);
 
-          // existing me mother name nahi hota
-          model.motherCtrl.text = "";
+        print("FAMILY LIST LENGTH: ${familyList.length}");
 
-          membersList.add(model);
+        /// PRINT ALL DATA
+        for (var family in familyList) {
+
+          print("Family ID: ${family.familyId}");
+
+          if (family.members != null &&
+              family.members!.isNotEmpty) {
+
+            print("MEMBERS COUNT: ${family.members!.length}");
+
+            for (var member in family.members!) {
+
+              print("ID: ${member.id}");
+              print("Member Name: ${member.memberName}");
+              print("Member ID: ${member.memberId}");
+              print("Age: ${member.age}");
+              print("Gender: ${member.gender}");
+              print("Aadhar: ${member.addharId}");
+              print("----------------------");
+            }
+          }
         }
-      }
 
-      if (membersList.isEmpty) {
-        Get.snackbar("No Data", "इस ID का कोई परिवार नहीं मिला");
+      } else {
+
+        print("NO DATA FOUND");
       }
 
     } catch (e) {
-      print(e);
+
+      print("ERROR: $e");
+
+    } finally {
+
+      isLoading = false;
+
+      update([familySearchID]);
+    }
+  }
+
+  /* Future<void> searchFamily() async {
+
+    final familyID = searchCtrl.text.trim();
+
+    if (familyID.isEmpty) {
+
+      familyIdError = "Family ID डालें";
+
+      update([familySearchID]);
+
+      return;
+    }
+
+    if (isLoading) return;
+
+    isLoading = true;
+
+    hasSearched = true;
+
+    /// 🔥 CLEAR OLD
+    familyList.clear();
+
+    update([familySearchID]);
+
+    try {
+
+      final body = {"familyid": familyID};
+
+      final response = await ProgramsApi.getFamilyMembers(body);
+
+      print(
+          "🔥 RESPONSE: ${response?.map((e) => e.toJson()).toList()}"
+      );
+
+      if (response != null && response.isNotEmpty) {
+
+        /// 🔥 DIRECT ASSIGN
+        familyList = List<FamilyData>.from(response);
+
+        print(
+          "🔥 FAMILY COUNT: ${familyList.length}",
+        );
+
+        print(
+          "🔥 MEMBERS COUNT: ${familyList.first.members?.length}",
+        );
+
+      } else {
+
+        familyList = [];
+      }
+
+    } catch (e) {
+
+      print("❌ ERROR: $e");
+
+      familyList = [];
+
+      Get.snackbar(
+        "Error",
+        "Data load failed",
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+      );
     }
 
     isLoading = false;
+
     update([familySearchID]);
   }
-
-  /// ➕ ADD MEMBER
+*/
+  /// ➕ ADD NEW MEMBER
   void addNewMember() {
-    if (!validateLastMember()) return;
 
-    /// 🔥 prevent empty spam
-    if (membersList.isNotEmpty) {
-      final last = membersList.last;
+    if (familyList.isEmpty) return;
+
+    familyList.first.members ??= [];
+
+    final members =
+    familyList.first.members!;
+
+    /// 🔥 VALIDATE LAST MEMBER
+    if (members.isNotEmpty) {
+
+      final last = members.last;
 
       final isExisting =
-          last.memberId != null && last.memberId!.isNotEmpty;
+          last.memberId != null &&
+              last.memberId!.isNotEmpty;
 
       if (!isExisting &&
-          last.motherCtrl.text.trim().isEmpty) {
+          (last.memberName ?? "")
+              .trim()
+              .isEmpty) {
+
+        Get.snackbar(
+          "Error",
+          "पहले नाम भरें",
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+        );
+
         return;
       }
     }
 
-    membersList.add(MemberModel());
+    /// 🔥 NEW MEMBER
+    members.add(
+
+      FamilyMembers(
+        memberName: "",
+        //relation: "",
+        gender: "",
+        dob: "",
+        abhaId: "",
+        addharId: "",
+      ),
+    );
+
     update([familySearchID]);
   }
 
-  /// ✅ LAST MEMBER VALIDATION
-  bool validateLastMember() {
-    if (membersList.isEmpty) return true;
+  /// ✅ VALIDATE ALL MEMBERS
+  bool validateMembers() {
 
-    final m = membersList.last;
+    if (familyList.isEmpty) {
 
-    final isExisting =
-        m.memberId != null && m.memberId!.isNotEmpty;
-
-    // skip existing
-    if (isExisting) return true;
-
-    // 🔥 SAME validation as validateMembers
-    if (m.nameCtrl.text.trim().isEmpty ||
-        m.motherCtrl.text.trim().isEmpty) {
       Get.snackbar(
         "Error",
-        "नाम और माँ का नाम भरना आवश्यक है",
-        backgroundColor: Colors.red,
-        colorText: Colors.white,
+        "कोई सदस्य नहीं मिला",
       );
+
       return false;
     }
 
-    return true;
-  }
+    final members =
+        familyList.first.members ?? [];
 
-  /// 📦 FINAL VALIDATION (SAVE TIME)
-  bool validateMembers() {
-    for (var m in membersList) {
+    for (var m in members) {
+
       final isExisting =
-          m.memberId != null && m.memberId!.isNotEmpty;
+          m.memberId != null &&
+              m.memberId!.isNotEmpty;
 
-      /// skip existing
+      /// 🔥 OLD MEMBER SKIP
       if (isExisting) continue;
 
-      /// validate new
-      if (m.nameCtrl.text.trim().isEmpty ||
-          m.motherCtrl.text.trim().isEmpty) {
+      if ((m.memberName ?? "")
+          .trim()
+          .isEmpty) {
+
         Get.snackbar(
+
           "Error",
-          "Name & Mother's Name required",
+
+          "नाम भरना आवश्यक है",
+
           backgroundColor: Colors.red,
+
           colorText: Colors.white,
         );
+
         return false;
       }
     }
+
     return true;
   }
 
-  /// 📦 PAYLOAD (API READY)
+  /// 📦 PAYLOAD
   Map<String, dynamic> buildPayload() {
+
+    final members =
+        familyList.first.members ?? [];
+
     return {
-      "familyId": searchCtrl.text.trim(),
+
+      "familyId":
+      searchCtrl.text.trim(),
+
       "createdUser": 0,
-      "members": membersList.map((m) {
+
+      "members": members.map((m) {
+
         return {
-          "value": m.nameCtrl.text.trim(),
-          "text": m.motherCtrl.text.trim(),
-          "gender": m.genderCtrl.text.trim(),
-          "dob": m.dobCtrl.text.trim(),
-          "aabhaId": m.abhaCtrl.text.trim(),
-          "aadharId": m.aadharCtrl.text.trim(),
+
+          "value":
+          m.memberName ?? "",
+
+          "text": "", // m.relation ??
+
+          "gender":
+          m.gender ?? "",
+
+          "dob":
+          m.dob ?? "",
+
+          "aabhaId":
+          m.abhaId ?? "",
+
+          "aadharId":
+          m.addharId ?? "",
         };
-      }).toList()
+
+      }).toList(),
     };
   }
 
+  /// 💾 SAVE FAMILY
   Future<void> saveFamily() async {
+
     if (!validateMembers()) return;
 
     isLoading = true;
+
     update([familySearchID]);
 
     try {
-      final payload = buildPayload();
 
-      final success = await ProgramsApi.addFamilyMembers(payload);
+      final payload =
+      buildPayload();
+
+      print(
+        "🔥 SAVE PAYLOAD: $payload",
+      );
+
+      final success =
+      await ProgramsApi
+          .addFamilyMembers(payload);
 
       if (success) {
+
         Get.snackbar(
+
           "सफल",
+
           "परिवार सफलतापूर्वक जोड़ दिया गया",
-          backgroundColor: Colors.green,
-          colorText: Colors.white,
+
+          backgroundColor:
+          Colors.green,
+
+          colorText:
+          Colors.white,
         );
 
-        // 🔥 optional: reload data
+        /// 🔥 RELOAD
         await searchFamily();
 
       } else {
+
         Get.snackbar(
+
           "त्रुटि",
+
           "डेटा सेव नहीं हुआ",
-          backgroundColor: Colors.red,
-          colorText: Colors.white,
+
+          backgroundColor:
+          Colors.red,
+
+          colorText:
+          Colors.white,
         );
       }
 
     } catch (e) {
+
+      print("❌ SAVE ERROR: $e");
+
       Get.snackbar(
+
         "त्रुटि",
+
         e.toString(),
-        backgroundColor: Colors.red,
-        colorText: Colors.white,
+
+        backgroundColor:
+        Colors.red,
+
+        colorText:
+        Colors.white,
       );
     }
 
     isLoading = false;
+
     update([familySearchID]);
   }
 }

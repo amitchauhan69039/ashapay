@@ -15,6 +15,7 @@ class AshaGatividhiController extends GetxController {
   bool isDeath=false;
   String activityid="";
   List<FamilyMembers> selectedMembers=[];
+  List<FamilyMembers> selectedDeathMembers=[];
   List<FamilyMembers> selectedCouplesMembers=[];
   List<String> lmpDates = [];
   List<String> regDates = [];

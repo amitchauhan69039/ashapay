@@ -285,7 +285,7 @@ class _AshaGatividhiScreenState extends State<AshaGatividhiScreen> {
 
 
 
-                              controller.selectedMembers=result;
+                              controller.selectedDeathMembers=result;
 
 
 
@@ -309,7 +309,7 @@ class _AshaGatividhiScreenState extends State<AshaGatividhiScreen> {
                       const SizedBox(height: 12),
 
                       if(controller.isDeath)
-                        birthDeathCard(context, controller.selectedMembers[0].memberName!),
+                        birthDeathCard(context, controller.selectedDeathMembers[0].memberName!),
 
                       const SizedBox(height: 35),
 
