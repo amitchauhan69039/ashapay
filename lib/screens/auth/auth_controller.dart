@@ -21,8 +21,8 @@ class AuthController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    passwordController.text = "nirmaladevi";
-    phoneNumberController.text = "7027818670";
+    passwordController.text = "santosh";//nirmaladevi
+    phoneNumberController.text = "7027818669"; //7027818670
   }
   
   onResendOtp() async {

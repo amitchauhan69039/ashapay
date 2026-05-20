@@ -1,25 +1,23 @@
 import 'package:asha_pay/asha_pay.dart';
 import 'package:asha_pay/model/family_model.dart';
-
 import '../../../model/family_activity_model.dart';
 
 class ProgramsApi{
 
-  static Future<List<FamilyData>?> getFamilyMembers(String familyID) async {
+  static Future<List<FamilyData>?> getFamilyMembers(Map<String, dynamic> body) async {
     try {
-      final response = await HttpService.getApi(url: EndPoints.getFamilyMembers);
-
-      print("Respose: ${response}");
+      final response = await HttpService.getApi(
+        url: EndPoints.getFamilyMembers,
+        queryParams: body
+      );
 
       if (response != null) {
-        print("Get Family Response: ${response.body}");
-        print("Status Code: ${response.statusCode}");
-
         if (response.statusCode == 200) {
           final responseBody = json.decode(response.body);
-
-          // 🔥 Parse using model
           FamilyModel model = FamilyModel.fromJson(responseBody);
+
+          print("test");
+          print(model.data?.first.members?.length);
 
           return model.data ?? [];
         } else {
@@ -131,6 +129,27 @@ class ProgramsApi{
 
       print("AddFamilyMembers body: $body");
       print("AddFamilyMembers response: ${response?.body}");
+
+      if (response != null && response.statusCode == 200) {
+        return true; // ✅ success
+      }
+
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+
+    return false;
+  }
+
+  static Future<bool> addNewFamily(Map<String, dynamic> body) async {
+    try {
+      final response = await HttpService.postApi(
+        url: EndPoints.addNewFamily,
+        body: body,
+      );
+
+      print("AddNewFamily body: $body");
+      print("AddNewFamily response: ${response?.body}");
 
       if (response != null && response.statusCode == 200) {
         return true; // ✅ success

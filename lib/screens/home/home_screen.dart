@@ -21,18 +21,16 @@ class _DashboardScreenState extends State<DashboardScreen> {
             now.difference(lastBackPressTime!) > const Duration(seconds: 2)) {
           lastBackPressTime = now;
 
-          Get.snackbar(
-            "Exit",
-            "बाहर निकलने के लिए फिर से back दबाएं",
-            snackPosition: SnackPosition.BOTTOM,
+          Fluttertoast.showToast(
+            msg: "बाहर निकलने के लिए फिर से back दबाएं",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
             backgroundColor: Colors.black,
-            colorText: Colors.white,
-            duration: const Duration(seconds: 2),
+            textColor: Colors.white,
+            fontSize: 14.0,
           );
-
           return false; // ❌ exit mat karo
         }
-
         return true; // ✅ exit app
       },
 
@@ -40,7 +38,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         backgroundColor: Colors.white,
         body: SafeArea(
           child: Container(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               image: DecorationImage(
                 image: AssetImage(AssetRes.login_bg),
                 fit: BoxFit.cover,

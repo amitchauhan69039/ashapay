@@ -6,14 +6,12 @@ String familyModelToJson(List<FamilyData> data) => json.encode(List<dynamic>.fro
 
 class FamilyModel {
   String? status;
-  int? hodCount;
   List<FamilyData>? data;
 
-  FamilyModel({this.status, this.hodCount, this.data});
+  FamilyModel({this.status, this.data});
 
   FamilyModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
-    hodCount = json['hodCount'];
     if (json['data'] != null) {
       data = <FamilyData>[];
       json['data'].forEach((v) {
@@ -25,7 +23,6 @@ class FamilyModel {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['status'] = this.status;
-    data['hodCount'] = this.hodCount;
     if (this.data != null) {
       data['data'] = this.data!.map((v) => v.toJson()).toList();
     }
@@ -35,14 +32,12 @@ class FamilyModel {
 
 class FamilyData {
   String? familyId;
-  Hod? hod;
   List<Members>? members;
 
-  FamilyData({this.familyId, this.hod, this.members});
+  FamilyData({this.familyId, this.members});
 
   FamilyData.fromJson(Map<String, dynamic> json) {
     familyId = json['familyId'];
-    hod = json['hod'] != null ? new Hod.fromJson(json['hod']) : null;
     if (json['members'] != null) {
       members = <Members>[];
       json['members'].forEach((v) {
@@ -54,37 +49,9 @@ class FamilyData {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['familyId'] = this.familyId;
-    if (this.hod != null) {
-      data['hod'] = this.hod!.toJson();
-    }
     if (this.members != null) {
       data['members'] = this.members!.map((v) => v.toJson()).toList();
     }
-    return data;
-  }
-}
-
-class Hod {
-  String? familyId;
-  String? headName;
-  String? memberId;
-  String? createdDate;
-
-  Hod({this.familyId, this.headName, this.memberId, this.createdDate});
-
-  Hod.fromJson(Map<String, dynamic> json) {
-    familyId = json['familyId'];
-    headName = json['headName'];
-    memberId = json['memberId'];
-    createdDate = json['createdDate'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['familyId'] = this.familyId;
-    data['headName'] = this.headName;
-    data['memberId'] = this.memberId;
-    data['createdDate'] = this.createdDate;
     return data;
   }
 }
@@ -94,13 +61,15 @@ class Members {
   String? familyId;
   String? memberId;
   String? memberName;
-  String? dob;
+  int? age;
+  dynamic dob;
   String? gender;
+  dynamic relation;
   String? abhaId;
   String? addharId;
   int? createdUser;
   String? createdDate;
-  String? updateDate;
+  dynamic updateDate;
   int? isActive;
 
   Members(
@@ -108,8 +77,10 @@ class Members {
         this.familyId,
         this.memberId,
         this.memberName,
+        this.age,
         this.dob,
         this.gender,
+        this.relation,
         this.abhaId,
         this.addharId,
         this.createdUser,
@@ -122,8 +93,10 @@ class Members {
     familyId = json['familyId'];
     memberId = json['memberId'];
     memberName = json['memberName'];
+    age = json['age'];
     dob = json['dob'];
     gender = json['gender'];
+    relation = json['relation'];
     abhaId = json['abhaId'];
     addharId = json['addharId'];
     createdUser = json['createdUser'];
@@ -138,8 +111,10 @@ class Members {
     data['familyId'] = this.familyId;
     data['memberId'] = this.memberId;
     data['memberName'] = this.memberName;
+    data['age'] = this.age;
     data['dob'] = this.dob;
     data['gender'] = this.gender;
+    data['relation'] = this.relation;
     data['abhaId'] = this.abhaId;
     data['addharId'] = this.addharId;
     data['createdUser'] = this.createdUser;
@@ -149,3 +124,4 @@ class Members {
     return data;
   }
 }
+
