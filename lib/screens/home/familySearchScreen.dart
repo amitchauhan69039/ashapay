@@ -1,6 +1,6 @@
 import 'package:asha_pay/asha_pay.dart';
-import 'package:asha_pay/model/family_model.dart';
 import 'package:asha_pay/screens/familyListing/addFamilyScreen.dart';
+import '../../model/family_model.dart';
 import 'controller/family_controller.dart';
 
 class FamilySearchScreen extends StatelessWidget {
@@ -255,15 +255,9 @@ class FamilySearchScreen extends StatelessWidget {
       ),
     );
   }
-<<<<<<< HEAD
 
-  /// 🔹 FAMILY CARD
-  Widget familyCard(FamilyMembers item) {
-
-=======
   // FAMILY CARD
-  Widget familyCard(Members item) {
->>>>>>> 3f381ba (add family)
+  Widget familyCard(FamilyMembers item) {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 10),
       padding: const EdgeInsets.all(12),
@@ -377,26 +371,12 @@ class FamilySearchScreen extends StatelessWidget {
   }
 
   /// 🔹 ID / MOTHER FIELD
-<<<<<<< HEAD
   Widget idOrMotherField(FamilyMembers item) {
-=======
-  // ================= ID / STATUS FIELD =================
+    final controller = Get.find<FamilyController>();
 
-  Widget idOrMotherField(Members item) {
->>>>>>> 3f381ba (add family)
-
-    final controller =
-    Get.find<FamilyController>();
-
-    final isExisting =
-        item.memberId != null &&
-            item.memberId!.isNotEmpty;
-
-    final members =
-        controller.familyList.first.members ?? [];
-
-    final index =
-    members.indexOf(item);
+    final isExisting = item.memberId != null && item.memberId!.isNotEmpty;
+    final members = controller.familyList.first.members ?? [];
+    final index = members.indexOf(item);
 
     return Column(
 
@@ -444,11 +424,9 @@ class FamilySearchScreen extends StatelessWidget {
         /// NEW MEMBER
             : DropdownButtonFormField<String>(
 
-          value:
-          controller.memberStatus[index],
+          value: controller.memberStatus[index],
 
           items: const [
-
             DropdownMenuItem(
               value: "NEWBORN",
               child: Text("Newborn"),
@@ -462,8 +440,7 @@ class FamilySearchScreen extends StatelessWidget {
 
           onChanged: (v) {
 
-            controller.memberStatus[index] =
-                v ?? "";
+            controller.memberStatus[index] = v ?? "";
 
           },
 

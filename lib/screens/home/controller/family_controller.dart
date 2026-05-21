@@ -3,56 +3,55 @@ import 'package:asha_pay/model/family_model.dart';
 import 'package:asha_pay/screens/home/api/programsApi.dart';
 
 class FamilyController extends GetxController {
-
-  static const String familySearchID =
-      "familySearchID";
-
+  static const String familySearchID = "familySearchID";
   bool isLoading = false;
-
   bool hasSearched = false;
-
+  String currentFamilyId = "";
   /// 🔥 MAIN DATA
   List<FamilyData> familyList = [];
-
-  final TextEditingController searchCtrl =
-  TextEditingController();
-
+  final TextEditingController searchCtrl = TextEditingController();
   String? familyIdError;
+  /// STATUS MAP
+  Map<int, String> memberStatus = {};
 
   @override
   void onInit() {
-
     super.onInit();
-
     searchCtrl.text = "6XGZ0695";
-
     searchCtrl.addListener(() {
-
       if (familyIdError != null) {
-
         familyIdError = null;
-
         update([familySearchID]);
       }
     });
   }
 
+  bool get hasNewMembers {
+
+    if (familyList.isEmpty) return false;
+
+    final members =
+        familyList.first.members ?? [];
+
+    return members.any((m) {
+
+      return m.memberId == null ||
+          m.memberId!.isEmpty;
+
+    });
+  }
+
   /// 🔍 SEARCH FAMILY
-  Future<void> searchFamily() async {
-
-    final familyID = searchCtrl.text.trim();
-
+  Future<void> searchFamily(String familyID) async {
+    currentFamilyId = familyID;
     /// VALIDATION
     if (familyID.isEmpty) {
-
       familyIdError = "Family ID डालें";
-
       update([familySearchID]);
-
       return;
     }
 
-    if (isLoading) return;
+   // if (isLoading) return;
 
     isLoading = true;
 
@@ -105,18 +104,14 @@ class FamilyController extends GetxController {
         }
 
       } else {
-
         print("NO DATA FOUND");
       }
 
     } catch (e) {
-
       print("ERROR: $e");
 
     } finally {
-
       isLoading = false;
-
       update([familySearchID]);
     }
   }
@@ -230,7 +225,7 @@ class FamilyController extends GetxController {
     /// 🔥 NEW MEMBER
     members.add(
 
-      Members(
+      FamilyMembers(
         memberName: "",
         //relation: "",
         gender: "",
@@ -291,10 +286,19 @@ class FamilyController extends GetxController {
   }
 
   /// 📦 PAYLOAD
+  /// 📦 BUILD PAYLOAD
   Map<String, dynamic> buildPayload() {
 
     final members =
         familyList.first.members ?? [];
+
+    /// ONLY NEW MEMBERS
+    final newMembers = members.where((m) {
+
+      return m.memberId == null ||
+          m.memberId!.isEmpty;
+
+    }).toList();
 
     return {
 
@@ -303,26 +307,29 @@ class FamilyController extends GetxController {
 
       "createdUser": 0,
 
-      "members": members.map((m) {
+      "members": newMembers.map((m) {
+
+        final index =
+        members.indexOf(m);
 
         return {
 
-          "value":
+          "memberName":
           m.memberName ?? "",
 
-          "text": "", // m.relation ??
+          "memberId": "",
 
           "gender":
           m.gender ?? "",
 
-          "dob":
-          m.dob ?? "",
+          "dob": m.dob ?? "",
 
-          "aabhaId":
-          m.abhaId ?? "",
+          "aabhaId": m.abhaId ?? "",
 
-          "aadharId":
-          m.addharId ?? "",
+          "aadharId": m.addharId ?? "",
+
+          /// STATUS
+          "status": memberStatus[index] ?? "",
         };
 
       }).toList(),
@@ -339,26 +346,20 @@ class FamilyController extends GetxController {
     update([familySearchID]);
 
     try {
-
-      final payload =
-      buildPayload();
+      final payload = buildPayload();
 
       print(
         "🔥 SAVE PAYLOAD: $payload",
       );
 
       final success =
-      await ProgramsApi
-          .addFamilyMembers(payload);
+      await ProgramsApi.addFamilyMembers(payload);
 
       if (success) {
 
         Get.snackbar(
-
           "सफल",
-
           "परिवार सफलतापूर्वक जोड़ दिया गया",
-
           backgroundColor:
           Colors.green,
 
@@ -366,15 +367,19 @@ class FamilyController extends GetxController {
           Colors.white,
         );
 
-        /// 🔥 RELOAD
-        await searchFamily();
+        familyList.clear();
+        update([familySearchID]);
+
+        print("currentFamilyId: $currentFamilyId");
+
+        await Future.delayed(const Duration(milliseconds: 300));
+
+        await reloadFamily();
 
       } else {
 
         Get.snackbar(
-
           "त्रुटि",
-
           "डेटा सेव नहीं हुआ",
 
           backgroundColor:
@@ -406,5 +411,15 @@ class FamilyController extends GetxController {
     isLoading = false;
 
     update([familySearchID]);
+  }
+
+  Future<void> reloadFamily() async {
+
+    if (currentFamilyId == null || currentFamilyId!.isEmpty) {
+      print("❌ No familyId for reload");
+      return;
+    }
+
+    await searchFamily(currentFamilyId!);
   }
 }
