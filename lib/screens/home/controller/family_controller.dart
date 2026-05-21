@@ -230,7 +230,7 @@ class FamilyController extends GetxController {
     /// 🔥 NEW MEMBER
     members.add(
 
-      FamilyMembers(
+      Members(
         memberName: "",
         //relation: "",
         gender: "",
