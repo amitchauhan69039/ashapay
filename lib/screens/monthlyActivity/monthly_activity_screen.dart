@@ -210,6 +210,16 @@ class _MonthlyActivityScreenState extends State<MonthlyActivityScreen> {
                             },
                           ),
 
+                        const SizedBox(height: 30),
+
+                        AppButton(
+                          buttonName: "डेटा जमा करें",
+                          height: 45,
+                          onTap: () async {
+
+                            Get.back();
+                          },
+                        ),
                         const SizedBox(height: 20),
                       ],
                     ),

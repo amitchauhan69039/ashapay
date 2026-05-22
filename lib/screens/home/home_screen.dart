@@ -150,7 +150,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       title: "एंट्री दर्ज करें",
                       iconPath: AssetRes.enterIcon,
                       onTap: () {
-                        Get.to(() => AshaProgramScreen());
+                        Get.to(()=> ParivarSelectionScreen());
                       },
                     ),
 
