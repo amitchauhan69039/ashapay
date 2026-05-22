@@ -1,5 +1,7 @@
 import 'package:asha_pay/asha_pay.dart';
 
+import '../home/entryProgram_screen.dart';
+
 class ParivarSelectionScreen extends StatefulWidget {
 
   @override
@@ -86,7 +88,7 @@ class _ParivarSelectionScreenState extends State<ParivarSelectionScreen>{
             return InkWell(
               onTap: (){
 
-                Get.to(()=> AshaGatividhiScreen(familyData: controller.familyList[index]));
+                Get.to(()=> AshaProgramScreen(familyData: controller.familyList[index]));
               },
               child: Container(
                 height: 60,

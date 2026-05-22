@@ -1,7 +1,11 @@
 import 'package:asha_pay/asha_pay.dart';
 import 'package:asha_pay/screens/home/controller/programs_controller.dart';
 
+import '../../model/family_model.dart';
+
 class AshaProgramScreen extends StatelessWidget {
+  final FamilyData familyData;
+  AshaProgramScreen({super.key,required this.familyData});
 
   final ProgramsController controller = Get.put(ProgramsController());
 
@@ -66,7 +70,7 @@ class AshaProgramScreen extends StatelessWidget {
                             onTap: () {
 
                               if(controller.programsList![index].programmeId==1){
-                                Get.to(()=> ParivarSelectionScreen());
+                                Get.to(()=> AshaGatividhiScreen(familyData: familyData));
                               }else if(controller.programsList![index].programmeId==15){
                                 Get.to(()=> MonthlyActivityScreen());
                               }

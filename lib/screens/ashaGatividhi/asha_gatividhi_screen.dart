@@ -81,7 +81,7 @@ class _AshaGatividhiScreenState extends State<AshaGatividhiScreen> {
 
 
                       questionText(
-                        '1. योग्य विवाहित जोड़ों (18 -45 वर्ष तक के) की सूची तैयार करना',
+                        '1. योग्य विवाहित जोड़ों (18 -49 वर्ष तक के) की सूची तैयार करना',
                       ),
                       const SizedBox(height: 12),
                       memberRow(
@@ -253,17 +253,23 @@ class _AshaGatividhiScreenState extends State<AshaGatividhiScreen> {
 
                               const SizedBox(height: 20),
 
-                              questionText(
-                                '3. बच्चों/गर्भवती महिलाओं के टीकाकरण की मासिक ड्यू लिस्ट तैयार करना',
-                              ),
-                              const SizedBox(height: 12),
-                              memberRow(
 
-                                onTap: () {
-                                  Get.to(()=> VaccinationListScreen(familyData: controller.familyData!));
 
-                                },
-                              ),
+                              if (controller.isLmp) ...[
+
+                                questionText(
+                                  '3. बच्चों/गर्भवती महिलाओं के टीकाकरण की मासिक ड्यू लिस्ट तैयार करना',
+                                ),
+                                const SizedBox(height: 12),
+                                memberRow(
+
+                                  onTap: () {
+                                    Get.to(()=> VaccinationListScreen(familyData: controller.familyData!));
+
+                                  },
+                                ),
+
+                              ],
 
 
                             ],
