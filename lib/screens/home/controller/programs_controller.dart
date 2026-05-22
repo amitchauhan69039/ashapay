@@ -1,10 +1,12 @@
 import 'package:asha_pay/asha_pay.dart';
+import 'package:asha_pay/model/activity_data_model.dart';
 import 'package:asha_pay/screens/home/api/programsApi.dart';
 
 class ProgramsController extends GetxController {
   bool loader = false;
   String? caseStatus;
   List<ProgramsData>? programsList = [];
+
 
   ProgramsController();
 
@@ -24,6 +26,8 @@ class ProgramsController extends GetxController {
     loader = false;
     update();
   }
+
+
 
 }
 

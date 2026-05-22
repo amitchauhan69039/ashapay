@@ -39,6 +39,8 @@ export 'package:asha_pay/screens/auth/api/auth_api.dart';
 export 'package:asha_pay/screens/home/home_screen.dart';
 export 'package:asha_pay/screens/ashaGatividhi/asha_gatividhi_controller.dart';
 export 'package:asha_pay/screens/ashaGatividhi/asha_gatividhi_screen.dart';
+export 'package:asha_pay/screens/ashaGatividhi/asha_gatividhi_list_controller.dart';
+export 'package:asha_pay/screens/ashaGatividhi/asha_gatividhi_list_screen.dart';
 export 'package:asha_pay/screens/ParivarKiSuchi/parivar_ki_suchi_controller.dart';
 export 'package:asha_pay/screens/ParivarKiSuchi/parivar_ki_suchi_screen.dart';
 export 'package:asha_pay/screens/ParivarSelection/parivar_selection_controller.dart';

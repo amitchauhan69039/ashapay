@@ -1,5 +1,6 @@
 import 'package:asha_pay/asha_pay.dart';
 import 'package:asha_pay/model/family_model.dart';
+import '../../../model/activity_data_model.dart';
 import '../../../model/family_activity_model.dart';
 import '../../../model/get_family_activity_model.dart';
 
@@ -99,6 +100,34 @@ class ProgramsApi{
     }
 
     return [];
+  }
+
+
+  static Future<ActivityDataModel?> getAshaActivityMaster(Map<String, String> body) async {
+    try {
+      final response = await HttpService.getApi(
+        url: EndPoints.getAshaActivityMaster,
+        queryParams: body
+      );
+
+      print("Respose: ${response}");
+
+      if (response != null && response.statusCode == 200) {
+        final responseBody = response.body;
+        try {
+          print("Get Programs Response: ${response.body}");
+          print("Status Code: ${response.statusCode}");
+
+          ActivityDataModel model = activityDataModelFromJson(responseBody);
+          return model;
+        } catch (e) {
+          throw Exception("Unexpected response format: $responseBody");
+        }
+      }
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+    return null;
   }
 
   static Future<GetFamilyActivityModel?> getActivitybyFamilyId(Map<String, String> body) async {

@@ -7,7 +7,10 @@ import '../../model/get_family_activity_model.dart';
 
 class AshaGatividhiScreen extends StatefulWidget {
   final FamilyData familyData;
-  const AshaGatividhiScreen({super.key,required this.familyData});
+  final String programId;
+  final String activityId;
+
+  const AshaGatividhiScreen({super.key,required this.familyData,required this.programId,required this.activityId});
 
   @override
   State<AshaGatividhiScreen> createState() => _AshaGatividhiScreenState();

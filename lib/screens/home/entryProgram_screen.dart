@@ -69,10 +69,10 @@ class AshaProgramScreen extends StatelessWidget {
                         return InkWell(
                             onTap: () {
 
-                              if(controller.programsList![index].programmeId==1){
-                                Get.to(()=> AshaGatividhiScreen(familyData: familyData));
-                              }else if(controller.programsList![index].programmeId==15){
+                              if(controller.programsList![index].programmeId==15){
                                 Get.to(()=> MonthlyActivityScreen());
+                              }else{
+                                Get.to(()=> AshaGatividhiListScreen(programmeId: controller.programsList![index].programmeId.toString(),familyData: familyData,));
                               }
 
                             },
@@ -104,9 +104,10 @@ class AshaProgramScreen extends StatelessWidget {
           Expanded(
             child: Text(
               title,
-              style: TextStyle(color: Colors.white, fontSize: 16),
+              style: TextStyle(color: Colors.white, fontSize: 24,fontWeight: FontWeight.w700),
             ),
           ),
+          appSizedBox(width: 10),
           Icon(Icons.arrow_forward_ios, color: Colors.white, size: 18)
         ],
       ),

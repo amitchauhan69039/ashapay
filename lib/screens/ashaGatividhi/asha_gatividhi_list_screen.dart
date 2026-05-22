@@ -1,0 +1,153 @@
+import 'package:asha_pay/asha_pay.dart';
+import 'package:asha_pay/screens/home/controller/programs_controller.dart';
+
+import '../../model/family_model.dart';
+
+
+import 'package:asha_pay/asha_pay.dart';
+import 'package:flutter/material.dart';
+
+import '../../model/family_model.dart';
+import '../../model/get_family_activity_model.dart';
+
+
+class AshaGatividhiListScreen extends StatefulWidget {
+  final String programmeId;
+  final FamilyData familyData;
+  AshaGatividhiListScreen({super.key,required this.programmeId,required this.familyData});
+
+  @override
+  State<AshaGatividhiListScreen> createState() => _AshaGatividhiListScreenState();
+}
+
+class _AshaGatividhiListScreenState extends State<AshaGatividhiListScreen> {
+  final AshaGatividhiListController controller = Get.put(AshaGatividhiListController());
+  bool selectedNo5 = true;
+  bool selectedNo6 = true;
+  bool selectedNo7 = true;
+
+
+
+
+
+  @override
+  void initState() {
+
+    super.initState();
+    controller.getAshaActivityMaster(widget.programmeId);
+  }
+
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        backgroundColor: Colors.white,
+        appBar: AppBar(
+          backgroundColor: const Color(0xff0f7df2),
+          iconTheme: const IconThemeData(
+            color: Colors.white,
+          ),
+          elevation: 0,
+          centerTitle: true,
+          title: const Text(
+            'आशा गतिविधि',
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 20,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ),
+        body:Column(
+          children: [
+
+            Expanded(
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.grey.shade200,
+                  borderRadius: BorderRadius.vertical(
+                    top: Radius.circular(20),
+                  ),
+                ),
+
+                // 🔥 GetBuilder
+                child: GetBuilder<AshaGatividhiListController>(
+                  id: 'asha_gatividhi_list',
+                  builder: (controller) {
+
+                    // 🔹 Loader
+                    if (controller.loader) {
+                      return Center(child: CircularProgressIndicator());
+                    }
+
+                    // 🔹 Empty State
+                    if (controller.activityDataModel == null ||
+                        controller.activityDataModel!.data!.isEmpty) {
+                      return Center(child: Text("No Data Found"));
+                    }
+
+                    // 🔹 List
+                    return ListView.builder(
+                      padding: EdgeInsets.all(16),
+                      itemCount: controller.activityDataModel!.data!.length,
+                      itemBuilder: (context, index) {
+
+                        final item = controller.activityDataModel!.data![index];
+
+                        return InkWell(
+                            onTap: () {
+                              
+                              print("kldnldsn ${widget.programmeId} ${item.activityId}");
+
+                              if(widget.programmeId=="1" ){
+                                if(item.activityId==4){
+
+                                  print("aaaaaaaaa ${widget.programmeId} ${item.activityId}");
+                                  Get.to(()=> AshaGatividhiScreen(familyData: widget.familyData,programId: widget.programmeId,activityId: item.activityId.toString(), ));
+                                }
+                              }
+
+
+
+                            },
+                            child: programCard(item.activityName ?? "")
+                        );
+                      },
+                    );
+                  },
+                ),
+              ),
+            ),
+          ],
+        ),
+
+    );
+  }
+
+
+  // 🔹 Card
+  Widget programCard(String title) {
+    return Container(
+      margin: EdgeInsets.only(bottom: 16),
+      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 18),
+      decoration: BoxDecoration(
+        color: Color(0xFF2F7FB6),
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: Row(
+        children: [
+          Expanded(
+            child: Text(
+              title,
+              style: TextStyle(color: Colors.white, fontSize: 24,fontWeight: FontWeight.w700),
+            ),
+          ),
+          appSizedBox(width: 10),
+          Icon(Icons.arrow_forward_ios, color: Colors.white, size: 18)
+        ],
+      ),
+    );
+  }
+
+}
+
