@@ -27,6 +27,12 @@ TextStyle styleW700S24 = const TextStyle(
   fontFamily: AssetRes.roboto,
   fontWeight: FontWeight.w700,
 );
+TextStyle styleW700S26 = const TextStyle(
+  color: ColorRes.black,
+  fontSize: 26,
+  fontFamily: AssetRes.roboto,
+  fontWeight: FontWeight.w700,
+);
 
 TextStyle styleW700S22 = const TextStyle(
   color: ColorRes.black,
@@ -78,6 +84,18 @@ TextStyle styleW500S36 = const TextStyle(
 TextStyle styleW600S21 = const TextStyle(
   color: ColorRes.black,
   fontSize: 21,
+  fontFamily: AssetRes.roboto,
+  fontWeight: FontWeight.w600,
+);
+TextStyle styleW600S22 = const TextStyle(
+  color: ColorRes.black,
+  fontSize: 22,
+  fontFamily: AssetRes.roboto,
+  fontWeight: FontWeight.w600,
+);
+TextStyle styleW600S24 = const TextStyle(
+  color: ColorRes.black,
+  fontSize: 24,
   fontFamily: AssetRes.roboto,
   fontWeight: FontWeight.w600,
 );
