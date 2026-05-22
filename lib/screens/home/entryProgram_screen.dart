@@ -33,7 +33,6 @@ class AshaProgramScreen extends StatelessWidget {
       body: SafeArea(
         child: Column(
           children: [
-
             Expanded(
               child: Container(
                 decoration: BoxDecoration(

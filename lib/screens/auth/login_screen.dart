@@ -1,5 +1,4 @@
 import 'package:asha_pay/asha_pay.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -45,7 +44,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
                         Text(
                           "ASHA Pay",
-                          style: styleW700S24.copyWith(color: ColorRes.appBlueColor)
+                          style: styleW700S26.copyWith(color: ColorRes.appBlueColor)
                         ),
 
                         appSizedBox(height: 5.h),

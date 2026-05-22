@@ -88,12 +88,12 @@ class FamilySearchScreen extends StatelessWidget {
                                     ),
                                   ),
 
-                                  const Padding(
+                                  Padding(
                                     padding:
                                     EdgeInsets.symmetric(
                                       horizontal: 10,
                                     ),
-                                    child: Text("या"),
+                                    child: Text("या", style: styleW400S14),
                                   ),
 
                                   Expanded(
@@ -154,30 +154,30 @@ class FamilySearchScreen extends StatelessWidget {
                                       border: Border.all(color: Colors.orange),
                                     ),
 
-                                    child: const Column(
+                                    child: Column(
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
-                                        Icon(
+                                        const Icon(
                                           Icons.search_off,
                                           size: 60,
                                           color: Colors.orange,
                                         ),
-                                        SizedBox(height: 15),
-                                        Text(
+                                        const SizedBox(height: 15),
+                                        const Text(
                                           "परिवार नहीं मिला",
                                           style: TextStyle(
-                                            fontSize: 18,
+                                            fontSize: 20,
                                             fontWeight:
                                             FontWeight.bold,
                                           ),
                                         ),
 
-                                        SizedBox(height: 10),
+                                        const SizedBox(height: 10),
 
                                         Text(
                                           "इस Family ID से कोई परिवार नहीं मिला।\nकृपया नया परिवार जोड़ें।",
-                                          textAlign:
-                                          TextAlign.center,
+                                          textAlign: TextAlign.center,
+                                          style: styleW400S16,
                                         ),
                                       ],
                                     ),
@@ -185,7 +185,6 @@ class FamilySearchScreen extends StatelessWidget {
                                 );
                               }
 
-                              /// ✅ FAMILY FOUND
                               /// ✅ FAMILY FOUND
                               return ListView.builder(
                                 itemCount: members.length + 1,
@@ -213,13 +212,9 @@ class FamilySearchScreen extends StatelessWidget {
                                           /// FINAL API SAVE
                                           Expanded(
                                             child: AppButton(
-
                                               buttonName: "सेव करें",
-
                                               onTap: controller.hasNewMembers ? () async {
-
                                                 controller.saveFamily();
-
                                               } : () {
                                                 Get.snackbar(
                                                   "Message",

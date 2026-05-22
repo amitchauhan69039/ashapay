@@ -59,17 +59,15 @@ class CommonTextField extends StatelessWidget {
             controller: controller,
             obscureText: secureText,
             keyboardType: textInputType,
-
             style: const TextStyle(
-              fontSize: 18,
+              fontSize: 20,
             ),
 
             decoration: InputDecoration(
               hintText: hintText,
-
               hintStyle: const TextStyle(
                 color: Colors.grey,
-                fontSize: 18,
+                fontSize: 20,
               ),
 
               border: InputBorder.none,
@@ -97,7 +95,7 @@ class CommonTextField extends StatelessWidget {
               errorText!,
               style: const TextStyle(
                 color: Colors.red,
-                fontSize: 18,
+                fontSize: 20,
               ),
             ),
           ),
@@ -127,7 +125,7 @@ class CommonHeader extends StatelessWidget {
             onTap: () => Get.back(),
             child: const Icon(Icons.arrow_back, color: Colors.white),
           )
-              : const SizedBox(width: 24),
+              : const SizedBox(width: 20),
 
           Expanded(
             child: Center(
@@ -135,7 +133,7 @@ class CommonHeader extends StatelessWidget {
                 title,
                 style: const TextStyle(
                   color: Colors.white,
-                  fontSize: 18,
+                  fontSize: 22,
                 ),
               ),
             ),

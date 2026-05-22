@@ -43,6 +43,7 @@ class FamilyController extends GetxController {
 
   /// 🔍 SEARCH FAMILY
   Future<void> searchFamily(String familyID) async {
+    print("familyID====> $familyID");
     currentFamilyId = familyID;
     /// VALIDATION
     if (familyID.isEmpty) {
