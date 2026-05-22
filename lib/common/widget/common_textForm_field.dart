@@ -59,19 +59,26 @@ class CommonTextField extends StatelessWidget {
             controller: controller,
             obscureText: secureText,
             keyboardType: textInputType,
+
+            style: const TextStyle(
+              fontSize: 18,
+            ),
+
             decoration: InputDecoration(
               hintText: hintText,
+
               hintStyle: const TextStyle(
                 color: Colors.grey,
-                fontSize: 12,
+                fontSize: 18,
               ),
+
               border: InputBorder.none,
+
               contentPadding: const EdgeInsets.symmetric(
                 horizontal: 12,
                 vertical: 14,
               ),
 
-              // 🔥 suffix icon with tap
               suffixIcon: suffixIcon != null
                   ? GestureDetector(
                 onTap: onSuffixTap,
@@ -79,7 +86,7 @@ class CommonTextField extends StatelessWidget {
               )
                   : null,
             ),
-          ),
+          )
         ),
 
         // 🔥 ERROR TEXT SHOW
@@ -90,7 +97,7 @@ class CommonTextField extends StatelessWidget {
               errorText!,
               style: const TextStyle(
                 color: Colors.red,
-                fontSize: 12,
+                fontSize: 18,
               ),
             ),
           ),

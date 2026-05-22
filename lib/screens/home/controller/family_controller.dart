@@ -285,12 +285,8 @@ class FamilyController extends GetxController {
     return true;
   }
 
-  /// 📦 PAYLOAD
-  /// 📦 BUILD PAYLOAD
   Map<String, dynamic> buildPayload() {
-
-    final members =
-        familyList.first.members ?? [];
+    final members = familyList.first.members ?? [];
 
     /// ONLY NEW MEMBERS
     final newMembers = members.where((m) {
@@ -301,34 +297,17 @@ class FamilyController extends GetxController {
     }).toList();
 
     return {
-
-      "familyId":
-      searchCtrl.text.trim(),
-
+      "familyId": searchCtrl.text.trim(),
       "createdUser": 0,
-
       "members": newMembers.map((m) {
-
-        final index =
-        members.indexOf(m);
-
+        final index = members.indexOf(m);
         return {
-
-          "memberName":
-          m.memberName ?? "",
-
+          "memberName": m.memberName ?? "",
           "memberId": "",
-
-          "gender":
-          m.gender ?? "",
-
+          "gender": m.gender ?? "",
           "dob": m.dob ?? "",
-
           "aabhaId": m.abhaId ?? "",
-
           "aadharId": m.addharId ?? "",
-
-          /// STATUS
           "status": memberStatus[index] ?? "",
         };
 
@@ -360,11 +339,8 @@ class FamilyController extends GetxController {
         Get.snackbar(
           "सफल",
           "परिवार सफलतापूर्वक जोड़ दिया गया",
-          backgroundColor:
-          Colors.green,
-
-          colorText:
-          Colors.white,
+          backgroundColor: Colors.green,
+          colorText: Colors.white,
         );
 
         familyList.clear();
@@ -373,38 +349,21 @@ class FamilyController extends GetxController {
         print("currentFamilyId: $currentFamilyId");
 
         await Future.delayed(const Duration(milliseconds: 300));
-
         await reloadFamily();
 
       } else {
-
-        Get.snackbar(
-          "त्रुटि",
-          "डेटा सेव नहीं हुआ",
-
-          backgroundColor:
-          Colors.red,
-
-          colorText:
-          Colors.white,
+        Get.snackbar("त्रुटि", "डेटा सेव नहीं हुआ",
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
         );
       }
 
     } catch (e) {
-
       print("❌ SAVE ERROR: $e");
-
       Get.snackbar(
-
-        "त्रुटि",
-
-        e.toString(),
-
-        backgroundColor:
-        Colors.red,
-
-        colorText:
-        Colors.white,
+        "त्रुटि", e.toString(),
+        backgroundColor: Colors.red,
+        colorText:  Colors.white,
       );
     }
 

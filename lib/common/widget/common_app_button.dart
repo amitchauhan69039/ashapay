@@ -23,7 +23,7 @@ class AppButton extends StatelessWidget {
     this.onTap,
     this.backgroundColor = const Color(0xff2B78E4),
     this.textColor = Colors.white,
-    this.fontSize = 16,
+    this.fontSize = 20,
     this.fontWeight = FontWeight.w500,
   });
 
@@ -144,7 +144,7 @@ class CommonAppbar extends StatelessWidget {
                           appSizedBox(width: 3.w),
                           Text(
                             title ?? "",
-                            style: styleW600S15.copyWith(fontSize: 19, color: ColorRes.white),
+                            style: styleW600S15.copyWith(fontSize: 22, color: ColorRes.white),
                           ),
                         ],
                       )
@@ -214,7 +214,7 @@ class CommonMenuAppbar extends StatelessWidget {
                         appSizedBox(width: 3.w),
                         Text(
                           title ?? "",
-                          style: styleW600S15.copyWith(fontSize: 19, color: ColorRes.white),
+                          style: styleW600S15.copyWith(fontSize: 22, color: ColorRes.white),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                         ),

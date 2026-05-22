@@ -45,7 +45,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
                         Text(
                           "ASHA Pay",
-                          style: styleW700S20.copyWith(color: ColorRes.appBlueColor)
+                          style: styleW700S24.copyWith(color: ColorRes.appBlueColor)
                         ),
 
                         appSizedBox(height: 5.h),
@@ -56,7 +56,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           hintText: "Username",
                           textInputType: TextInputType.phone,
                           isNumberOnly: true,
-                          suffixIcon: const Icon(Icons.person_outline, size: 20),
+                          suffixIcon: const Icon(Icons.person_outline, size: 24),
                         ),
 
                         appSizedBox(height: 2.h),
@@ -70,7 +70,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             isPasswordVisible
                                 ? Icons.visibility_outlined
                                 : Icons.visibility_off_outlined,
-                            size: 20,
+                            size: 24,
                           ),
                           onSuffixTap: () {
                             setState(() {
