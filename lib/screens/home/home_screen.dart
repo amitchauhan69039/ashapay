@@ -27,7 +27,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             gravity: ToastGravity.BOTTOM,
             backgroundColor: Colors.black,
             textColor: Colors.white,
-            fontSize: 14.0,
+            fontSize: 18.0,
           );
           return false; // ❌ exit mat karo
         }
@@ -47,7 +47,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
             child: Stack(
               children: [
-
                 /// 🔹 MAIN CONTENT
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -74,11 +73,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text("नमस्ते, Nirmala!",
-                                    style: styleW600S16),
+                                    style: styleW600S21),
                                 appSizedBox(height: 5),
                                 Text(
                                   "हमारे पोर्टल ASHAPAY पर आपका स्वागत है!",
-                                  style: styleW400S12.copyWith(
+                                  style: styleW400S14.copyWith(
                                       color: Colors.grey),
                                 ),
                                 appSizedBox(height: 10),
@@ -93,7 +92,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                     const SizedBox(width: 6),
                                     Text(
                                       "27 अप्रैल 2026, 3:40",
-                                      style: styleW600S12.copyWith(
+                                      style: styleW600S14.copyWith(
                                           color: Colors.grey),
                                     ),
                                   ],
@@ -126,7 +125,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                 ),
                                 child: Text(
                                   "Logout",
-                                  style: styleW400S12.copyWith(
+                                  style: styleW500S16.copyWith(
                                       color: ColorRes.white),
                                 ),
                               ),
@@ -139,9 +138,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     appSizedBox(height: 20),
 
                     /// 🔹 TITLE
-                    const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 16),
-                      child: Text("आशा कार्य"),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: Text("आशा कार्य", style: styleW600S18),
                     ),
 
                     appSizedBox(height: 10),
@@ -221,7 +220,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 ),
                 appSizedBox(width: 15),
                 Expanded(
-                  child: Text(title, style: styleW400S16),
+                  child: Text(title, style: styleW400S18),
                 ),
                 Image.asset(
                   AssetRes.dotsIcon,
@@ -271,14 +270,14 @@ void showLogoutDialog(BuildContext context) {
 
                     Text(
                       "Logout",
-                      style: styleW600S16
+                      style: styleW600S20
                     ),
 
                     appSizedBox(height: 8),
 
                     Text(
                       "Are you sure you want to logout?",
-                      style: styleW400S14.copyWith(color: Colors.grey)
+                      style: styleW400S16.copyWith(color: Colors.grey)
                     ),
 
                     appSizedBox(height: 20),
@@ -300,7 +299,7 @@ void showLogoutDialog(BuildContext context) {
                             ),
                             child: Text(
                               "OK",
-                              style: styleW500S14.copyWith(color: Colors.black),
+                              style: styleW500S16.copyWith(color: Colors.black),
                             ),
                           ),
                         ),
@@ -319,7 +318,7 @@ void showLogoutDialog(BuildContext context) {
                             ),
                             child: Text(
                               "Cancel",
-                              style: styleW500S14.copyWith(color: Colors.black),
+                              style: styleW500S16.copyWith(color: Colors.black),
                             ),
                           ),
                         ),
