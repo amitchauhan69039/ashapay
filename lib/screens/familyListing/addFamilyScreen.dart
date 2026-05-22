@@ -2,14 +2,12 @@ import 'package:asha_pay/asha_pay.dart';
 import 'package:asha_pay/screens/familyListing/AddFamilyController.dart';
 
 class AddFamilyScreen extends StatelessWidget {
-
   AddFamilyScreen({super.key});
 
   final controller = Get.put(AddFamilyController());
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       backgroundColor: const Color(0xFF2F7FB6),
 
@@ -19,13 +17,11 @@ class AddFamilyScreen extends StatelessWidget {
           return SafeArea(
             child: Column(
               children: [
-
                 CommonHeader(title: "नया परिवार जोड़ें"),
 
                 Expanded(
                   child: Container(
                     margin: const EdgeInsets.only(top: 10),
-
                     decoration: const BoxDecoration(
                       color: Color(0xFFF3F5F7),
                       borderRadius: BorderRadius.vertical(
@@ -38,7 +34,6 @@ class AddFamilyScreen extends StatelessWidget {
 
                       child: Column(
                         children: [
-
                           /// ================= HEAD DETAILS =================
                           sectionTitle("मुखिया की जानकारी"),
 
@@ -142,7 +137,7 @@ class AddFamilyScreen extends StatelessWidget {
         child: Text(
           title,
           style: const TextStyle(
-            fontSize: 15,
+            fontSize: 22,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -154,9 +149,7 @@ class AddFamilyScreen extends StatelessWidget {
   Widget cardField(
       String label,
       TextEditingController ctrl,
-      String hint, {
-        VoidCallback? onTap,
-      }) {
+      String hint, {VoidCallback? onTap}) {
 
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
@@ -175,10 +168,12 @@ class AddFamilyScreen extends StatelessWidget {
         controller: ctrl,
         readOnly: onTap != null,
         onTap: onTap,
+        style: styleW400S20,
         decoration: InputDecoration(
           labelText: label,
           border: InputBorder.none,
           hintText: hint,
+          hintStyle: styleW400S20
         ),
       ),
     );
@@ -191,7 +186,6 @@ class AddFamilyScreen extends StatelessWidget {
       List<String> items,
       Function(String?) onChanged,
       ) {
-
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.symmetric(horizontal: 12),
@@ -207,15 +201,25 @@ class AddFamilyScreen extends StatelessWidget {
       ),
       child: DropdownButtonFormField<String>(
         value: value,
+        style: const TextStyle( // selected text
+          fontSize: 20,
+          color: Colors.black,
+        ),
         decoration: InputDecoration(
           labelText: title,
           border: InputBorder.none,
+          labelStyle: styleW400S20
         ),
         items: items
-            .map((e) => DropdownMenuItem(
-          value: e,
-          child: Text(e),
-        ))
+            .map(
+              (e) => DropdownMenuItem(
+            value: e,
+            child: Text(
+              e,
+              style: styleW400S20
+            ),
+          ),
+        )
             .toList(),
         onChanged: onChanged,
       ),

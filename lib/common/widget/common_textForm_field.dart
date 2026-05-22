@@ -125,7 +125,7 @@ class CommonHeader extends StatelessWidget {
             onTap: () => Get.back(),
             child: const Icon(Icons.arrow_back, color: Colors.white),
           )
-              : const SizedBox(width: 24),
+              : const SizedBox(width: 20),
 
           Expanded(
             child: Center(
@@ -133,7 +133,7 @@ class CommonHeader extends StatelessWidget {
                 title,
                 style: const TextStyle(
                   color: Colors.white,
-                  fontSize: 18,
+                  fontSize: 22,
                 ),
               ),
             ),

@@ -23,7 +23,7 @@ class AppButton extends StatelessWidget {
     this.onTap,
     this.backgroundColor = const Color(0xff2B78E4),
     this.textColor = Colors.white,
-    this.fontSize = 22,
+    this.fontSize = 20,
     this.fontWeight = FontWeight.w500,
   });
 
