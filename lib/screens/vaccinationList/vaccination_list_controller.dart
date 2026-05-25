@@ -4,10 +4,12 @@ import 'package:asha_pay/screens/home/api/programsApi.dart';
 
 import '../../model/family_activity_model.dart' hide Members;
 import '../../model/get_family_activity_model.dart';
+import '../../model/get_mother_child_model.dart';
 
 class VaccinationListController extends GetxController {
   bool loader = false;
   GetFamilyActivityModel? familyActivityModel;
+  GetMotherChildModel? motherChildModel;
   final TextEditingController searchCtrl = TextEditingController();
   FamilyData? familyData;
   Map<String, String> selectedDates = {};
@@ -51,14 +53,13 @@ class VaccinationListController extends GetxController {
     };
     update(['vaccination_list']);
     try {
-      GetFamilyActivityModel? model =
-          await ProgramsApi.getMotherChildListWithId(body);
+      GetMotherChildModel? model = await ProgramsApi.getMotherChildListWithId(body);
 
       if (model != null) {
         if (model.status!.toLowerCase() == "success") {
-          //  familyActivityModel=model;
+           motherChildModel=model;
         } else {
-          toastMsg(model.message ?? 'Something went wrong');
+          toastMsg( 'Something went wrong');
         }
       }
     } catch (e) {

@@ -87,32 +87,36 @@ class _AshaGatividhiListScreenState extends State<AshaGatividhiListScreen> {
                     }
 
                     // 🔹 List
-                    return ListView.builder(
-                      padding: EdgeInsets.all(16),
-                      itemCount: controller.activityDataModel!.data!.length,
-                      itemBuilder: (context, index) {
+                    return Container(
+                      margin: EdgeInsets.only(bottom: 20),
+                      child: ListView.builder(
+                        padding: EdgeInsets.all(16),
+                        itemCount: controller.activityDataModel!.data!.length,
+                        itemBuilder: (context, index) {
 
-                        final item = controller.activityDataModel!.data![index];
+                          final item = controller.activityDataModel!.data![index];
 
-                        return InkWell(
-                            onTap: () {
-                              
-                              print("kldnldsn ${widget.programmeId} ${item.activityId}");
+                          return InkWell(
+                              onTap: () {
 
-                              if(widget.programmeId=="1" ){
-                                if(item.activityId==4){
+                                print("kldnldsn ${widget.programmeId} ${item.activityId}");
 
-                                  print("aaaaaaaaa ${widget.programmeId} ${item.activityId}");
-                                  Get.to(()=> AshaGatividhiScreen(familyData: widget.familyData,programId: widget.programmeId,activityId: item.activityId.toString(), ));
+                                if(widget.programmeId=="1" ){
+                                 if(item.activityId==1){
+                                    Get.to(()=> PragnantLadiesScreen(familyData: widget.familyData,programId: widget.programmeId,activityId: item.activityId.toString(), ));
+                                  }else if(item.activityId==2){
+                                    Get.to(()=> VaccinationListScreen(familyData: widget.familyData));
+                                  }else  if(item.activityId==4){
+                                  Get.to(()=> CoupleScreen(familyData: widget.familyData,programId: widget.programmeId,activityId: item.activityId.toString(), ));
+                                }else if(item.activityId==5){
+                                    Get.to(()=> BirthDeathScreen(familyData: widget.familyData,programId: widget.programmeId,activityId: item.activityId.toString(), ));
+                                  }
                                 }
-                              }
-
-
-
-                            },
-                            child: programCard(item.activityName ?? "")
-                        );
-                      },
+                              },
+                              child: programCard(item.activityName ?? ""),
+                          );
+                        },
+                      ),
                     );
                   },
                 ),
@@ -128,7 +132,7 @@ class _AshaGatividhiListScreenState extends State<AshaGatividhiListScreen> {
   // 🔹 Card
   Widget programCard(String title) {
     return Container(
-      margin: EdgeInsets.only(bottom: 16),
+      margin: EdgeInsets.only(bottom: 20),
       padding: EdgeInsets.symmetric(horizontal: 16, vertical: 18),
       decoration: BoxDecoration(
         color: Color(0xFF2F7FB6),

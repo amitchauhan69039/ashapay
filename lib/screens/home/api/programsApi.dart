@@ -3,6 +3,7 @@ import 'package:asha_pay/model/family_model.dart';
 import '../../../model/activity_data_model.dart';
 import '../../../model/family_activity_model.dart';
 import '../../../model/get_family_activity_model.dart';
+import '../../../model/get_mother_child_model.dart';
 
 class ProgramsApi{
 
@@ -218,7 +219,7 @@ class ProgramsApi{
     return false;
   }
 
-  static Future<GetFamilyActivityModel?> getMotherChildListWithId(Map<String, String> body) async {
+  static Future<GetMotherChildModel?> getMotherChildListWithId(Map<String, String> body) async {
     try {
       final response = await HttpService.getApi(
           url: EndPoints.getMotherChildListWithId,
@@ -227,16 +228,13 @@ class ProgramsApi{
 
       print("Respose: ${response}");
 
-
-
-
       if (response != null && response.statusCode == 200) {
         final responseBody = response.body;
         try {
           print("Get Programs Response: ${response.body}");
           print("Status Code: ${response.statusCode}");
 
-          GetFamilyActivityModel model = getFamilyActivityModelFromJson(responseBody);
+          GetMotherChildModel model = getMotherChildModelFromJson(responseBody);
           return model;
         } catch (e) {
           throw Exception("Unexpected response format: $responseBody");
