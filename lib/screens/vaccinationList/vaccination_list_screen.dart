@@ -188,8 +188,8 @@ class _VaccinationListScreenState
 
             if (member is PregnantWomens) {
               name = member.name ?? "";
-              gender = "Female";
-              age = member.age ?? "";
+              gender = "F";
+              age = member.lmpWeeks ?? "";
             }
 
             if (member is Children) {

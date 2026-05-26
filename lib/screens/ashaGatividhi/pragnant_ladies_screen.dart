@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../../model/family_model.dart';
 import '../../model/get_family_activity_model.dart';
+import '../../model/get_mother_child_model.dart';
 
 
 class PragnantLadiesScreen extends StatefulWidget {
@@ -103,15 +104,15 @@ class _PragnantLadiesScreenState extends State<PragnantLadiesScreen> {
                                 InkWell(
                                   onTap: (){
 
-                                    Get.to(()=> ParivarKiSuchiScreen(step: "step1",familyData: controller.familyData!))?.then((result) {
+                                    Get.to(()=> PregnantWomenListScreen(familyData: controller.familyData!))?.then((result) {
                                       if (result != null) {
 
 
 
-                                        controller.selectedMembers=result;
+                                        controller.pregnantWomensMembers=result;
 
-                                        controller.lmpDates = List.filled(controller.selectedMembers.length, "");
-                                        controller.regDates = List.filled(controller.selectedMembers.length, "");
+                                        controller.lmpDates = List.filled(controller.pregnantWomensMembers.length, "");
+                                        controller.regDates = List.filled(controller.pregnantWomensMembers.length, "");
 
 
                                         setState(() {
@@ -190,7 +191,7 @@ class _PragnantLadiesScreenState extends State<PragnantLadiesScreen> {
                               if(controller.isLmp)
                                 showLMP(context),
 
-                              addLMP(context,controller.selectedMembers),
+                              addLMP(context,controller.pregnantWomensMembers),
                             ],
 
                             const SizedBox(height: 20),
@@ -281,30 +282,7 @@ class _PragnantLadiesScreenState extends State<PragnantLadiesScreen> {
     );
   }
 
-  Widget _yesNoRow({
-    required bool selectedNo,
-    required ValueChanged<bool> onChanged,
-  }) {
-    return Row(
-      children: [
-        Expanded(
-          child: _choiceBox(
-            label: 'हां',
-            selected: !selectedNo,
-            onTap: () => onChanged(false),
-          ),
-        ),
-        const SizedBox(width: 12),
-        Expanded(
-          child: _choiceBox(
-            label: 'नहीं',
-            selected: selectedNo,
-            onTap: () => onChanged(true),
-          ),
-        ),
-      ],
-    );
-  }
+
 
   Widget _choiceBox({
     required String label,
@@ -359,7 +337,7 @@ class _PragnantLadiesScreenState extends State<PragnantLadiesScreen> {
 
 
 
-  Widget addLMP(BuildContext context,List<FamilyMembers> selectedMembers) {
+  Widget addLMP(BuildContext context,List<PregnantWomens> selectedMembers) {
 
     print("sizzzeee ${selectedMembers.length}");
     return Column(
@@ -380,7 +358,7 @@ class _PragnantLadiesScreenState extends State<PragnantLadiesScreen> {
                       flex: 4,
                       child: Padding(
                         padding: EdgeInsets.only(right: 8),
-                        child: Text(selectedMembers[index].memberName!,
+                        child: Text(selectedMembers[index].name!,
                           style: TextStyle(
                             fontSize: 13, fontWeight: FontWeight.w500,
                           ),
@@ -577,8 +555,7 @@ class _PragnantLadiesScreenState extends State<PragnantLadiesScreen> {
 
                         if (picked != null) {
                           setState(() {
-                            controller
-                                .regDates[index] =
+                            controller.regDates[index] =
                             "${picked.day}/${picked.month}/${picked.year}";
                           });
                         }

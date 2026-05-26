@@ -4,6 +4,7 @@ import 'package:asha_pay/screens/home/api/programsApi.dart';
 
 import '../../model/family_activity_model.dart';
 import '../../model/get_family_activity_model.dart';
+import '../../model/get_mother_child_model.dart';
 
 class AshaGatividhiController extends GetxController {
   bool loader = false;
@@ -15,10 +16,12 @@ class AshaGatividhiController extends GetxController {
   bool isDeath=false;
   String activityid="";
   List<FamilyMembers> selectedMembers=[];
+  List<PregnantWomens> pregnantWomensMembers=[];
   List<FamilyMembers> selectedDeathMembers=[];
   List<FamilyMembers> selectedCouplesMembers=[];
   List<String> lmpDates = [];
   List<String> regDates = [];
+  TextEditingController birthDeathDateController = TextEditingController();
 
   @override
   void onInit() {
@@ -83,6 +86,8 @@ class AshaGatividhiController extends GetxController {
   Future<void> dataSubmit() async {
 
     if(activityid!=""){
+
+
 
     loader = true;
     Map<String, dynamic> body= {};
@@ -150,6 +155,35 @@ class AshaGatividhiController extends GetxController {
           }
         ]
       };
+    }else if(activityid=="5"){
+      body = {
+        "programId": 1,
+        "familyId": familyData!.familyId,
+        "activities": [
+          {
+            "activityId": activityid,
+            "members": [
+              {
+                "memberId":selectedDeathMembers[0].memberId,
+                "memberName": selectedDeathMembers[0].memberName,
+                "spouseName":"",
+                "deathDate": birthDeathDateController.text.toString(),
+                "lmpDate": "",
+                "dateOfReg": "",
+                "action": "",
+                "vaccinations": [
+                  {
+                    "vaccineType": "",
+                    "vaccineName": "",
+                    "action": "",
+                    "date": ""
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      };
     }
 
     update(['asha_gatividhi']);
@@ -157,12 +191,14 @@ class AshaGatividhiController extends GetxController {
       final success =  await ProgramsApi.addAshaMembersActivity(body);
 
       if (success) {
+        Get.back();
         Get.snackbar(
           "सफल",
           "गतिविधि सफलतापूर्वक जोड़ दिया गया",
           backgroundColor: Colors.green,
           colorText: Colors.white,
         );
+
 
 
       } else {

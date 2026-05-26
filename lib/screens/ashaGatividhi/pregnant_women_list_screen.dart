@@ -2,23 +2,18 @@ import 'package:flutter/material.dart';
 
 import '../../asha_pay.dart';
 import '../../model/family_model.dart';
+import '../../model/get_mother_child_model.dart';
 
-class ParivarKiSuchiScreen extends StatefulWidget {
-  final String step;
+class PregnantWomenListScreen extends StatefulWidget {
   final FamilyData familyData;
 
-  const ParivarKiSuchiScreen({
-    super.key,
-    required this.step,
-    required this.familyData,
-  });
+  const PregnantWomenListScreen({super.key,required this.familyData,});
 
   @override
-  State<ParivarKiSuchiScreen> createState() =>
-      _ParivarKiSuchiScreenState();
+  State<PregnantWomenListScreen> createState() => _PregnantWomenListScreenState();
 }
 
-class _ParivarKiSuchiScreenState extends State<ParivarKiSuchiScreen> {
+class _PregnantWomenListScreenState extends State<PregnantWomenListScreen> {
 
   final ParivarKiSuchiController controller =Get.put(ParivarKiSuchiController());
 
@@ -30,31 +25,29 @@ class _ParivarKiSuchiScreenState extends State<ParivarKiSuchiScreen> {
     super.initState();
 
 
-    if(widget.step=="step3"){
-      for (var member in widget.familyData.members!) {
-        if ((member.age ?? 0) >= 18 && (member.age ?? 0) <= 49) {
-          members.add({
-            'member': member,
-            'name': member.memberName ?? '',
-            'selected': false,
-          });
-        }
-      }
-    }else{
-      for (var member in widget.familyData.members!) {
-        members.add({
-          'member': member,
-          'name': member.memberName ?? '',
-          'selected': false,
-        });
-      }
-    }
-    /// Create local list from API/member data
+    getPregnantWomen();
+
+  }
 
 
-    controller.getMotherChildListWithId(
+  Future<void> getPregnantWomen() async {
+    await controller.getMotherChildListWithId(
       widget.familyData.familyId!,
     );
+
+    members.clear();
+
+    final pregnantWomen = controller.motherChildModel?.data?.pregnantWomens ?? [];
+
+    for (var woman in pregnantWomen) {
+      members.add({
+        'member': woman,
+        'name': woman.name ?? '',
+        'selected': false,
+      });
+    }
+
+    setState(() {});
   }
 
   @override
@@ -80,7 +73,7 @@ class _ParivarKiSuchiScreenState extends State<ParivarKiSuchiScreen> {
       ),
 
       body: GetBuilder<AshaGatividhiController>(
-        id: 'parivar_suchi',
+        id: 'asha_gatividhi_list',
         builder: (controller) {
           return StackedLoader(
             loading: controller.loader,
@@ -193,90 +186,21 @@ class _ParivarKiSuchiScreenState extends State<ParivarKiSuchiScreen> {
                       onPressed: () {
 
                         /// STEP 1
-                        if (widget.step == "step1") {
+                        final List<PregnantWomens> selectedMembers = [];
 
-                         // final List<String> selectedMembers = [];
-                          final List<FamilyMembers> selectedMembers = [];
-
-                          for (int i = 0; i < members.length; i++) {
-                            if (members[i]['selected'] == true) {
-                              selectedMembers.add(
-                                members[i]['member'],
-                              );
-                            }
-                          }
-
-                          Get.back(result: selectedMembers);
-                        }
-
-                        if (widget.step == "step4") {
-
-                          // final List<String> selectedMembers = [];
-                          final List<FamilyMembers> selectedMembers = [];
-
-                          int selected = 0;
-                          for (int i = 0; i < members.length; i++) {
-                            if (members[i]['selected'] == true) {
-                              selected++;
-                              selectedMembers.add(
-                                members[i]['member'],
-                              );
-                            }
-                          }
-
-                          if (selected != 1) {
-
-                            toastMsg(
-                              "Please select only one member",
-                            );
-
-                          } else {
-
-                            Get.back(
-                              result: selectedMembers,
-                            );
-                          }
-
-
-
-                        }
-
-                        /// STEP 3
-                        if (widget.step == "step3") {
-
-                          final List<FamilyMembers> selectedMembers = [];
-                          int selected = 0;
-
-                          for (int i = 0; i < members.length; i++) {
-                            if (members[i]['selected'] == true) {
-
-                              selected++;
-
-
-                              selectedMembers.add(
-                                members[i]['member'],
-                              );
-
-                            }
-                          }
-
-                          if (selected != 2) {
-
-                            toastMsg(
-                              "Please select only two members",
-                            );
-
-                          } else {
-
-                            Get.back(
-                              result: selectedMembers,
+                        for (int i = 0; i < members.length; i++) {
+                          if (members[i]['selected'] == true) {
+                            selectedMembers.add(
+                              members[i]['member'],
                             );
                           }
                         }
+
+                        Get.back(result: selectedMembers);
                       },
 
                       child: Text(
-                        widget.step == "step3"? "परिवार जोड़ें" :widget.step == "step1" ? "महिलाएँ जोड़ें":widget.step == "step4"?"डेटा पोस्ट करें":"परिवार जोड़ें" ,
+                        "महिलाएँ जोड़ें" ,
                         style: const TextStyle(
                           fontSize: 16,
                           color: Colors.white,
