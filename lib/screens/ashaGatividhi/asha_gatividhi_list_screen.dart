@@ -1,5 +1,7 @@
 import 'package:asha_pay/asha_pay.dart';
+import 'package:asha_pay/screens/BaalSwasthya/childListScreen.dart';
 import 'package:asha_pay/screens/home/controller/programs_controller.dart';
+import 'package:asha_pay/screens/matri%20swasthya/mothers_list_screen.dart';
 
 import '../../model/family_model.dart';
 
@@ -25,10 +27,6 @@ class _AshaGatividhiListScreenState extends State<AshaGatividhiListScreen> {
   bool selectedNo5 = true;
   bool selectedNo6 = true;
   bool selectedNo7 = true;
-
-
-
-
 
   @override
   void initState() {
@@ -110,6 +108,16 @@ class _AshaGatividhiListScreenState extends State<AshaGatividhiListScreen> {
                                   Get.to(()=> CoupleScreen(familyData: widget.familyData,programId: widget.programmeId,activityId: item.activityId.toString(), ));
                                 }else if(item.activityId==5){
                                     Get.to(()=> BirthDeathScreen(familyData: widget.familyData,programId: widget.programmeId,activityId: item.activityId.toString(), ));
+                                  }
+                                }else  if(widget.programmeId=="2" ){
+                                  if(item.activityId==9){
+                                    Get.to(()=> MothersListScreen(familyData: widget.familyData,
+                                      programId: widget.programmeId, activityId: item.activityId.toString(), ));
+                                  }
+                                }else  if(widget.programmeId=="4" ){
+                                  if(item.activityId == 21){
+                                    Get.to(()=> ChildListScreen(familyData: widget.familyData,
+                                      programId: widget.programmeId, activityId: item.activityId.toString(), ));
                                   }
                                 }
                               },

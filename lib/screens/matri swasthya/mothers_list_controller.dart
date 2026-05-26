@@ -6,7 +6,7 @@ import '../../model/family_activity_model.dart' hide Members;
 import '../../model/get_family_activity_model.dart';
 import '../../model/get_mother_child_model.dart';
 
-class VaccinationListController extends GetxController {
+class MothersListController extends GetxController {
   bool loader = false;
   GetFamilyActivityModel? familyActivityModel;
   GetMotherChildModel? motherChildModel;
@@ -70,126 +70,106 @@ class VaccinationListController extends GetxController {
     update(['vaccination_list']);
   }
 
-  /*Future<void> dataSubmit() async {
+  Future<void> dataSubmit() async {
     loader = true;
     update(['vaccination_list']);
 
     try {
-      Members? selectedMember;
+      final pregnantWomen = motherChildModel?.data?.pregnantWomens ?? [];
 
-      //=========================
-      // Get selected member
-      //=========================
-
-      for (var activity in familyActivityModel?.data?.activities ?? []) {
-        if (activity.activityId == 2) {
-          if (selectedIndex >= 0 && selectedIndex < activity.members.length) {
-            selectedMember = activity.members[selectedIndex];
-          }
-          break;
-        }
-      }
-
-      if (selectedMember == null) {
-        toastMsg("Please select member");
+      if (pregnantWomen.isEmpty) {
+        toastMsg("No Mother Found");
         loader = false;
-        update(['asha_gatividhi']);
+        update(['vaccination_list']);
         return;
       }
 
-      //=========================
-      // Vaccination list
-      //=========================
+      List<Map<String, dynamic>> members = [];
 
-      List<Map<String, dynamic>> vaccinationList = [];
+      for (var mother in pregnantWomen) {
+        List<Map<String, dynamic>> vaccinationList = [];
 
-      for (var vaccination in selectedMember.vaccinations ?? []) {
-        for (int i = 0; i < (vaccination.vaccines?.length ?? 0); i++) {
-          final vaccine = vaccination.vaccines![i];
+        for (int i = 0; i < (mother.vaccinationDetail?.length ?? 0);
+          i++) {
+          final vaccine = mother.vaccinationDetail![i];
 
-          // Same key used in UI
-          String key = "${vaccination.ageStage}-$i";
+          String key = "${mother.memberId}_${vaccine.vaccinationName}_$i";
 
-          // Selected date from UI
           String selectedDate = selectedDates[key] ?? "";
 
           vaccinationList.add({
-            "vaccineType": vaccination.ageStage ?? "",
+          //  "vaccineType": vaccine.vaccinationName ?? "",
 
-            "vaccineName": vaccine.name ?? "",
+            "vaccineName": vaccine.vaccinationName ?? "",
 
-            // Completed if date selected
             "action": selectedDate.isNotEmpty
                 ? "Completed"
-                : (vaccine.action ?? "Pending"),
+                : (vaccine.vacStatus ?? "Pending"),
 
-            // Send selected date
-            "date":
-                selectedDate.isNotEmpty ? selectedDate : (vaccine.date ?? ""),
+            "date": selectedDate,
           });
         }
-      }
 
-      //=========================
-      // Body Parameter
-      //=========================
+        members.add({
+          "memberId": mother.memberId ?? "",
+
+          "memberName": mother.name ?? "",
+
+          "spouseName": "",
+
+          "deathDate": "",
+
+          "lmpDate": mother.lmpWeeks ?? "",
+
+          "dateOfReg": "",
+
+          "action": "",
+
+          "vaccinations": vaccinationList,
+        });
+      }
 
       Map<String, dynamic> body = {
         "programId": 1,
+
         "familyId": familyData?.familyId ?? "",
+
         "activities": [
           {
             "activityId": 2,
-            "members": [
-              {
-                "memberId": selectedMember.memberId ?? "",
-                "memberName": selectedMember.memberName ?? "",
-                "spouseName": "",
-                "deathDate": "",
-                "lmpDate": "",
-                "dateOfReg": "",
-                "action": "",
-                "vaccinations": vaccinationList,
-              }
-            ]
+
+            "members": members,
           }
         ]
       };
 
-      debugPrint(
-        "Vaccination Body => $body",
-      );
+      debugPrint("BODY => $body");
 
-      final success = await ProgramsApi.addAshaMembersActivity(
-        body,
-      );
+      final success =
+      await ProgramsApi.addAshaMembersActivity(body);
 
-      print("सफल kjfj $success");
       if (success) {
         Get.back();
+
         Get.snackbar(
-          "सफल",
-          "गतिविधि सफलतापूर्वक जोड़ दिया गया",
+          "Success",
+          "Data Saved Successfully",
           backgroundColor: Colors.green,
           colorText: Colors.white,
         );
-
-
       } else {
         Get.snackbar(
-          "त्रुटि",
-          "डेटा सेव नहीं हुआ",
+          "Error",
+          "Data not saved",
           backgroundColor: Colors.red,
           colorText: Colors.white,
         );
       }
     } catch (e) {
-      debugPrint(
-        "Submit Error => $e",
-      );
+      debugPrint("Submit Error => $e");
     }
 
     loader = false;
     update(['vaccination_list']);
-  }*/
+  }
 }
