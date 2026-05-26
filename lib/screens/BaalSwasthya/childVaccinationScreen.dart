@@ -47,79 +47,81 @@ class _ChildVaccinationScreenState
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xffECECEC),
-      appBar: AppBar(
-        backgroundColor: const Color(0xff0f7df2),
-        elevation: 0,
-        centerTitle: true,
-        iconTheme: const IconThemeData(
-          color: Colors.white,
-        ),
-        title: const Text(
-          'बाल स्वास्थ्य',
-          style: TextStyle(
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: const Color(0xffECECEC),
+        appBar: AppBar(
+          backgroundColor: const Color(0xff0f7df2),
+          elevation: 0,
+          centerTitle: true,
+          iconTheme: const IconThemeData(
             color: Colors.white,
-            fontSize: 20,
-            fontWeight: FontWeight.w500,
+          ),
+          title: const Text(
+            'बाल स्वास्थ्य',
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 20,
+              fontWeight: FontWeight.w500,
+            ),
           ),
         ),
-      ),
-      body: GetBuilder<ChildListController>(
-        id: 'vaccination_list',
-        builder: (controller) {
-          return StackedLoader(
-            loading: controller.loader,
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  const SizedBox(
-                    height: 12,
-                  ),
-                  getChildList(),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 16,
+        body: GetBuilder<ChildListController>(
+          id: 'vaccination_list',
+          builder: (controller) {
+            return StackedLoader(
+              loading: controller.loader,
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    const SizedBox(
+                      height: 12,
                     ),
-                    child: SizedBox(
-                      width: double.infinity,
-                      height: 52,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(
-                            0xff0f7df2,
-                          ),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(
-                              14,
+                    getChildList(),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                      ),
+                      child: SizedBox(
+                        width: double.infinity,
+                        height: 52,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color(
+                              0xff0f7df2,
+                            ),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(
+                                14,
+                              ),
                             ),
                           ),
-                        ),
-                        onPressed: () async {
-                          await controller.dataSubmit();
-                        },
-                        child: const Text(
-                          "Submit Data",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 20,
-                            fontWeight: FontWeight.w600,
+                          onPressed: () async {
+                            await controller.dataSubmit();
+                          },
+                          child: const Text(
+                            "Submit Data",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 20,
+                              fontWeight: FontWeight.w600,
+                            ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                ],
+                    const SizedBox(
+                      height: 20,
+                    ),
+                  ],
+                ),
               ),
-            ),
-          );
-        },
+            );
+          },
+        ),
       ),
     );
   }

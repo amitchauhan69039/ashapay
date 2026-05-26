@@ -4,6 +4,7 @@ import '../../../model/activity_data_model.dart';
 import '../../../model/family_activity_model.dart';
 import '../../../model/get_family_activity_model.dart';
 import '../../../model/get_mother_child_model.dart';
+import '../../../model/married_female_list_model.dart';
 
 class ProgramsApi{
 
@@ -235,6 +236,33 @@ class ProgramsApi{
           print("Status Code: ${response.statusCode}");
 
           GetMotherChildModel model = getMotherChildModelFromJson(responseBody);
+          return model;
+        } catch (e) {
+          throw Exception("Unexpected response format: $responseBody");
+        }
+      }
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+    return null;
+  }
+
+  static Future<MarriedFemaleListModel?> getMarriedFemaleListWihfamilyId(Map<String, String> body) async {
+    try {
+      final response = await HttpService.getApi(
+          url: EndPoints.getMarriedFemaleListWihfamilyId,
+          queryParams: body
+      );
+
+      print("Respose: ${response}");
+
+      if (response != null && response.statusCode == 200) {
+        final responseBody = response.body;
+        try {
+          print("Get Programs Response: ${response.body}");
+          print("Status Code: ${response.statusCode}");
+
+          MarriedFemaleListModel model = marriedFemaleListModelFromJson(responseBody);
           return model;
         } catch (e) {
           throw Exception("Unexpected response format: $responseBody");

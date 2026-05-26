@@ -4,10 +4,12 @@ import 'package:asha_pay/screens/home/api/programsApi.dart';
 
 import '../../model/family_activity_model.dart';
 import '../../model/get_mother_child_model.dart';
+import '../../model/married_female_list_model.dart';
 
 class ParivarKiSuchiController extends GetxController {
   bool loader = false;
-  GetMotherChildModel? motherChildModel;
+
+  MarriedFemaleListModel? marriedFemaleListModel;
 
 
   @override
@@ -17,18 +19,20 @@ class ParivarKiSuchiController extends GetxController {
   }
 
 
-  Future<void> getMotherChildListWithId(String familyId) async {
+
+
+  Future<void> getMarriedFemaleListWihfamilyId(String familyId) async {
     loader = true;
     Map<String, String> body = {
       "familyid": familyId,
     };
     update(['vaccination_list']);
     try {
-      GetMotherChildModel? model = await ProgramsApi.getMotherChildListWithId(body);
+      MarriedFemaleListModel? model = await ProgramsApi.getMarriedFemaleListWihfamilyId(body);
 
       if (model != null) {
         if (model.status!.toLowerCase() == "success") {
-          motherChildModel=model;
+          marriedFemaleListModel=model;
         } else {
           toastMsg( 'Something went wrong');
         }

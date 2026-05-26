@@ -31,13 +31,13 @@ class _PregnantWomenListScreenState extends State<PregnantWomenListScreen> {
 
 
   Future<void> getPregnantWomen() async {
-    await controller.getMotherChildListWithId(
+    await controller.getMarriedFemaleListWihfamilyId(
       widget.familyData.familyId!,
     );
 
     members.clear();
 
-    final pregnantWomen = controller.motherChildModel?.data?.pregnantWomens ?? [];
+    final pregnantWomen = controller.marriedFemaleListModel?.data?.mariedWomens ?? [];
 
     for (var woman in pregnantWomen) {
       members.add({

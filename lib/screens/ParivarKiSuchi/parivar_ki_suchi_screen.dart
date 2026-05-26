@@ -52,9 +52,7 @@ class _ParivarKiSuchiScreenState extends State<ParivarKiSuchiScreen> {
     /// Create local list from API/member data
 
 
-    controller.getMotherChildListWithId(
-      widget.familyData.familyId!,
-    );
+
   }
 
   @override
