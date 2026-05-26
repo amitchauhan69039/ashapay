@@ -123,10 +123,7 @@ class _ParivarSelectionScreenState extends State<ParivarSelectionScreen>{
                     Expanded(
                       child: Text(
                         controller.familyList[index].familyId!,
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                        ),
+                        style: styleW500S21
                       ),
                     ),
 

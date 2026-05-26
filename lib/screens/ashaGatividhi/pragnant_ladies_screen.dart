@@ -24,9 +24,6 @@ class _PragnantLadiesScreenState extends State<PragnantLadiesScreen> {
   bool selectedNo7 = true;
 
 
-
-
-
   @override
   void initState() {
 

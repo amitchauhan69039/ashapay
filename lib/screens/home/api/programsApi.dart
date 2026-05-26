@@ -10,7 +10,7 @@ class ProgramsApi{
   static Future<List<FamilyData>?> getFamilyMembers(Map<String, dynamic> body) async {
     try {
       final response = await HttpService.getApi(
-        url: EndPoints.getFamilyMembers,
+        url: EndPoints.getFamilyMembersWithID,
         queryParams: body
       );
 
