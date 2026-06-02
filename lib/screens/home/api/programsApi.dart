@@ -105,6 +105,39 @@ class ProgramsApi{
   }
 
 
+  static Future<List<ProgramsData>?> getAshaIndependentProgramMaster() async {
+    try {
+      final response = await HttpService.getApi(
+        url: EndPoints.getAshaIndependentProgramMaster,
+      );
+
+      print("Respose: ${response}");
+
+      if (response != null) {
+        print("Get Programs Response: ${response.body}");
+        print("Status Code: ${response.statusCode}");
+
+        if (response.statusCode == 200) {
+          final responseBody = json.decode(response.body);
+
+          // 🔥 Parse using model
+          ProgramsModel model = ProgramsModel.fromJson(responseBody);
+
+          return model.data ?? [];
+        } else {
+          return [];
+        }
+      }
+    } catch (e) {
+      toastMsg(e.toString());
+      debugPrint(e.toString());
+      return [];
+    }
+
+    return [];
+  }
+
+
   static Future<ActivityDataModel?> getAshaActivityMaster(Map<String, String> body) async {
     try {
       final response = await HttpService.getApi(
@@ -272,5 +305,26 @@ class ProgramsApi{
       throw Exception(e.toString());
     }
     return null;
+  }
+
+  static Future<bool> addAshaMeetingActivity(Map<String, dynamic> body) async {
+    try {
+      final response = await HttpService.postApi(
+        url: EndPoints.addNewFamily,
+        body: body,
+      );
+
+      print("AddNewFamily body: $body");
+      print("AddNewFamily response: ${response?.body}");
+
+      if (response != null && response.statusCode == 200) {
+        return true; // ✅ success
+      }
+
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+
+    return false;
   }
 }

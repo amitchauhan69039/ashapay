@@ -119,6 +119,16 @@ class _AshaGatividhiListScreenState extends State<AshaGatividhiListScreen> {
                                     Get.to(()=> ChildListScreen(familyData: widget.familyData,
                                       programId: widget.programmeId, activityId: item.activityId.toString(), ));
                                   }
+                                }if(widget.programmeId=="15" ){
+                                  if(item.activityId == 6){
+                                    Get.to(()=> MonthlyActivityScreen(activity:"6" , ));
+                                  }
+                                  if(item.activityId == 7){
+                                    Get.to(()=> MonthlyActivityScreen(activity: "7", ));
+                                  }
+                                  if(item.activityId == 8){
+                                    Get.to(()=> MonthlyActivityScreen( activity: "8",));
+                                  }
                                 }
                               },
                               child: programCard(item.activityName ?? ""),
@@ -163,3 +173,147 @@ class _AshaGatividhiListScreenState extends State<AshaGatividhiListScreen> {
 
 }
 
+
+
+class AshaGatividhiListScreen2 extends StatefulWidget {
+  final String programmeId;
+  AshaGatividhiListScreen2({super.key,required this.programmeId,});
+
+  @override
+  State<AshaGatividhiListScreen2> createState() => _AshaGatividhiListScreen2State();
+
+
+
+}
+
+
+class _AshaGatividhiListScreen2State extends State<AshaGatividhiListScreen2> {
+  final AshaGatividhiListController controller = Get.put(AshaGatividhiListController());
+  bool selectedNo5 = true;
+  bool selectedNo6 = true;
+  bool selectedNo7 = true;
+
+  @override
+  void initState() {
+
+    super.initState();
+    controller.getAshaActivityMaster(widget.programmeId);
+  }
+
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        backgroundColor: const Color(0xff0f7df2),
+        iconTheme: const IconThemeData(
+          color: Colors.white,
+        ),
+        elevation: 0,
+        centerTitle: true,
+        title: const Text(
+          'आशा गतिविधि',
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 20,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+      ),
+      body:Column(
+        children: [
+
+          Expanded(
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.grey.shade200,
+                borderRadius: BorderRadius.vertical(
+                  top: Radius.circular(20),
+                ),
+              ),
+
+              // 🔥 GetBuilder
+              child: GetBuilder<AshaGatividhiListController>(
+                id: 'asha_gatividhi_list',
+                builder: (controller) {
+
+                  // 🔹 Loader
+                  if (controller.loader) {
+                    return Center(child: CircularProgressIndicator());
+                  }
+
+                  // 🔹 Empty State
+                  if (controller.activityDataModel == null ||
+                      controller.activityDataModel!.data!.isEmpty) {
+                    return Center(child: Text("No Data Found"));
+                  }
+
+                  // 🔹 List
+                  return Container(
+                    margin: EdgeInsets.only(bottom: 20),
+                    child: ListView.builder(
+                      padding: EdgeInsets.all(16),
+                      itemCount: controller.activityDataModel!.data!.length,
+                      itemBuilder: (context, index) {
+
+                        final item = controller.activityDataModel!.data![index];
+
+                        return InkWell(
+                          onTap: () {
+
+                            print("kldnldsn ${widget.programmeId} ${item.activityId}");
+
+                          if(widget.programmeId=="15" ){
+                              if(item.activityId == 6){
+                                Get.to(()=> MonthlyActivityScreen(activity:"6" , ));
+                              }
+                              if(item.activityId == 7){
+                                Get.to(()=> MonthlyActivityScreen(activity: "7", ));
+                              }
+                              if(item.activityId == 8){
+                                Get.to(()=> MonthlyActivityScreen( activity: "8",));
+                              }
+                            }
+                          },
+                          child: programCard(item.activityName ?? ""),
+                        );
+                      },
+                    ),
+                  );
+                },
+              ),
+            ),
+          ),
+        ],
+      ),
+
+    );
+  }
+
+
+  // 🔹 Card
+  Widget programCard(String title) {
+    return Container(
+      margin: EdgeInsets.only(bottom: 20),
+      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 18),
+      decoration: BoxDecoration(
+        color: Color(0xFF2F7FB6),
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: Row(
+        children: [
+          Expanded(
+            child: Text(
+              title,
+              style: TextStyle(color: Colors.white, fontSize: 24,fontWeight: FontWeight.w700),
+            ),
+          ),
+          appSizedBox(width: 10),
+          Icon(Icons.arrow_forward_ios, color: Colors.white, size: 18)
+        ],
+      ),
+    );
+  }
+
+}

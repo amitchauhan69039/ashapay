@@ -1,11 +1,10 @@
 import 'package:asha_pay/asha_pay.dart';
 import 'package:flutter/material.dart';
 
-import '../../model/family_model.dart';
-
 class MonthlyActivityScreen extends StatefulWidget {
+  final String activity;
 
-  const MonthlyActivityScreen({super.key,});
+  const MonthlyActivityScreen({super.key,required this.activity});
 
   @override
   State<MonthlyActivityScreen> createState() => _MonthlyActivityScreenState();
@@ -13,37 +12,24 @@ class MonthlyActivityScreen extends StatefulWidget {
 
 class _MonthlyActivityScreenState extends State<MonthlyActivityScreen> {
   final MonthlyActivityController controller = Get.put(MonthlyActivityController());
-  bool selectedNo1 = true;
-  bool selectedNo2 = true;
-  bool selectedNo3 = true;
 
-  List<String> lmpDates = [];
-  List<String> regDates = [];
 
-  List<String> selectedMembers=[];
-  List<String> selectedCouplesMembers=[];
+
 
   @override
   void initState() {
-
     super.initState();
-
+    controller.activity=widget.activity;
   }
-
 
   bool showLmp = false;
   bool showCouple = false;
 
-  TextEditingController dateController = TextEditingController();
-  TextEditingController agendaController = TextEditingController();
-  String selectedPlace = "";
+
 
   List<String> places = ["Delhi", "Mumbai", "Jaipur"];
 
-  String lmp1 = '';
-  String reg1 = '';
-  String lmp2 = '';
-  String reg2 = '';
+
 
   @override
   Widget build(BuildContext context) {
@@ -65,6 +51,7 @@ class _MonthlyActivityScreenState extends State<MonthlyActivityScreen> {
             ),
           ),
         ),
+
         body: GetBuilder<MonthlyActivityController>(
             id: 'monthly_activity',
             builder: (controller) {
@@ -78,148 +65,157 @@ class _MonthlyActivityScreenState extends State<MonthlyActivityScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
 
-
                         const SizedBox(height: 12),
 
-                        questionText(
-                          '1. ग्राम स्वास्थ्य स्वच्छता पोषण समिति की मासिक बैठक करना',
-                        ),
-                        const SizedBox(height: 12),
-                        _yesNoRow(
-                          selectedNo: selectedNo1,
-                          onChanged: (value) {
-                            setState(() {
-                              selectedNo1 = value;
-                            });
-                          },
-                        ),
+                        if (widget.activity=="6") ...[
 
-                        const SizedBox(height: 12),
-
-                        if (!selectedNo1)
-                          datePlaceRow(
-                            context: context,
-                            dateController: dateController,
-                            selectedPlace: selectedPlace,
-                            places: places,
-                            onPlaceChanged: (value) {
+                          questionText(
+                            'ग्राम स्वास्थ्य स्वच्छता पोषण समिति की मासिक बैठक करना',
+                          ),
+                          const SizedBox(height: 12),
+                          _yesNoRow(
+                            selectedNo: controller.selectedNo1,
+                            onChanged: (value) {
                               setState(() {
-                                selectedPlace = value ?? "";
+                                controller.selectedNo1 = value;
                               });
                             },
                           ),
 
-                        const SizedBox(height: 20),
+                          const SizedBox(height: 12),
 
-                        questionText(
-                          '6. मासिक ग्राम/शहरी स्वास्थ्य पोषण दिवस मनाना',
-                        ),
-                        const SizedBox(height: 12),
-                        _yesNoRow(
-                          selectedNo: selectedNo2,
-                          onChanged: (value) {
-                            setState(() {
-                              selectedNo2 = value;
-                            });
-                          },
-                        ),
+                          if (!controller.selectedNo1)
+                            datePlaceRow(
+                              context: context,
+                              dateController: controller.dateController,
+                              selectedPlace: controller.selectedPlace,
+                              places: places,
+                              onPlaceChanged: (value) {
+                                setState(() {
+                                  controller.selectedPlace = value ?? "";
+                                });
+                              },
+                            ),
 
-                        const SizedBox(height: 12),
+                          const SizedBox(height: 30),
 
-                        if (!selectedNo2)
-                          datePlaceRow(
-                            context: context,
-                            dateController: dateController,
-                            selectedPlace: selectedPlace,
-                            places: places,
-                            onPlaceChanged: (value) {
+                        ],
+
+                        if (widget.activity=="7") ...[
+                          questionText(
+                            'मासिक ग्राम/शहरी स्वास्थ्य पोषण दिवस मनाना',
+                          ),
+                          const SizedBox(height: 12),
+                          _yesNoRow(
+                            selectedNo: controller.selectedNo2,
+                            onChanged: (value) {
                               setState(() {
-                                selectedPlace = value ?? "";
+                                controller.selectedNo2 = value;
                               });
                             },
                           ),
 
-                        if (!selectedNo2)
-                          const SizedBox(height: 8),
+                          const SizedBox(height: 12),
 
-                        if (!selectedNo2)
-                          SizedBox(
-                            height: 60,
-                            child: TextField(
-                              controller: agendaController,
-                              maxLines: 1,
-                              decoration: InputDecoration(
-                                hintText: "चर्चा का एजेंडा चुनें",
-                                hintStyle: TextStyle(
-                                  color: Colors.grey.shade400,
-                                  fontSize: 16,
-                                ),
+                          if (!controller.selectedNo2)
+                            datePlaceRow(
+                              context: context,
+                              dateController: controller.dateController,
+                              selectedPlace: controller.selectedPlace,
+                              places: places,
+                              onPlaceChanged: (value) {
+                                setState(() {
+                                  controller.selectedPlace = value ?? "";
+                                });
+                              },
+                            ),
 
-                                contentPadding: const EdgeInsets.symmetric(
-                                  horizontal: 16,
-                                  vertical: 0,
-                                ),
+                          if (!controller.selectedNo2)
+                            const SizedBox(height: 8),
 
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(2),
-                                ),
+                          if (!controller.selectedNo2)
+                            SizedBox(
+                              height: 60,
+                              child: TextField(
+                                controller: controller.agendaController,
+                                maxLines: 1,
+                                decoration: InputDecoration(
+                                  hintText: "चर्चा का एजेंडा चुनें",
+                                  hintStyle: TextStyle(
+                                    color: Colors.grey.shade400,
+                                    fontSize: 16,
+                                  ),
 
-                                enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(2),
-                                  borderSide: BorderSide(color: Colors.grey.shade300),
-                                ),
+                                  contentPadding: const EdgeInsets.symmetric(
+                                    horizontal: 16,
+                                    vertical: 0,
+                                  ),
 
-                                focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(2),
-                                  borderSide: const BorderSide(color: Colors.blue),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(2),
+                                  ),
+
+                                  enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(2),
+                                    borderSide: BorderSide(color: Colors.grey.shade300),
+                                  ),
+
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(2),
+                                    borderSide: const BorderSide(color: Colors.blue),
+                                  ),
                                 ),
                               ),
                             ),
+
+
+
+                          const SizedBox(height: 30),
+
+                        ],
+
+                        if (widget.activity=="8") ...[
+                          questionText(
+                            'प्राथमिक स्वास्थ्य केंद्र पर मासिक मीटिंग में उपस्थित होना',
                           ),
 
-
-
-                        const SizedBox(height: 20),
-
-                        questionText(
-                          '7. प्राथमिक स्वास्थ्य केंद्र पर मासिक मीटिंग में उपस्थित होना',
-                        ),
-
-                        const SizedBox(height: 12),
-                        _yesNoRow(
-                          selectedNo: selectedNo3,
-                          onChanged: (value) {
-                            setState(() {
-                              selectedNo3 = value;
-                            });
-                          },
-                        ),
-
-                        const SizedBox(height: 12),
-
-                        if (!selectedNo3)
-                          datePlaceRow(
-                            context: context,
-                            dateController: dateController,
-                            selectedPlace: selectedPlace,
-                            places: places,
-                            onPlaceChanged: (value) {
+                          const SizedBox(height: 12),
+                          _yesNoRow(
+                            selectedNo: controller.selectedNo3,
+                            onChanged: (value) {
                               setState(() {
-                                selectedPlace = value ?? "";
+                                controller.selectedNo3 = value;
                               });
                             },
                           ),
 
-                        const SizedBox(height: 30),
+                          const SizedBox(height: 12),
+
+                          if (!controller.selectedNo3)
+                            datePlaceRow(
+                              context: context,
+                              dateController: controller.dateController,
+                              selectedPlace: controller.selectedPlace,
+                              places: places,
+                              onPlaceChanged: (value) {
+                                setState(() {
+                                  controller.selectedPlace = value ?? "";
+                                });
+                              },
+                            ),
+
+                          const SizedBox(height: 30),
+                        ],
 
                         AppButton(
                           buttonName: "डेटा जमा करें",
                           height: 45,
                           onTap: () async {
 
-                            Get.back();
+                            controller.addAshaMeetingActivity();
                           },
                         ),
+
                         const SizedBox(height: 20),
                       ],
                     ),
@@ -227,7 +223,6 @@ class _MonthlyActivityScreenState extends State<MonthlyActivityScreen> {
                 ),
               );
             })
-
     );
   }
 
@@ -235,14 +230,13 @@ class _MonthlyActivityScreenState extends State<MonthlyActivityScreen> {
     return Text(
       text,
       style: const TextStyle(
-        fontSize: 16,
+        fontSize: 22,
         height: 1.3,
         color: Colors.black,
-        fontWeight: FontWeight.w500,
+        fontWeight: FontWeight.w700,
       ),
     );
   }
-
 
   Widget memberRow({required VoidCallback onTap} ) {
     return InkWell(
@@ -362,170 +356,6 @@ class _MonthlyActivityScreenState extends State<MonthlyActivityScreen> {
     );
   }
 
-
-
-  Widget addLMP(BuildContext context,List<String> selectedMembers) {
-
-    print("sizzzeee ${selectedMembers.length}");
-    return Column(
-      children: [
-        Container(
-          height: 52,
-          padding: const EdgeInsets.symmetric(horizontal: 10),
-          color: const Color(0xffe8e8e8),
-          child: const Row(
-            children: [
-              Expanded(
-                flex: 4,
-                child: Text(
-                  'Name',
-                  style: TextStyle(
-                    fontSize: 13,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ),
-              Expanded(
-                flex: 4,
-                child: Text(
-                  'LMP',
-                  style: TextStyle(
-                    fontSize: 13,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ),
-              Expanded(
-                flex: 4,
-                child: Text(
-                  'REGISTRATION DATE',
-                  style: TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-
-        const SizedBox(height: 10),
-
-        ListView.builder(
-          shrinkWrap: true,
-          physics: NeverScrollableScrollPhysics(),
-          itemCount: selectedMembers.length,
-          itemBuilder: (context, index) {
-            return Column(
-              children: [
-                Row(
-                  children: [
-
-                    Expanded(
-                      flex: 4,
-                      child: Padding(
-                        padding: EdgeInsets.only(right: 8),
-                        child: Text(selectedMembers[index],
-                          style: TextStyle(
-                            fontSize: 13, fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ),
-                    ),
-
-
-
-                    Expanded(
-                      flex: 4,
-                      child: InkWell(
-                        onTap: () async {
-                          final picked = await showDatePicker(
-                            context: context,
-                            initialDate: DateTime.now(),
-                            firstDate: DateTime(2000),
-                            lastDate: DateTime(2100),
-                          );
-
-                          if (picked != null) {
-                            setState(() {
-                              lmpDates[index] =
-                              "${picked.day}/${picked.month}/${picked.year}";
-                            });
-
-                          }
-                        },
-                        child:Container(
-                          height: 55,
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                          alignment: Alignment.centerLeft,
-                          decoration: BoxDecoration(
-                            border: Border.all( color: const Color(0xffd7d7d7),
-                            ),
-                          ),
-                          child: Text( lmpDates[index].isEmpty
-                              ? "एलएमपी तिथि" : lmpDates[index],
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: lmpDates[index].isEmpty ? const Color(0xffbdbdbd) : Colors.black, ),
-                          ),
-                        ),
-                      ),
-                    ),
-
-
-
-                    appSizedBox(width: 10),
-                    // 📅 REG
-                    Expanded(
-                      flex: 4,
-                      child: InkWell(
-                        onTap: () async {
-                          final picked = await showDatePicker(
-                            context: context,
-                            initialDate: DateTime.now(),
-                            firstDate: DateTime(2000),
-                            lastDate: DateTime(2100),
-                          );
-
-                          if (picked != null) {
-                            setState(() {
-                              regDates[index] =
-                              "${picked.day}/${picked.month}/${picked.year}";
-                            });
-                          }
-                        },
-                        child:Container(
-                          height: 55,
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                          alignment: Alignment.centerLeft,
-                          decoration: BoxDecoration(
-                            border: Border.all( color: const Color(0xffd7d7d7),
-                            ),
-                          ),
-                          child: Text( regDates[index].isEmpty
-                              ? "पंजीकरण तिथि"
-                              : regDates[index],
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: regDates[index].isEmpty ? const Color(0xffbdbdbd) : Colors.black, ),
-                          ),
-                        ),
-
-                      ),
-                    ),
-                  ],
-                ),
-                appSizedBox(height: 10)
-              ],
-            );
-          },
-        ),
-
-      ],
-    );
-  }
-
-
   Widget datePlaceRow({
     required BuildContext context,
     required TextEditingController dateController,
@@ -629,149 +459,4 @@ class _MonthlyActivityScreenState extends State<MonthlyActivityScreen> {
       ],
     );
   }
-
-
-  Widget coupleCard(){
-
-    String names="";
-    for(int i=0;i<selectedCouplesMembers.length;i++){
-      if(i==0){
-        names=selectedCouplesMembers[i];
-      }else{
-        names=names+" & "+selectedCouplesMembers[i];
-      }
-    }
-    return  Column(
-      children: [
-
-        Container(
-          width: double.infinity,
-          padding: const EdgeInsets.symmetric(vertical: 12),
-          decoration: BoxDecoration(
-            color: const Color(0xffd9d9d9),
-            borderRadius: BorderRadius.circular(10),
-          ),
-          child: const Center(
-            child: Text(
-              "चयनित जोड़ें",
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-          ),
-        ),
-
-        const SizedBox(height: 15),
-
-
-        Container(
-          height: 55,
-          decoration: BoxDecoration(
-            color: const Color(0xffeaf4f4),
-            borderRadius: BorderRadius.circular(10),
-          ),
-          child: Row(
-            children: [
-              // 🔴 Red Left Section
-              Container(
-                width: 55,
-                decoration: const BoxDecoration(
-                  color: Color(0xffd32f2f),
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(10),
-                    bottomLeft: Radius.circular(10),
-                  ),
-                ),
-                child: const Center(
-                  child: Icon(
-                    Icons.close,
-                    color: Colors.white,
-                    size: 25,
-                  ),
-                ),
-              ),
-
-              // 📝 Text
-              Expanded(
-                child: Padding(
-                  padding: EdgeInsets.only(left: 12,right: 12),
-                  child: Text(
-                    names.toUpperCase(),
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w300,
-                    ),
-                  ),
-                ),
-              ),
-
-              // 👨‍👩 Icon
-              const Padding(
-                padding: EdgeInsets.only(right: 16),
-                child: Icon(
-                  Icons.family_restroom,
-                  size: 32,
-                  color: Colors.black87,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget birthDeathCard(){
-    return  Column(
-      children: [
-        Container(
-          height: 55,
-          decoration: BoxDecoration(
-            color: const Color(0xffeaf4f4),
-            borderRadius: BorderRadius.circular(10),
-          ),
-          child: Row(
-            children: [
-
-              Container(
-                width: 55,
-                decoration: const BoxDecoration(
-                  color: Color(0xffd32f2f),
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(10),
-                    bottomLeft: Radius.circular(10),
-                  ),
-                ),
-                child: const Center(
-                  child: Icon(
-                    Icons.close,
-                    color: Colors.white,
-                    size: 25,
-                  ),
-                ),
-              ),
-
-              // 📝 Text
-              const Expanded(
-                child: Padding(
-                  padding: EdgeInsets.only(left: 12,right: 12),
-                  child: Text(
-                    "JONISH KUMAR",
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w300,
-                    ),
-                  ),
-                ),
-              ),
-
-
-            ],
-          ),
-        ),
-      ],
-    );
-  }
-
 }

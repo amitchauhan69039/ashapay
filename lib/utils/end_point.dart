@@ -4,6 +4,7 @@ class EndPoints {
   //--------------------------------- endpoints ---------------------------------
   static const login = baseUrl+'Auth/login';
   static const getPrograms = baseUrl+'Asha/GetAshaProgramMaster';
+  static const getAshaIndependentProgramMaster = baseUrl+'Asha/GetAshaIndependentProgramMaster';
   static const getAshaActivityMaster = baseUrl+'Asha/GetAshaActivityMaster';
   static const getFamilyMembers = baseUrl+'Asha/ListFamilyWithMembers';
   static const getFamilyMembersWithID = baseUrl+'Asha/ListFamilyMembersWithId';
