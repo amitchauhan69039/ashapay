@@ -15,6 +15,7 @@ class EndPoints {
   static const getMarriedFemaleListWihfamilyId = baseUrl+'Asha/GetMarriedFemaleListWihfamilyId';
 
   static const addNewFamily = baseUrl+'Asha/AddNewFamily';
+  static const addIndependentProgram_survey = baseUrl+'Asha/AddIndependentProgram_survey';
 
 }
 

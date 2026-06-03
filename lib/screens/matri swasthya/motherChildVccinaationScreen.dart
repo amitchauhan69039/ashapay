@@ -358,12 +358,10 @@ class _MotherChildVaccinationScreenState
                       TextFormField(
                         controller: dateControllers[key],
                         readOnly: true,
-
                         decoration: InputDecoration(
                           hintText: isCompleted
                               ? (vaccine.vaccinationDate ?? "Completed")
                               : "Select Date",
-
                           suffixIcon: isCompleted
                               ? const Icon(
                             Icons.check_circle,
@@ -374,31 +372,24 @@ class _MotherChildVaccinationScreenState
                             Icons.calendar_month,
                             size: 20,
                           ),
-
                           contentPadding: const EdgeInsets.symmetric(
                             horizontal: 14,
                             vertical: 12,
                           ),
-
                           filled: true,
-
                           fillColor: isCompleted
                               ? Colors.green.withOpacity(.05)
                               : const Color(0xffF5F5F5),
-
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
                             borderSide: BorderSide.none,
                           ),
                         ),
-
                         // completed pe disable
                         enabled: !isCompleted,
-
                         onTap: isCompleted
                             ? null
                             : () async {
-
                           DateTime? pickedDate =
                           await showDatePicker(
                             context: this.context,
@@ -408,17 +399,12 @@ class _MotherChildVaccinationScreenState
                           );
 
                           if (pickedDate != null) {
-
-                            String formattedDate =
-                                "${pickedDate.day}-${pickedDate.month}-${pickedDate.year}";
-
-                            // textfield show
-                            dateControllers[key]?.text =
-                                formattedDate;
+                            String formattedDate = "${pickedDate.day}-${pickedDate.month}-${pickedDate.year}";
+                            // textField show
+                            dateControllers[key]?.text = formattedDate;
 
                             // submit body save
-                            controller.selectedDates[key] =
-                                formattedDate;
+                            controller.selectedDates[key] = formattedDate;
 
                             setState(() {});
                           }

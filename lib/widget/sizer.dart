@@ -26,8 +26,6 @@ Widget appSizedBox({double? width ,double? height,Widget? child}){
 }
 
 
-
-
 class AppPadding{
   static double horizontalPadding = 6.4.w;
   static double verticalPadding = 3.0.w;

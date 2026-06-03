@@ -1,7 +1,9 @@
 import 'package:asha_pay/asha_pay.dart';
 import 'package:asha_pay/screens/BaalSwasthya/childListScreen.dart';
+import 'package:asha_pay/screens/IodineTest/iodine_test_screen.dart';
 import 'package:asha_pay/screens/home/controller/programs_controller.dart';
 import 'package:asha_pay/screens/matri%20swasthya/mothers_list_screen.dart';
+import 'package:asha_pay/tbSurvey/tb_survey_screen.dart';
 
 import '../../model/family_model.dart';
 
@@ -119,7 +121,7 @@ class _AshaGatividhiListScreenState extends State<AshaGatividhiListScreen> {
                                     Get.to(()=> ChildListScreen(familyData: widget.familyData,
                                       programId: widget.programmeId, activityId: item.activityId.toString(), ));
                                   }
-                                }if(widget.programmeId=="15" ){
+                                }else if(widget.programmeId=="15" ){
                                   if(item.activityId == 6){
                                     Get.to(()=> MonthlyActivityScreen(activity:"6" , ));
                                   }
@@ -128,6 +130,32 @@ class _AshaGatividhiListScreenState extends State<AshaGatividhiListScreen> {
                                   }
                                   if(item.activityId == 8){
                                     Get.to(()=> MonthlyActivityScreen( activity: "8",));
+                                  }
+                                }else if(widget.programmeId=="7" ){
+                                  if(item.activityId == 37){
+                                    Get.to(
+                                          ()=> IodineSurveyScreen(
+                                        familyData: widget.familyData,
+                                        programId: 7,
+                                        activityId: 37,
+                                      ),
+                                    );
+                                  }
+                                }else if(widget.programmeId=="8" ){
+                                  if(item.activityId == 40){
+                                    Get.to(()=> TBSurveyScreen(
+                                        familyData: widget.familyData,
+                                        programId: 8,
+                                        activityId: 40,
+                                      ),
+                                    );
+                                  }else if(item.activityId == 41){
+                                    Get.to(()=> TBSurveyScreen(
+                                        familyData: widget.familyData,
+                                        programId: 8,
+                                        activityId: 41,
+                                      ),
+                                    );
                                   }
                                 }
                               },
@@ -274,7 +302,45 @@ class _AshaGatividhiListScreen2State extends State<AshaGatividhiListScreen2> {
                               if(item.activityId == 8){
                                 Get.to(()=> MonthlyActivityScreen( activity: "8",));
                               }
+                            }else if(widget.programmeId=="7" ){
+                            if(item.activityId == 37){
+                              Get.to(()=> ParivarSelectionScreen(
+                                  onFamilyTap: (familyData){
+                                    Get.to(
+                                          ()=> IodineSurveyScreen(
+                                        familyData: familyData,
+                                            programId: 7,
+                                            activityId: 37,
+                                      ),
+                                    );
+
+                                  },
+                                ),
+                              );
                             }
+                          }else if(widget.programmeId=="8" ){
+                            if(item.activityId == 38){
+                              Get.to(
+                                    ()=> ParivarSelectionScreen(
+
+                                  onFamilyTap: (familyData){
+
+                                    Get.to(
+                                          ()=> TBSurveyScreen(
+
+                                        familyData: familyData,
+
+                                        programId: 8,
+
+                                        activityId: 38,
+                                      ),
+                                    );
+
+                                  },
+                                ),
+                              );
+                            }
+                          }
                           },
                           child: programCard(item.activityName ?? ""),
                         );
@@ -290,7 +356,6 @@ class _AshaGatividhiListScreen2State extends State<AshaGatividhiListScreen2> {
 
     );
   }
-
 
   // 🔹 Card
   Widget programCard(String title) {

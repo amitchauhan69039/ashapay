@@ -327,4 +327,28 @@ class ProgramsApi{
 
     return false;
   }
+
+  static Future<dynamic> addIndependentProgramSurvey(
+      Map<String, dynamic> body,
+      ) async {
+    try {
+      final response = await HttpService.postApi(
+        url: EndPoints.addIndependentProgram_survey,
+        body: body,
+      );
+
+      if (response != null) {
+        debugPrint("SURVEY STATUS CODE : ${response.statusCode}");
+        debugPrint("SURVEY RESPONSE : ${response.body}");
+
+        if (response.statusCode == 200 || response.statusCode == 201) {
+          return jsonDecode(response.body);
+        }
+      }
+    } catch (e) {
+      debugPrint("SURVEY API ERROR : $e");
+    }
+
+    return null;
+  }
 }
