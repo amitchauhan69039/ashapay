@@ -2,7 +2,6 @@ import 'package:asha_pay/model/family_model.dart';
 import 'package:asha_pay/screens/kushtRogSurvey/kusht_survey_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import '../../common/widget/loaders.dart';
 
 class KushtSurveyScreen extends StatelessWidget {
@@ -20,6 +19,9 @@ class KushtSurveyScreen extends StatelessWidget {
   final KushtSurveyController controller =
   Get.put(KushtSurveyController());
 
+  bool get showTreatmentFields =>
+      activityId == 45 || activityId == 46;
+
   @override
   Widget build(BuildContext context) {
     controller.setFamilyMembers(familyData);
@@ -35,7 +37,6 @@ class KushtSurveyScreen extends StatelessWidget {
         ),
         iconTheme: const IconThemeData(color: Colors.white),
       ),
-
       body: GetBuilder<KushtSurveyController>(
         id: "kusht_survey",
         builder: (controller) {
@@ -49,7 +50,7 @@ class KushtSurveyScreen extends StatelessWidget {
                   const SizedBox(height: 18),
                   _familyCard(),
                   const SizedBox(height: 18),
-                  _questionCard(),
+                  _questionCard(context),
                   const SizedBox(height: 28),
                   _submitButton(),
                 ],
@@ -69,23 +70,27 @@ class KushtSurveyScreen extends StatelessWidget {
         color: const Color(0xff2F7DBD),
         borderRadius: BorderRadius.circular(20),
       ),
-      child: const Column(
+      child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(Icons.medical_services, color: Colors.white, size: 34),
-          SizedBox(height: 12),
+          const Icon(Icons.medical_services, color: Colors.white, size: 34),
+          const SizedBox(height: 12),
           Text(
-            "कुष्ठ रोगी सर्वे",
-            style: TextStyle(
+            showTreatmentFields
+                ? "कुष्ठ रोग इलाज प्रबंधन"
+                : "कुष्ठ रोगी सर्वे",
+            style: const TextStyle(
               color: Colors.white,
               fontSize: 20,
               fontWeight: FontWeight.w700,
             ),
           ),
-          SizedBox(height: 8),
+          const SizedBox(height: 8),
           Text(
-            "परिवार में कुष्ठ रोगी की जानकारी दर्ज करें",
-            style: TextStyle(color: Colors.white70, fontSize: 14),
+            showTreatmentFields
+                ? "रोगी के इलाज की जानकारी दर्ज करें"
+                : "परिवार में कुष्ठ रोगी की जानकारी दर्ज करें",
+            style: const TextStyle(color: Colors.white70, fontSize: 14),
           ),
         ],
       ),
@@ -135,7 +140,7 @@ class KushtSurveyScreen extends StatelessWidget {
     );
   }
 
-  Widget _questionCard() {
+  Widget _questionCard(BuildContext context) {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(18),
@@ -147,12 +152,13 @@ class KushtSurveyScreen extends StatelessWidget {
             "प्रश्न",
             style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
           ),
-
           const SizedBox(height: 16),
 
-          const Text(
-            "क्या परिवार में कोई कुष्ठ रोगी है ?",
-            style: TextStyle(
+          Text(
+            showTreatmentFields
+                ? "कुष्ठ रोगी का चयन करें और इलाज की जानकारी भरें"
+                : "क्या परिवार में कोई कुष्ठ रोगी है ?",
+            style: const TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w600,
               height: 1.5,
@@ -161,34 +167,43 @@ class KushtSurveyScreen extends StatelessWidget {
 
           const SizedBox(height: 22),
 
-          Obx(() {
-            return Row(
-              children: [
-                Expanded(
-                  child: optionCard(
-                    title: "हाँ",
-                    value: "YES",
-                    icon: Icons.check_circle,
-                    isSelected: controller.answer.value == "YES",
+          if (!showTreatmentFields)
+            Obx(() {
+              return Row(
+                children: [
+                  Expanded(
+                    child: optionCard(
+                      title: "हाँ",
+                      value: "YES",
+                      icon: Icons.check_circle,
+                      isSelected: controller.answer.value == "YES",
+                    ),
                   ),
-                ),
-                const SizedBox(width: 14),
-                Expanded(
-                  child: optionCard(
-                    title: "नहीं",
-                    value: "NO",
-                    icon: Icons.cancel,
-                    isSelected: controller.answer.value == "NO",
+                  const SizedBox(width: 14),
+                  Expanded(
+                    child: optionCard(
+                      title: "नहीं",
+                      value: "NO",
+                      icon: Icons.cancel,
+                      isSelected: controller.answer.value == "NO",
+                    ),
                   ),
-                ),
-              ],
-            );
-          }),
+                ],
+              );
+            }),
+
+          if (showTreatmentFields)
+            Builder(
+              builder: (_) {
+                controller.answer.value = "YES";
+                return const SizedBox();
+              },
+            ),
 
           const SizedBox(height: 20),
 
           Obx(() {
-            if (controller.answer.value != "YES") {
+            if (!showTreatmentFields && controller.answer.value != "YES") {
               return const SizedBox();
             }
 
@@ -197,12 +212,8 @@ class KushtSurveyScreen extends StatelessWidget {
               children: [
                 const Text(
                   "रोगी का चयन करें",
-                  style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 14,
-                  ),
+                  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
                 ),
-
                 const SizedBox(height: 8),
 
                 DropdownButtonFormField<FamilyMembers>(
@@ -220,30 +231,147 @@ class KushtSurveyScreen extends StatelessWidget {
                   onChanged: (value) {
                     controller.selectedMember.value = value;
                   },
-                  decoration: InputDecoration(
-                    filled: true,
-                    fillColor: const Color(0xffF5F7FA),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(14),
-                      borderSide: BorderSide.none,
-                    ),
-                  ),
+                  decoration: fieldDecoration(),
                 ),
+
+                if (showTreatmentFields) ...[
+                  const SizedBox(height: 16),
+
+                  const Text(
+                    "कुष्ठ रोग का प्रकार",
+                    style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
+                  ),
+                  const SizedBox(height: 8),
+
+                  DropdownButtonFormField<String>(
+                    value: controller.diseaseType.value.isEmpty
+                        ? null
+                        : controller.diseaseType.value,
+                    isExpanded: true,
+                    hint: const Text("प्रकार चुनें"),
+                    items: const [
+                      DropdownMenuItem(value: "PB", child: Text("PB")),
+                      DropdownMenuItem(value: "MB", child: Text("MB")),
+                    ],
+                    onChanged: (value) {
+                      controller.diseaseType.value = value ?? "";
+                    },
+                    decoration: fieldDecoration(),
+                  ),
+
+                  const SizedBox(height: 16),
+
+                  Obx(() {
+                    return dateField(
+                      title: "इलाज शुरू होने की तारीख",
+                      value: controller.treatmentStartDate.value,
+                      onTap: () async {
+                        final date = await pickDate(context);
+                        if (date != null) {
+                          controller.treatmentStartDate.value =
+                              date.toIso8601String();
+                        }
+                      },
+                    );
+                  }),
+
+                  const SizedBox(height: 16),
+
+                  Obx(() {
+                    return dateField(
+                      title: "इलाज समाप्त होने की तारीख",
+                      value: controller.treatmentEndDate.value,
+                      onTap: () async {
+                        final date = await pickDate(context);
+                        if (date != null) {
+                          controller.treatmentEndDate.value =
+                              date.toIso8601String();
+                        }
+                      },
+                    );
+                  }),
+
+                  const SizedBox(height: 16),
+
+                  const Text(
+                    "क्या दवाई ली जा रही है?",
+                    style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
+                  ),
+                  const SizedBox(height: 8),
+
+                  Obx(() {
+                    return Row(
+                      children: [
+                        Expanded(
+                          child: smallOptionCard(
+                            title: "हाँ",
+                            value: "YES",
+                            selectedValue: controller.medicineTaken.value,
+                            onTap: () {
+                              controller.medicineTaken.value = "YES";
+                            },
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: smallOptionCard(
+                            title: "नहीं",
+                            value: "NO",
+                            selectedValue: controller.medicineTaken.value,
+                            onTap: () {
+                              controller.medicineTaken.value = "NO";
+                            },
+                          ),
+                        ),
+                      ],
+                    );
+                  }),
+
+                  const SizedBox(height: 16),
+
+                  const Text(
+                    "Patient Status",
+                    style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
+                  ),
+                  const SizedBox(height: 8),
+
+                  DropdownButtonFormField<String>(
+                    value: controller.patientStatus.value.isEmpty
+                        ? null
+                        : controller.patientStatus.value,
+                    isExpanded: true,
+                    hint: const Text("Status चुनें"),
+                    items: const [
+                      DropdownMenuItem(
+                        value: "Treatment Started",
+                        child: Text("Treatment Started"),
+                      ),
+                      DropdownMenuItem(
+                        value: "Under Treatment",
+                        child: Text("Under Treatment"),
+                      ),
+                      DropdownMenuItem(
+                        value: "Treatment Completed",
+                        child: Text("Treatment Completed"),
+                      ),
+                      DropdownMenuItem(
+                        value: "Defaulted",
+                        child: Text("Defaulted"),
+                      ),
+                    ],
+                    onChanged: (value) {
+                      controller.patientStatus.value = value ?? "";
+                    },
+                    decoration: fieldDecoration(),
+                  ),
+                ],
 
                 const SizedBox(height: 16),
 
                 TextFormField(
                   controller: controller.remarksController,
                   maxLines: 3,
-                  decoration: InputDecoration(
-                    hintText: "Remarks",
-                    filled: true,
-                    fillColor: const Color(0xffF5F7FA),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(14),
-                      borderSide: BorderSide.none,
-                    ),
-                  ),
+                  decoration: fieldDecoration(hint: "Remarks"),
                 ),
               ],
             );
@@ -272,6 +400,7 @@ class KushtSurveyScreen extends StatelessWidget {
               familyData,
               programId,
               activityId,
+              showTreatmentFields,
             );
           },
           child: const Text(
@@ -297,7 +426,6 @@ class KushtSurveyScreen extends StatelessWidget {
       borderRadius: BorderRadius.circular(16),
       onTap: () {
         controller.answer.value = value;
-
         if (value == "NO") {
           controller.selectedMember.value = null;
         }
@@ -305,14 +433,10 @@ class KushtSurveyScreen extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 18),
         decoration: BoxDecoration(
-          color: isSelected
-              ? const Color(0xff2F7DBD)
-              : const Color(0xffEEF5FF),
+          color: isSelected ? const Color(0xff2F7DBD) : const Color(0xffEEF5FF),
           borderRadius: BorderRadius.circular(16),
           border: Border.all(
-            color: isSelected
-                ? const Color(0xff2F7DBD)
-                : Colors.grey.shade300,
+            color: isSelected ? const Color(0xff2F7DBD) : Colors.grey.shade300,
           ),
         ),
         child: Column(
@@ -333,6 +457,101 @@ class KushtSurveyScreen extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget smallOptionCard({
+    required String title,
+    required String value,
+    required String selectedValue,
+    required VoidCallback onTap,
+  }) {
+    final isSelected = selectedValue == value;
+
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(14),
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 14),
+        decoration: BoxDecoration(
+          color: isSelected ? const Color(0xff2F7DBD) : const Color(0xffEEF5FF),
+          borderRadius: BorderRadius.circular(14),
+          border: Border.all(
+            color: isSelected ? const Color(0xff2F7DBD) : Colors.grey.shade300,
+          ),
+        ),
+        child: Center(
+          child: Text(
+            title,
+            style: TextStyle(
+              color: isSelected ? Colors.white : const Color(0xff2F7DBD),
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget dateField({
+    required String title,
+    required String value,
+    required VoidCallback onTap,
+  }) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          title,
+          style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
+        ),
+        const SizedBox(height: 8),
+        InkWell(
+          onTap: onTap,
+          child: Container(
+            width: double.infinity,
+            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 16),
+            decoration: BoxDecoration(
+              color: const Color(0xffF5F7FA),
+              borderRadius: BorderRadius.circular(14),
+            ),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    value.isEmpty ? "तारीख चुनें" : value.split("T").first,
+                    style: TextStyle(
+                      color: value.isEmpty ? Colors.grey : Colors.black,
+                    ),
+                  ),
+                ),
+                const Icon(Icons.calendar_month, color: Color(0xff2F7DBD)),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Future<DateTime?> pickDate(BuildContext context) async {
+    return await showDatePicker(
+      context: context,
+      firstDate: DateTime(2020),
+      lastDate: DateTime(2035),
+      initialDate: DateTime.now(),
+    );
+  }
+
+  InputDecoration fieldDecoration({String? hint}) {
+    return InputDecoration(
+      hintText: hint,
+      filled: true,
+      fillColor: const Color(0xffF5F7FA),
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(14),
+        borderSide: BorderSide.none,
       ),
     );
   }
