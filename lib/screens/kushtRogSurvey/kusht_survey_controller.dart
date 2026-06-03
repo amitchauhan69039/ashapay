@@ -60,6 +60,7 @@ class KushtSurveyController extends GetxController {
       debugPrint("TB RESPONSE : $response");
 
       if (response != null && response["status"] == "Success") {
+        Get.back();
         Get.snackbar(
           "Success",
           response["message"] ?? "Survey submitted successfully",

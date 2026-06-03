@@ -100,6 +100,7 @@ class MonthlyActivityController extends GetxController {
       );
 
       if (success) {
+        Get.back();
         Get.snackbar(
           "Success",
           "Saved successfully",
