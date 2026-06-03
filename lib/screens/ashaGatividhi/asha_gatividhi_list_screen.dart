@@ -150,6 +150,20 @@ class _AshaGatividhiListScreenState extends State<AshaGatividhiListScreen> {
                                         activityId: 44,
                                       ),
                                     );
+                                  }else if(item.activityId == 45){
+                                    Get.to(()=> KushtSurveyScreen(
+                                        familyData: widget.familyData,
+                                        programId: 8,
+                                        activityId: 45,
+                                      ),
+                                    );
+                                  }else if(item.activityId == 46){
+                                    Get.to(()=> KushtSurveyScreen(
+                                        familyData: widget.familyData,
+                                        programId: 8,
+                                        activityId: 46,
+                                      ),
+                                    );
                                   }
                                 }
                               },
