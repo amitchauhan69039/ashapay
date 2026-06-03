@@ -1,32 +1,48 @@
-import 'package:asha_pay/asha_pay.dart';
+import 'package:asha_pay/common/widget/loaders.dart';
+import 'package:asha_pay/model/family_model.dart';
+import 'package:asha_pay/screens/ParivarSelection/parivar_selection_controller.dart';
+import 'package:asha_pay/screens/home/entryProgram_screen.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
-import '../home/entryProgram_screen.dart';
+import '../../common/styles.dart';
 
 class ParivarSelectionScreen extends StatefulWidget {
+  final Function(FamilyData familyData)? onFamilyTap;
+
+  const ParivarSelectionScreen({
+    super.key,
+    this.onFamilyTap,
+  });
 
   @override
-  _ParivarSelectionScreenState createState() => _ParivarSelectionScreenState();
+  State<ParivarSelectionScreen> createState() =>
+      _ParivarSelectionScreenState();
 }
 
-class _ParivarSelectionScreenState extends State<ParivarSelectionScreen>{
-  final ParivarSelectionController controller = Get.put(ParivarSelectionController());
+class _ParivarSelectionScreenState
+    extends State<ParivarSelectionScreen> {
+  final ParivarSelectionController controller =
+  Get.put(ParivarSelectionController());
 
-   @override
-   void initState() {
-     super.initState();
-     controller.getFamily();
-   }
-
-
+  @override
+  void initState() {
+    super.initState();
+    controller.getFamily();
+  }
 
   @override
   Widget build(BuildContext context) {
-     return Scaffold(
+    return Scaffold(
       backgroundColor: Colors.white,
+
       appBar: AppBar(
         backgroundColor: const Color(0xff2f7dbd),
         elevation: 0,
-        leading: const Icon(Icons.arrow_back, color: Colors.white),
+        leading: InkWell(
+          onTap: () => Get.back(),
+          child: const Icon(Icons.arrow_back, color: Colors.white),
+        ),
         centerTitle: true,
         title: const Text(
           "परिवार का चयन करें",
@@ -38,57 +54,62 @@ class _ParivarSelectionScreenState extends State<ParivarSelectionScreen>{
         ),
       ),
 
-      body:GetBuilder<ParivarSelectionController>(
-          id: 'parivar_selection',
-          builder: (controller) {
-            return StackedLoader(
-                loading: controller.loader,
-                child: Column(
-                  children: [
-                    // 🔍 Search Box
-                    Container(
-                      color: const Color(0xff2f7dbd),
-                      padding: const EdgeInsets.all(16),
-                      child: Container(
-                        height: 45,
-                        padding: const EdgeInsets.symmetric(horizontal: 12),
-                        decoration: BoxDecoration(
-                          color: const Color(0xffe6e6e6),
-                          borderRadius: BorderRadius.circular(4),
-                        ),
-                        child: const Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            "परिवार आईडी दर्ज करें",
-                            style: TextStyle(color: Colors.grey),
-                          ),
-                        ),
+      body: GetBuilder<ParivarSelectionController>(
+        id: 'parivar_selection',
+        builder: (controller) {
+          return StackedLoader(
+            loading: controller.loader,
+            child: Column(
+              children: [
+                Container(
+                  color: const Color(0xff2f7dbd),
+                  padding: const EdgeInsets.all(16),
+                  child: Container(
+                    height: 45,
+                    padding: const EdgeInsets.symmetric(horizontal: 12),
+                    decoration: BoxDecoration(
+                      color: const Color(0xffe6e6e6),
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                    child: const Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        "परिवार आईडी दर्ज करें",
+                        style: TextStyle(color: Colors.grey),
                       ),
                     ),
-
-                    getList(),
-
-                  ],
+                  ),
                 ),
-            );
-          })
 
-
+                getList(),
+              ],
+            ),
+          );
+        },
+      ),
     );
   }
 
-  Widget getList(){
-    if(!controller.familyList.isEmpty){
-
+  Widget getList() {
+    if (controller.familyList.isNotEmpty) {
       return Expanded(
         child: ListView.builder(
           padding: const EdgeInsets.all(16),
           itemCount: controller.familyList.length,
           itemBuilder: (context, index) {
-            return InkWell(
-              onTap: (){
+            final familyData = controller.familyList[index];
 
-                Get.to(()=> AshaProgramScreen(familyData: controller.familyList[index]));
+            return InkWell(
+              onTap: () {
+                if (widget.onFamilyTap != null) {
+                  widget.onFamilyTap!(familyData);
+                } else {
+                  Get.to(
+                        () => AshaProgramScreen(
+                      familyData: familyData,
+                    ),
+                  );
+                }
               },
               child: Container(
                 height: 60,
@@ -99,7 +120,6 @@ class _ParivarSelectionScreenState extends State<ParivarSelectionScreen>{
                 ),
                 child: Row(
                   children: [
-
                     Container(
                       width: 60,
                       height: 60,
@@ -119,18 +139,19 @@ class _ParivarSelectionScreenState extends State<ParivarSelectionScreen>{
 
                     const SizedBox(width: 12),
 
-                    // 📝 Text
                     Expanded(
                       child: Text(
-                        controller.familyList[index].familyId!,
-                        style: styleW500S21
+                        familyData.familyId ?? "",
+                        style: styleW500S21,
                       ),
                     ),
 
-                    // ⋮ Menu Icon
                     const Padding(
                       padding: EdgeInsets.only(right: 10),
-                      child: Icon(Icons.more_vert, color: Colors.grey),
+                      child: Icon(
+                        Icons.more_vert,
+                        color: Colors.grey,
+                      ),
                     ),
                   ],
                 ),
@@ -139,8 +160,12 @@ class _ParivarSelectionScreenState extends State<ParivarSelectionScreen>{
           },
         ),
       );
-    }else{
-      return Container();
+    } else {
+      return const Expanded(
+        child: Center(
+          child: Text("परिवार उपलब्ध नहीं है"),
+        ),
+      );
     }
   }
 }

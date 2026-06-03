@@ -53,6 +53,7 @@ Future<String> getDeviceId() async {
   }
   return "unknown";
 }
+
 Future<String> getVersionCode() async {
   try {
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
