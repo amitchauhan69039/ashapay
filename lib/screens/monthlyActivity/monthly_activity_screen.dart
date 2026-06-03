@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 
 class MonthlyActivityScreen extends StatefulWidget {
   final String activity;
+  final String programId;
 
-  const MonthlyActivityScreen({super.key,required this.activity});
+  const MonthlyActivityScreen({super.key,required this.activity,required this.programId});
 
   @override
   State<MonthlyActivityScreen> createState() => _MonthlyActivityScreenState();
@@ -20,6 +21,7 @@ class _MonthlyActivityScreenState extends State<MonthlyActivityScreen> {
   void initState() {
     super.initState();
     controller.activity=widget.activity;
+    controller.programId=widget.programId;
   }
 
   bool showLmp = false;

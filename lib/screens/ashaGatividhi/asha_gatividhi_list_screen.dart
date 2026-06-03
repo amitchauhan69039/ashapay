@@ -121,13 +121,13 @@ class _AshaGatividhiListScreenState extends State<AshaGatividhiListScreen> {
                                   }
                                 }if(widget.programmeId=="15" ){
                                   if(item.activityId == 6){
-                                    Get.to(()=> MonthlyActivityScreen(activity:"6" , ));
+                                    Get.to(()=> MonthlyActivityScreen(activity:"6" ,programId: widget.programmeId, ));
                                   }
                                   if(item.activityId == 7){
-                                    Get.to(()=> MonthlyActivityScreen(activity: "7", ));
+                                    Get.to(()=> MonthlyActivityScreen(activity: "7", programId: widget.programmeId,));
                                   }
                                   if(item.activityId == 8){
-                                    Get.to(()=> MonthlyActivityScreen( activity: "8",));
+                                    Get.to(()=> MonthlyActivityScreen( activity: "8",programId: widget.programmeId,));
                                   }
                                 }
                               },
@@ -266,13 +266,13 @@ class _AshaGatividhiListScreen2State extends State<AshaGatividhiListScreen2> {
 
                           if(widget.programmeId=="15" ){
                               if(item.activityId == 6){
-                                Get.to(()=> MonthlyActivityScreen(activity:"6" , ));
+                                Get.to(()=> MonthlyActivityScreen(activity:"6" , programId: widget.programmeId,));
                               }
                               if(item.activityId == 7){
-                                Get.to(()=> MonthlyActivityScreen(activity: "7", ));
+                                Get.to(()=> MonthlyActivityScreen(activity: "7", programId: widget.programmeId,));
                               }
                               if(item.activityId == 8){
-                                Get.to(()=> MonthlyActivityScreen( activity: "8",));
+                                Get.to(()=> MonthlyActivityScreen( activity: "8",programId: widget.programmeId,));
                               }
                             }
                           },

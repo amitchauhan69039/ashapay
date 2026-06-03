@@ -310,7 +310,7 @@ class ProgramsApi{
   static Future<bool> addAshaMeetingActivity(Map<String, dynamic> body) async {
     try {
       final response = await HttpService.postApi(
-        url: EndPoints.addNewFamily,
+        url: EndPoints.addAshaMeetingActivity,
         body: body,
       );
 

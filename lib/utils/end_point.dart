@@ -11,6 +11,7 @@ class EndPoints {
   static const getActivitybyFamilyId = baseUrl+'Asha/GetActivitybyFamilyId';
   static const addFamilyMembers = baseUrl+'Asha/AddFamilyMembers';
   static const addAshaMemberActivity = baseUrl+'Asha/AddAshaMemberActivity';
+  static const addAshaMeetingActivity = baseUrl+'Asha/AddAshaMeetingActivity';
   static const getMotherChildListWithId = baseUrl+'Asha/GetMotherChildListWithId';
   static const getMarriedFemaleListWihfamilyId = baseUrl+'Asha/GetMarriedFemaleListWihfamilyId';
 
