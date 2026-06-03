@@ -2,6 +2,7 @@ import 'package:asha_pay/asha_pay.dart';
 import 'package:asha_pay/screens/BaalSwasthya/childListScreen.dart';
 import 'package:asha_pay/screens/IodineTest/iodine_test_screen.dart';
 import 'package:asha_pay/screens/home/controller/programs_controller.dart';
+import 'package:asha_pay/screens/kushtRogSurvey/kusht_survey_screen.dart';
 import 'package:asha_pay/screens/matri%20swasthya/mothers_list_screen.dart';
 import 'package:asha_pay/tbSurvey/tb_survey_screen.dart';
 
@@ -142,18 +143,11 @@ class _AshaGatividhiListScreenState extends State<AshaGatividhiListScreen> {
                                     );
                                   }
                                 }else if(widget.programmeId=="8" ){
-                                  if(item.activityId == 40){
-                                    Get.to(()=> TBSurveyScreen(
+                                  if(item.activityId == 44){
+                                    Get.to(()=> KushtSurveyScreen(
                                         familyData: widget.familyData,
                                         programId: 8,
-                                        activityId: 40,
-                                      ),
-                                    );
-                                  }else if(item.activityId == 41){
-                                    Get.to(()=> TBSurveyScreen(
-                                        familyData: widget.familyData,
-                                        programId: 8,
-                                        activityId: 41,
+                                        activityId: 44,
                                       ),
                                     );
                                   }
